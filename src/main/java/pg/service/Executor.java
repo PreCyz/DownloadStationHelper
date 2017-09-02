@@ -10,4 +10,5 @@ public interface Executor {
     void logoutFromDiskStation();
     void createDownloadStationTasks();
     void listOfTasks();
+    void writeTorrentsOnDS();
 }

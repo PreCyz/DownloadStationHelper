@@ -5,10 +5,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class GetClient {
             HttpGet request = new HttpGet(url);
 
             // add request header
-            request.addHeader("User-Agent", USER_AGENT);
+            request.addHeader(USER_AGENT, "Station Helper Agent");
             addCookies(request, cookies);
             HttpResponse response = client.execute(request);
 
@@ -70,5 +71,23 @@ public class GetClient {
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public void downloadFile(String destination) {
+        try {
+            URL torrentUrl = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) torrentUrl.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty(USER_AGENT, "Station Helper Agent");
+            urlConnection.setUseCaches(false);
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            InputStream inputStream = urlConnection.getInputStream();
+            Files.copy(inputStream, new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            inputStream.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 }

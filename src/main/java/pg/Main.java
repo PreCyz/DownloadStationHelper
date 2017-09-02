@@ -28,11 +28,15 @@ public class Main {
             executor.findTorrents();
             executor.matchTorrents();
             executor.writeTorrentsToFile();
-            executor.prepareAvailableOperations();
-            executor.loginToDiskStation();
-            executor.createDownloadStationTasks();
-            executor.listOfTasks();
-            executor.logoutFromDiskStation();
+            if ("COPY_FILE".equals(application.getProperty(SettingKeys.CREATION_METHOD.key(), "COPY_FILE"))) {
+                executor.writeTorrentsOnDS();
+            } else {
+                executor.prepareAvailableOperations();
+                executor.loginToDiskStation();
+                executor.createDownloadStationTasks();
+                executor.listOfTasks();
+                executor.logoutFromDiskStation();
+            }
         } catch (IllegalArgumentException ex) {
             System.err.println(ex.getLocalizedMessage());
         }

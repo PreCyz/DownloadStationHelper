@@ -292,6 +292,23 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    public void writeTorrentsOnDS() {
+        String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
+        if (destination == null || destination.isEmpty()) {
+            System.out.printf("%s not specified. Add it to application.properties.%n", SettingKeys.TORRENT_LOCATION.key());
+            return;
+        }
+        if (foundTorrents.isEmpty()) {
+            System.out.println("No task to create.");
+            return;
+        }
+        foundTorrents.forEach(torrent -> {
+            String filePath = destination + torrent.getTitle() + ".torrent";
+            new GetClient(torrent.getTorrentUrl()).downloadFile(filePath);
+            System.out.printf("File [%s] saved in %s.%n", torrent.getTitle(), destination);
+        });
+    }
+
     protected abstract String buildLoginUrl(String serverUrl);
     protected abstract String buildCreateTaskUrl(String serverUrl);
     protected abstract String buildTaskListUrl(String serverUrl);

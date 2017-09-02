@@ -13,7 +13,9 @@ public enum SettingKeys {
     API_INFO("synology.api.info"),
     DESTINATION("synology.download.folder"),
     WRITE_TO_FILE("write.to.file"),
-    TORRENT_URL_TYPE("torrent.url.type");
+    TORRENT_URL_TYPE("torrent.url.type"),
+    CREATION_METHOD("task.creation.method"),
+    TORRENT_LOCATION("torrent.file.location");
 
     private String key;
 
