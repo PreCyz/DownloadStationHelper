@@ -2,6 +2,7 @@ package pg;
 
 import pg.service.Executor;
 import pg.service.SidExecutor;
+import pg.web.model.DSMethod;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
@@ -28,14 +29,18 @@ public class Main {
             executor.findTorrents();
             executor.matchTorrents();
             executor.writeTorrentsToFile();
-            if ("COPY_FILE".equals(application.getProperty(SettingKeys.CREATION_METHOD.key(), "COPY_FILE"))) {
-                executor.writeTorrentsOnDS();
-            } else {
-                executor.prepareAvailableOperations();
-                executor.loginToDiskStation();
-                executor.createDownloadStationTasks();
-                executor.listOfTasks();
-                executor.logoutFromDiskStation();
+            String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(), "COPY_FILE");
+            switch (DSMethod.valueOf(creationMethod)) {
+                case COPY_FILE:
+                    executor.writeTorrentsOnDS();
+                    break;
+                case REST:
+                    executor.prepareAvailableOperations();
+                    executor.loginToDiskStation();
+                    executor.createDownloadStationTasks();
+                    executor.listOfTasks();
+                    executor.logoutFromDiskStation();
+                    break;
             }
         } catch (IllegalArgumentException ex) {
             System.err.println(ex.getLocalizedMessage());
