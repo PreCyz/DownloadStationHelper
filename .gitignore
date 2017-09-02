@@ -1,0 +1,11 @@
+/.gradle/
+/.idea/
+/gradle/
+/out/
+/build/
+gradlew
+gradlew.bat
+HEAD
+config
+description
+/src/main/resources/run.sh
