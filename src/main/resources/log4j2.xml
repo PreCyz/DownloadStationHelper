@@ -23,11 +23,6 @@
                 <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
             </Filters>
         </Appender>
-        <!--<Appender type="File" name="File" fileName="${filename}">
-            <Layout type="PatternLayout">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-            </Layout>
-        </Appender>-->
     </Appenders>
 
     <Loggers>
