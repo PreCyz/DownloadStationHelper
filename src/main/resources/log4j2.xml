@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="debug" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
     <Properties>
-        <Property name="filename">logs/downloader.log</Property>
+        <Property name="logPath">logs/</Property>
+        <Property name="filename">downloader</Property>
     </Properties>
 
     <Appenders>
+        <RollingFile name="RollingFile" fileName="${logPath}/${filename}.log"
+                     filePattern="${log-path}/${filename}-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout>
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="4"/>
+        </RollingFile>
         <Appender type="Console" name="STDOUT">
             <Layout type="PatternLayout" pattern="%d %t %level %m%n"/>
             <Filters>
@@ -12,16 +23,16 @@
                 <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
             </Filters>
         </Appender>
-        <Appender type="File" name="File" fileName="${filename}">
+        <!--<Appender type="File" name="File" fileName="${filename}">
             <Layout type="PatternLayout">
                 <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
             </Layout>
-        </Appender>
+        </Appender>-->
     </Appenders>
 
     <Loggers>
         <Logger name="org.apache.logging.log4j.test2" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
+            <AppenderRef ref="RollingFile"/>
         </Logger>
 
         <Root level="trace">
