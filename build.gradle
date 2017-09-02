@@ -28,7 +28,7 @@ dependencies {
 task copyAppProperties( type: Copy ) {
     from 'src/main/resources'
     into "$buildDir/libs"
-    include '*.properties','run.sh'
+    include '*.properties','run.sh', 'credentials'
 }
 
 //create a single Jar with all dependencies
