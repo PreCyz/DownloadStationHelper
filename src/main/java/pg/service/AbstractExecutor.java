@@ -196,9 +196,9 @@ public abstract class AbstractExecutor implements Executor {
                         sid = loginResponse.getLoginDetails().getSid();
                         logger.info("Login successful. sid = %s.%n", sid);
                     } else {
-                        logger.info(String.format("Login unsuccessful. Details %d - %s",
+                        logger.info("Login unsuccessful. Details {} - {}",
                                 loginResponse.getError().getCode(),
-                                authErrorMap.get(loginResponse.getError().getCode())));
+                                authErrorMap.get(loginResponse.getError().getCode()));
                     }
                 } else {
                     logger.info("Login unsuccessful. No response from server.");
@@ -226,9 +226,9 @@ public abstract class AbstractExecutor implements Executor {
                         if (createTaskResponse.isSuccess()) {
                             logger.info("Task creation successful.");
                         } else {
-                            logger.info(String.format("Task creation finished with error %d - %s.",
+                            logger.info("Task creation finished with error {} - {}.",
                                     createTaskResponse.getError().getCode(),
-                                    taskErrorMap.get(createTaskResponse.getError().getCode())));
+                                    taskErrorMap.get(createTaskResponse.getError().getCode()));
                         }
                     } else {
                         logger.info("Task creation with error. No details.");
@@ -255,12 +255,12 @@ public abstract class AbstractExecutor implements Executor {
                 if (jsonResponse.isPresent()) {
                     TaskListResponse taskListResponse = jsonResponse.get();
                     if (taskListResponse.isSuccess()) {
-                        logger.info(String.format("Total number of tasks on download station is: %d.",
-                                taskListResponse.getTaskListDetail().getTotal()));
+                        logger.info("Total number of tasks on download station is: {}.",
+                                taskListResponse.getTaskListDetail().getTotal());
                     } else {
-                        logger.info(String.format("List of tasks finished with error %d - %s.%n",
+                        logger.info("List of tasks finished with error {} - {}.",
                                 taskListResponse.getError().getCode(),
-                                taskErrorMap.get(taskListResponse.getError().getCode())));
+                                taskErrorMap.get(taskListResponse.getError().getCode()));
                     }
                 } else {
                     logger.info("List of tasks with error. No details.");
@@ -285,9 +285,9 @@ public abstract class AbstractExecutor implements Executor {
                     if (logoutResponse.isSuccess()) {
                         logger.info("Logout finished.");
                     } else {
-                        logger.info(String.format("Logout with error %d - %s.",
+                        logger.info("Logout with error {} - {}.",
                                 logoutResponse.getError().getCode(),
-                                authErrorMap.get(logoutResponse.getError().getCode())));
+                                authErrorMap.get(logoutResponse.getError().getCode()));
                     }
                 } else {
                     logger.info("Logout with error. No details.");
@@ -299,8 +299,7 @@ public abstract class AbstractExecutor implements Executor {
     public void writeTorrentsOnDS() {
         String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
         if (destination == null || destination.isEmpty()) {
-            logger.info(String.format("%s not specified. Add it to application.properties.",
-                    SettingKeys.TORRENT_LOCATION.key()));
+            logger.info("{} not specified. Add it to application.properties.", SettingKeys.TORRENT_LOCATION.key());
             return;
         }
         if (foundTorrents.isEmpty()) {
@@ -310,7 +309,7 @@ public abstract class AbstractExecutor implements Executor {
         foundTorrents.forEach(torrent -> {
             String filePath = destination + torrent.getTitle() + ".torrent";
             new GetClient(torrent.getTorrentUrl()).downloadFile(filePath);
-            logger.info(String.format("File [%s] saved in %s.%n", torrent.getTitle(), destination));
+            logger.info("File [{}] saved in {}.", torrent.getTitle(), destination);
         });
     }
 

@@ -57,10 +57,10 @@ public class Main {
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
             Properties properties = new Properties();
             properties.load(resourceIS);
-            logger.info(fileName+" file loaded.%n");
+            logger.info("{} file loaded", fileName);
             return properties;
         } catch (IOException e) {
-            logger.error("No "+fileName+" file.");
+            logger.error("No {} file.", fileName);
             System.exit(0);
         }
         throw new NullPointerException();
