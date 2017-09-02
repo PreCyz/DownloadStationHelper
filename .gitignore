@@ -9,3 +9,4 @@ HEAD
 config
 description
 /src/main/resources/run.sh
+/src/main/resources/credentials
