@@ -1,5 +1,7 @@
 package pg;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.service.Executor;
 import pg.service.SidExecutor;
 import pg.web.model.DSMethod;
@@ -14,6 +16,8 @@ import java.util.Properties;
 
 /**Created by Gawa on 15/08/17.*/
 public class Main {
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
     private static final String SHOWS_PROPERTIES = "shows.properties";
@@ -43,7 +47,7 @@ public class Main {
                     break;
             }
         } catch (IllegalArgumentException ex) {
-            System.err.println(ex.getLocalizedMessage());
+            logger.error(ex.getLocalizedMessage());
         }
 
         System.exit(0);
@@ -53,10 +57,10 @@ public class Main {
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
             Properties properties = new Properties();
             properties.load(resourceIS);
-            System.out.printf("%s file loaded.%n", fileName);
+            logger.info(fileName+" file loaded.%n");
             return properties;
         } catch (IOException e) {
-            System.out.printf("No %s file.%n", fileName);
+            logger.error("No "+fileName+" file.");
             System.exit(0);
         }
         throw new NullPointerException();

@@ -1,5 +1,7 @@
 package pg.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
@@ -15,6 +17,8 @@ import java.util.*;
 
 /**Created by Gawa on 15/08/17*/
 public abstract class AbstractExecutor implements Executor {
+
+    private static final Logger logger = LogManager.getLogger(AbstractExecutor.class);
 
     protected final String defaultLimit = "100";
     protected final String defaultPage = "1";
@@ -82,9 +86,9 @@ public abstract class AbstractExecutor implements Executor {
             String json = client.get().get();
             Optional<TorrentResponse> response = JsonUtils.convertFromString(json, TorrentResponse.class);
             response.ifPresent(torrentResponse -> this.torrentResponse = torrentResponse);
-            System.out.println(this.torrentResponse);
+            logger.info(this.torrentResponse);
         } else {
-            System.out.println("No torrents to process");
+            logger.error("No torrents to process");
             System.exit(0);
         }
     }
@@ -106,13 +110,13 @@ public abstract class AbstractExecutor implements Executor {
 
     public void writeTorrentsToFile() {
         if (!foundTorrents.isEmpty()) {
-            System.out.printf("Found %s matching torrents.%n", foundTorrents.size());
+            logger.info("Found "+foundTorrents.size()+" matching torrents.");
             if ("Y".equals(application.getProperty(SettingKeys.WRITE_TO_FILE.key(), "N"))) {
                 JsonUtils.writeToFile(createFilePath(), foundTorrents);
             }
-            System.out.println(JsonUtils.convertToString(foundTorrents));
+            logger.info(JsonUtils.convertToString(foundTorrents));
         } else {
-            System.out.printf("No matching torrents found.%n");
+            logger.info("No matching torrents found.");
         }
     }
 
@@ -142,7 +146,7 @@ public abstract class AbstractExecutor implements Executor {
     public void prepareAvailableOperations() {
         String requestUrl = prepareServerUrl();
         if (requestUrl.isEmpty()) {
-            System.out.printf("Server URL not specified");
+            logger.info("Server URL not specified.");
         } else {
             requestUrl += application.getProperty(SettingKeys.API_INFO.key());
             GetClient client = new GetClient(requestUrl);
@@ -177,7 +181,7 @@ public abstract class AbstractExecutor implements Executor {
     public void loginToDiskStation() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
-            System.out.printf("Server URL not specified");
+            logger.info("Server URL not specified.");
         } else {
             String requestUrl = buildLoginUrl(serverUrl);
             GetClient client = new GetClient(requestUrl);
@@ -185,19 +189,19 @@ public abstract class AbstractExecutor implements Executor {
             if (response.isPresent()) {
                 Optional<LoginResponse> jsonResponse =
                         JsonUtils.convertFromString(response.get(), LoginResponse.class);
-                System.out.println("Login format sid.");
+                logger.info("Login format sid.");
                 if (jsonResponse.isPresent()) {
                     LoginResponse loginResponse = jsonResponse.get();
                     if (loginResponse.isSuccess()) {
                         sid = loginResponse.getLoginDetails().getSid();
-                        System.out.printf("Login successful. sid = %s.%n", sid);
+                        logger.info("Login successful. sid = %s.%n", sid);
                     } else {
-                        System.out.printf("Login unsuccessful. Details %d - %s%n",
+                        logger.info(String.format("Login unsuccessful. Details %d - %s",
                                 loginResponse.getError().getCode(),
-                                authErrorMap.get(loginResponse.getError().getCode()));
+                                authErrorMap.get(loginResponse.getError().getCode())));
                     }
                 } else {
-                    System.out.println("Login unsuccessful. No response from server.");
+                    logger.info("Login unsuccessful. No response from server.");
                 }
 
             }
@@ -208,10 +212,10 @@ public abstract class AbstractExecutor implements Executor {
         if (!foundTorrents.isEmpty()) {
             String serverUrl = prepareServerUrl();
             if (serverUrl.isEmpty()) {
-                System.out.printf("Server URL not specified");
+                logger.info("Server URL not specified.");
             } else {
                 String requestUrl = buildCreateTaskUrl(serverUrl);
-                System.out.printf("RestURL: [%s].%n", requestUrl);
+                logger.info("RestURL: ["+requestUrl+"].");
 
                 GetClient client = new GetClient(requestUrl);
                 Optional<String> response = client.get(createCookieMap());
@@ -220,26 +224,26 @@ public abstract class AbstractExecutor implements Executor {
                     if (jsonResponse.isPresent()) {
                         GeneralResponse createTaskResponse = jsonResponse.get();
                         if (createTaskResponse.isSuccess()) {
-                            System.out.println("Task creation successful.");
+                            logger.info("Task creation successful.");
                         } else {
-                            System.out.printf("Task creation finished with error %d - %s.%n",
+                            logger.info(String.format("Task creation finished with error %d - %s.",
                                     createTaskResponse.getError().getCode(),
-                                    taskErrorMap.get(createTaskResponse.getError().getCode()));
+                                    taskErrorMap.get(createTaskResponse.getError().getCode())));
                         }
                     } else {
-                        System.out.println("Task creation with error. No details.");
+                        logger.info("Task creation with error. No details.");
                     }
                 }
             }
         } else {
-            System.out.println("No task to create.");
+            logger.info("No task to create.");
         }
     }
 
     public void listOfTasks() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
-            System.out.printf("Server URL not specified");
+            logger.info("Server URL not specified.");
         } else {
             String requestUrl = buildTaskListUrl(serverUrl);
 
@@ -251,15 +255,15 @@ public abstract class AbstractExecutor implements Executor {
                 if (jsonResponse.isPresent()) {
                     TaskListResponse taskListResponse = jsonResponse.get();
                     if (taskListResponse.isSuccess()) {
-                        System.out.printf("Total number of tasks on download station is: %d.%n",
-                                taskListResponse.getTaskListDetail().getTotal());
+                        logger.info(String.format("Total number of tasks on download station is: %d.",
+                                taskListResponse.getTaskListDetail().getTotal()));
                     } else {
-                        System.out.printf("List of tasks finished with error %d - %s.%n",
+                        logger.info(String.format("List of tasks finished with error %d - %s.%n",
                                 taskListResponse.getError().getCode(),
-                                taskErrorMap.get(taskListResponse.getError().getCode()));
+                                taskErrorMap.get(taskListResponse.getError().getCode())));
                     }
                 } else {
-                    System.out.println("List of tasks with error. No details.");
+                    logger.info("List of tasks with error. No details.");
                 }
             }
         }
@@ -268,7 +272,7 @@ public abstract class AbstractExecutor implements Executor {
     public void logoutFromDiskStation() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
-            System.out.printf("Server URL not specified");
+            logger.info("Server URL not specified.");
         } else {
             String requestUrl = buildLogoutUrl(serverUrl);
             GetClient client = new GetClient(requestUrl);
@@ -279,14 +283,14 @@ public abstract class AbstractExecutor implements Executor {
                 if (jsonResponse.isPresent()) {
                     GeneralResponse logoutResponse = jsonResponse.get();
                     if (logoutResponse.isSuccess()) {
-                        System.out.println("Logout finished.");
+                        logger.info("Logout finished.");
                     } else {
-                        System.out.printf("Logout with error %d - %s.%n",
+                        logger.info(String.format("Logout with error %d - %s.",
                                 logoutResponse.getError().getCode(),
-                                authErrorMap.get(logoutResponse.getError().getCode()));
+                                authErrorMap.get(logoutResponse.getError().getCode())));
                     }
                 } else {
-                    System.out.println("Logout with error. No details.");
+                    logger.info("Logout with error. No details.");
                 }
             }
         }
@@ -295,17 +299,18 @@ public abstract class AbstractExecutor implements Executor {
     public void writeTorrentsOnDS() {
         String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
         if (destination == null || destination.isEmpty()) {
-            System.out.printf("%s not specified. Add it to application.properties.%n", SettingKeys.TORRENT_LOCATION.key());
+            logger.info(String.format("%s not specified. Add it to application.properties.",
+                    SettingKeys.TORRENT_LOCATION.key()));
             return;
         }
         if (foundTorrents.isEmpty()) {
-            System.out.println("No task to create.");
+            logger.info("No task to create.");
             return;
         }
         foundTorrents.forEach(torrent -> {
             String filePath = destination + torrent.getTitle() + ".torrent";
             new GetClient(torrent.getTorrentUrl()).downloadFile(filePath);
-            System.out.printf("File [%s] saved in %s.%n", torrent.getTitle(), destination);
+            logger.info(String.format("File [%s] saved in %s.%n", torrent.getTitle(), destination));
         });
     }
 

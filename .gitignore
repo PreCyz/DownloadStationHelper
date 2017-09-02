@@ -3,6 +3,7 @@
 /gradle/
 /out/
 /build/
+/logs/
 gradlew
 gradlew.bat
 HEAD

@@ -4,6 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -18,6 +20,8 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 
 /**Created by Gawa on 15/08/17.*/
 public class GetClient {
+
+    private static final Logger logger = LogManager.getLogger(GetClient.class);
 
     private final String url;
     private int responseCode;
@@ -54,7 +58,7 @@ public class GetClient {
             return Optional.of(result.toString());
 
         } catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage());
         }
         return Optional.empty();
     }
@@ -87,7 +91,7 @@ public class GetClient {
             Files.copy(inputStream, new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
             inputStream.close();
         } catch (Exception ex) {
-            System.out.println(ex);
+            logger.error(ex);
         }
     }
 }
