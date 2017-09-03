@@ -23,6 +23,7 @@ public class Main {
     private static final String SHOWS_PROPERTIES = "shows.properties";
 
     public static void main(String[] args) {
+        logger.info("Start of application.");
         try {
             Properties application = loadProperties(APPLICATION_PROPERTIES);
             extractUsernameFromArgs(args, application);
@@ -50,6 +51,7 @@ public class Main {
             logger.error(ex.getLocalizedMessage());
         }
 
+        logger.info("End of application.");
         System.exit(0);
     }
 
