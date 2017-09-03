@@ -2,6 +2,7 @@ package pg.service;
 
 import pg.web.model.ApiName;
 import pg.web.model.SettingKeys;
+import pg.web.model.TorrentUrlType;
 import pg.web.synology.AuthMethod;
 import pg.web.synology.DSTaskMethod;
 
@@ -34,13 +35,19 @@ public class SidExecutor extends AbstractExecutor {
 
     @Override
     protected String buildCreateTaskUrl(String serverUrl) {
-        final String urlType = application.getProperty(SettingKeys.TORRENT_URL_TYPE.key(), "torrent");
+        final TorrentUrlType urlType = TorrentUrlType.valueOf(
+                application.getProperty(SettingKeys.TORRENT_URL_TYPE.key(), TorrentUrlType.torrent.name())
+        );
         String uri = String.join(",", foundTorrents.stream()
                 .map(reducedDetail -> {
-                    if ("magnet".equals(urlType)) {
-                        return reducedDetail.getMagnetUrl();
+                    switch (urlType) {
+                        case magnet:
+                            return reducedDetail.getMagnetUrl();
+                        case torrent:
+                            return reducedDetail.getTorrentUrl();
+                        default:
+                            return reducedDetail.getTorrentUrl();
                     }
-                    return reducedDetail.getTorrentUrl();
                 })
                 .collect(Collectors.toList()));
         String destination = application.getProperty(SettingKeys.DESTINATION.key());
