@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
-    <Properties>
-        <Property name="logPath">logs/</Property>
-        <Property name="filename">downloader</Property>
-    </Properties>
+<Configuration status="warn" strict="true" name="XMLConfig" packages="">
 
     <Appenders>
-        <RollingFile name="RollingFile" fileName="${logPath}/${filename}.log"
-                     filePattern="${log-path}/${filename}-%d{yyyy-MM-dd}-%i.log" >
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/app-%d{yyyy-MM-dd}-%i.log" >
             <PatternLayout>
                 <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy size="1 KB" />
+                <TimeBasedTriggeringPolicy />
             </Policies>
-            <DefaultRolloverStrategy max="4"/>
+            <DefaultRolloverStrategy max="20"/>
         </RollingFile>
-        <Appender type="Console" name="STDOUT">
+        <Appender type="Console" name="STDOUT" target="SYSTEM_OUT">
             <Layout type="PatternLayout" pattern="%d %t %level %m%n"/>
             <Filters>
                 <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -26,12 +22,9 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="org.apache.logging.log4j.test2" level="debug" additivity="false">
-            <AppenderRef ref="RollingFile"/>
-        </Logger>
-
         <Root level="trace">
-            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="RollingFile" level="info"/>
+            <AppenderRef ref="STDOUT" level="debug"/>
         </Root>
     </Loggers>
 
