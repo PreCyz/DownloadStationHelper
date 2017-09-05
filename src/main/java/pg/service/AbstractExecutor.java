@@ -111,9 +111,7 @@ public abstract class AbstractExecutor implements Executor {
     public void writeTorrentsToFile() {
         if (!foundTorrents.isEmpty()) {
             logger.info("Found "+foundTorrents.size()+" matching torrents.");
-            if ("Y".equals(application.getProperty(SettingKeys.WRITE_TO_FILE.key(), "N"))) {
-                JsonUtils.writeToFile(createFilePath(), foundTorrents);
-            }
+            JsonUtils.writeToFile(createFilePath(), foundTorrents);
             logger.info(JsonUtils.convertToString(foundTorrents));
         } else {
             logger.info("No matching torrents found.");
