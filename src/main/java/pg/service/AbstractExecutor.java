@@ -137,13 +137,18 @@ public abstract class AbstractExecutor implements Executor {
             String key = (String) keyObject;
             if (key.endsWith(ShowKeys.baseWords.name())) {
                 String baseWords = shows.getProperty(key);
-                String precisionKey = key.substring(0, key.indexOf(ShowKeys.baseWords.name())) +
-                        ShowKeys.matchPrecision.name();
-                String precision = shows.getProperty(precisionKey,
-                        String.valueOf(baseWords.split(",").length));
-                Integer matchPrecision = Integer.valueOf(precision);
-                map.put(baseWords, matchPrecision);
+                if (baseWords != null && baseWords.trim().length() > 0) {
+                    String precisionKey = key.substring(0, key.indexOf(ShowKeys.baseWords.name())) +
+                            ShowKeys.matchPrecision.name();
+                    String precision = shows.getProperty(precisionKey,
+                            String.valueOf(baseWords.split(",").length));
+                    Integer matchPrecision = Integer.valueOf(precision);
+                    map.put(baseWords, matchPrecision);
+                }
             }
+        }
+        if (map.isEmpty()) {
+            throw new IllegalArgumentException("No shows were specified. Add some base words to shows.properties.");
         }
         return map;
     }
