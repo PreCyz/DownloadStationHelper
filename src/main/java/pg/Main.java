@@ -8,6 +8,7 @@ import pg.web.model.DSMethod;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -63,6 +64,16 @@ public class Main {
     }
 
     public static Properties loadProperties(String fileName) {
+        String applicationProperties = "./" + fileName;
+        try (FileInputStream fis = new FileInputStream(applicationProperties)) {
+            Properties properties = new Properties();
+            properties.load(fis);
+            logger.info("{} file loaded", fileName);
+            return properties;
+        } catch (IOException ex) {
+            logger.info("Can't find user's {}. Load default one.", fileName);
+        }
+
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
             Properties properties = new Properties();
             properties.load(resourceIS);
