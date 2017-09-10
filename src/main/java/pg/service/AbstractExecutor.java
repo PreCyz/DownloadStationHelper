@@ -11,6 +11,8 @@ import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -147,8 +149,16 @@ public abstract class AbstractExecutor implements Executor {
     }
 
     protected Path createFilePath() {
+        String directoryPath = application.getProperty(SettingKeys.FILE_PATH.key());
+        if (Files.notExists(Paths.get(directoryPath))) {
+            try {
+                Files.createDirectory(Paths.get(directoryPath));
+            } catch(IOException ex) {
+                throw new IllegalArgumentException(ex.getLocalizedMessage());
+            }
+        }
         String fileName = new SimpleDateFormat("yyyyMMdd-hhmmss").format(Calendar.getInstance().getTime());
-        String filePath = String.format("%s/%s.json", application.getProperty(SettingKeys.FILE_PATH.key()), fileName);
+        String filePath = String.format("%s/%s.json", directoryPath, fileName);
         return Paths.get(filePath).toAbsolutePath();
     }
 
