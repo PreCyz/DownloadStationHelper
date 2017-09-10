@@ -192,14 +192,16 @@ public abstract class AbstractExecutor implements Executor {
                     LoginResponse loginResponse = jsonResponse.get();
                     if (loginResponse.isSuccess()) {
                         sid = loginResponse.getLoginDetails().getSid();
-                        logger.info("Login successful. sid = %s.%n", sid);
+                        String logMsg = String.format("Login successful. sid = %s.", sid);
+                        logger.info(logMsg);
                     } else {
-                        logger.info("Login unsuccessful. Details {} - {}",
+                        String logMsg = String.format("Login unsuccessful. Details %d - %s.",
                                 loginResponse.getError().getCode(),
                                 authErrorMap.get(loginResponse.getError().getCode()));
+                        throw new IllegalArgumentException(logMsg);
                     }
                 } else {
-                    logger.info("Login unsuccessful. No response from server.");
+                    throw new IllegalArgumentException("Login unsuccessful. No response from server.");
                 }
 
             }
@@ -224,12 +226,13 @@ public abstract class AbstractExecutor implements Executor {
                         if (createTaskResponse.isSuccess()) {
                             logger.info("Task creation successful.");
                         } else {
-                            logger.info("Task creation finished with error {} - {}.",
+                            String logMsg = String.format("Task creation finished with error %d - %s.",
                                     createTaskResponse.getError().getCode(),
                                     taskErrorMap.get(createTaskResponse.getError().getCode()));
+                            throw new IllegalArgumentException(logMsg);
                         }
                     } else {
-                        logger.info("Task creation with error. No details.");
+                        throw new IllegalArgumentException("Task creation with error. No details.");
                     }
                 }
             }
@@ -256,12 +259,14 @@ public abstract class AbstractExecutor implements Executor {
                         logger.info("Total number of tasks on download station is: {}.",
                                 taskListResponse.getTaskListDetail().getTotal());
                     } else {
-                        logger.info("List of tasks finished with error {} - {}.",
+                        String logMsg = String.format("List of tasks finished with error %d - %s.",
                                 taskListResponse.getError().getCode(),
                                 taskErrorMap.get(taskListResponse.getError().getCode()));
+                        throw new IllegalArgumentException(logMsg);
+
                     }
                 } else {
-                    logger.info("List of tasks with error. No details.");
+                    throw new IllegalArgumentException("List of tasks with error. No details.");
                 }
             }
         }
@@ -283,12 +288,13 @@ public abstract class AbstractExecutor implements Executor {
                     if (logoutResponse.isSuccess()) {
                         logger.info("Logout finished.");
                     } else {
-                        logger.info("Logout with error {} - {}.",
+                        String logMsg = String.format("Logout with error %d - %s.",
                                 logoutResponse.getError().getCode(),
                                 authErrorMap.get(logoutResponse.getError().getCode()));
+                        throw new IllegalArgumentException(logMsg);
                     }
                 } else {
-                    logger.info("Logout with error. No details.");
+                    throw new IllegalArgumentException("Logout with error. No details.");
                 }
             }
         }
