@@ -8,6 +8,7 @@ import pg.web.model.DSMethod;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,9 @@ public class Main {
             executor.findTorrents();
             executor.matchTorrents();
             if (executor.hasFoundTorrents()) {
-                if (!"".equals(application.getProperty(SettingKeys.FILE_PATH.key(), ""))) {
+                final String notGiven = "NOT_GIVEN";
+                final String filePath = application.getProperty(SettingKeys.FILE_PATH.key(), notGiven);
+                if (!notGiven.equals(filePath.trim())) {
                     executor.writeTorrentsToFile();
                 }
                 String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
@@ -64,7 +67,7 @@ public class Main {
     }
 
     public static Properties loadProperties(String fileName) {
-        String applicationProperties = "./" + fileName;
+        String applicationProperties = "."+ File.separator + fileName;
         try (FileInputStream fis = new FileInputStream(applicationProperties)) {
             Properties properties = new Properties();
             properties.load(fis);
