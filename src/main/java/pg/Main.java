@@ -54,7 +54,7 @@ public class Main {
             } else {
                 logger.info("No matching torrents found.");
             }
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
         }
 
@@ -69,17 +69,15 @@ public class Main {
             logger.info("{} file loaded", fileName);
             return properties;
         } catch (IOException e) {
-            logger.error("No {} file.", fileName);
-            System.exit(0);
+            throw new IllegalArgumentException(String.format("No %s file.", fileName));
         }
-        throw new NullPointerException();
     }
 
     static void extractUsernameFromArgs(String[] args, Properties applications) {
         if (applications.containsKey(SettingKeys.USERNAME.key())) {
             return;
         }
-        if (args == null || args.length ==0) {
+        if (args == null || args.length == 0) {
             throw new IllegalArgumentException("No userName where given. Add username to application.properties " +
                     "or run program with username param (username=login).");
         }
