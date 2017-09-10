@@ -45,7 +45,7 @@ public class AbstractExecutorTest {
         Properties properties = Main.loadProperties("application.properties");
         SidExecutor = new SidExecutor(new Properties(), properties);
 
-        String actual = SidExecutor.prepareTorrentUrl();
+        String actual = SidExecutor.prepareTorrentUrl(2);
 
         assertThat(actual, is( equalTo("https://eztv.ag/api/get-torrents?limit=30&page=2")));
     }
@@ -55,7 +55,7 @@ public class AbstractExecutorTest {
         Properties properties = Main.loadProperties("emptyApp.properties");
         SidExecutor = new SidExecutor(new Properties(), properties);
 
-        String actual = SidExecutor.prepareTorrentUrl();
+        String actual = SidExecutor.prepareTorrentUrl(1);
 
         assertThat(actual, is( equalTo("https://eztv.ag/api/get-torrents?limit=100&page=1")));
     }

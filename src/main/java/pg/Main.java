@@ -21,8 +21,6 @@ public class Main {
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
     private static final String SHOWS_PROPERTIES = "shows.properties";
-    private static final String YES = "Y";
-    private static final String NO = "N";
 
     public static void main(String[] args) {
         logger.info("Start of application.");
@@ -35,22 +33,26 @@ public class Main {
             Executor executor = new SidExecutor(shows, application);
             executor.findTorrents();
             executor.matchTorrents();
-            if (YES.equals(application.getProperty(SettingKeys.WRITE_TO_FILE.key(), NO))) {
-                executor.writeTorrentsToFile();
-            }
-            String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
-                    DSMethod.COPY_FILE.name());
-            switch (DSMethod.valueOf(creationMethod)) {
-                case COPY_FILE:
-                    executor.writeTorrentsOnDS();
-                    break;
-                case REST:
-                    executor.prepareAvailableOperations();
-                    executor.loginToDiskStation();
-                    executor.createDownloadStationTasks();
-                    executor.listOfTasks();
-                    executor.logoutFromDiskStation();
-                    break;
+            if (executor.hasFoundTorrents()) {
+                if (!"".equals(application.getProperty(SettingKeys.FILE_PATH.key(), ""))) {
+                    executor.writeTorrentsToFile();
+                }
+                String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
+                        DSMethod.COPY_FILE.name());
+                switch (DSMethod.valueOf(creationMethod)) {
+                    case COPY_FILE:
+                        executor.writeTorrentsOnDS();
+                        break;
+                    case REST:
+                        executor.prepareAvailableOperations();
+                        executor.loginToDiskStation();
+                        executor.createDownloadStationTasks();
+                        executor.listOfTasks();
+                        executor.logoutFromDiskStation();
+                        break;
+                }
+            } else {
+                logger.info("No matching torrents found.");
             }
         } catch (IllegalArgumentException ex) {
             logger.error(ex.getLocalizedMessage());

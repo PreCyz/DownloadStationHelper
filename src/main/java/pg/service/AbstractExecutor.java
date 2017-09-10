@@ -8,20 +8,23 @@ import pg.web.model.ApiDetails;
 import pg.web.model.SettingKeys;
 import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
+import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**Created by Gawa on 15/08/17*/
 public abstract class AbstractExecutor implements Executor {
 
     private static final Logger logger = LogManager.getLogger(AbstractExecutor.class);
 
-    protected final String defaultLimit = "100";
-    protected final String defaultPage = "1";
+    protected final int defaultLimit = 100;
+    protected final int defaultPage = 1;
+    protected final int defaultTorrentAge = 0;
     protected final String defaultUrl = "https://eztv.ag/api/get-torrents";
     protected final int defaultServerPort = 5001;
     protected final Properties shows;
@@ -32,7 +35,7 @@ public abstract class AbstractExecutor implements Executor {
     protected List<ReducedDetail> foundTorrents;
     protected String sid;
 
-    private TorrentResponse torrentResponse;
+    private List<TorrentResponse> torrentResponses;
     private String serverUrl;
 
     protected static Map<Integer, String> authErrorMap = new HashMap<>();
@@ -76,51 +79,59 @@ public abstract class AbstractExecutor implements Executor {
     public AbstractExecutor(Properties shows, Properties application) {
         this.shows = shows;
         this.application = application;
-        searchService = new SearchService();
+        searchService = new SearchService(Integer.valueOf(
+                application.getProperty(SettingKeys.TORRENT_AGE.key(), String.valueOf(defaultTorrentAge))
+        ));
         foundTorrents = new LinkedList<>();
+        torrentResponses = new LinkedList<>();
     }
 
     public void findTorrents() {
-        GetClient client = new GetClient(prepareTorrentUrl());
-        if (client.get().isPresent()) {
-            String json = client.get().get();
-            Optional<TorrentResponse> response = JsonUtils.convertFromString(json, TorrentResponse.class);
-            response.ifPresent(torrentResponse -> this.torrentResponse = torrentResponse);
-            logger.info(this.torrentResponse);
-        } else {
-            logger.error("No torrents to process");
-            System.exit(0);
+        int pages = Integer.valueOf(application.getProperty(SettingKeys.PAGE.key(), String.valueOf(defaultPage)));
+        for (int page = defaultPage; page <= pages; page++) {
+            String url = prepareTorrentUrl(page);
+            logger.info("Executing request for url {}", url);
+            GetClient client = new GetClient(url);
+            if (client.get().isPresent()) {
+                String json = client.get().get();
+                Optional<TorrentResponse> response = JsonUtils.convertFromString(json, TorrentResponse.class);
+                response.ifPresent(torrentResponse -> torrentResponses.add(torrentResponse));
+            } else {
+                logger.info("No response for url {}", url);
+            }
         }
+        logger.info(torrentResponses);
     }
 
-    protected String prepareTorrentUrl() {
+    protected String prepareTorrentUrl(int currentPage) {
         String url = application.getProperty(SettingKeys.URL.key(), defaultUrl);
-        String limit = String.format("limit=%s", application.getProperty(SettingKeys.LIMIT.key(), defaultLimit));
-        String page = String.format("page=%s", application.getProperty(SettingKeys.PAGE.key(), defaultPage));
+        String limit = String.format("limit=%s", application.getProperty(SettingKeys.LIMIT.key(),
+                String.valueOf(defaultLimit)));
+        String page = String.format("page=%d", currentPage);
         return String.format("%s?%s&%s", url, limit, page);
     }
 
     public void matchTorrents() {
+        List<TorrentDetail> torrentDetails = torrentResponses.stream()
+                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+                .collect(Collectors.toList());
         Map<String, Integer> map = buildPrecisionWordMap();
-        for(Map.Entry<String, Integer> entry : map.entrySet()) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
             searchService.setMatchPrecision(entry.getValue());
-            foundTorrents.addAll(searchService.search(entry.getKey(), torrentResponse.getTorrents()));
+            foundTorrents.addAll(searchService.search(entry.getKey(), torrentDetails));
         }
     }
 
     public void writeTorrentsToFile() {
-        if (!foundTorrents.isEmpty()) {
-            logger.info("Found "+foundTorrents.size()+" matching torrents.");
-            JsonUtils.writeToFile(createFilePath(), foundTorrents);
-            logger.info(JsonUtils.convertToString(foundTorrents));
-        } else {
-            logger.info("No matching torrents found.");
-        }
+        Path filePath = createFilePath();
+        logger.info("Writing {} torrents to file [{}].", foundTorrents.size(), filePath);
+        JsonUtils.writeToFile(filePath, foundTorrents);
+        logger.info(JsonUtils.convertToString(foundTorrents));
     }
 
     protected Map<String, Integer> buildPrecisionWordMap() {
         Map<String, Integer> map = new HashMap<>();
-        for(Object keyObject : shows.keySet()) {
+        for (Object keyObject : shows.keySet()) {
             String key = (String) keyObject;
             if (key.endsWith(ShowKeys.baseWords.name())) {
                 String baseWords = shows.getProperty(key);
@@ -315,6 +326,11 @@ public abstract class AbstractExecutor implements Executor {
             new GetClient(torrent.getTorrentUrl()).downloadFile(filePath);
             logger.info("File [{}] saved in {}.", torrent.getTitle(), destination);
         });
+    }
+
+    @Override
+    public boolean hasFoundTorrents() {
+        return foundTorrents != null && !foundTorrents.isEmpty();
     }
 
     protected abstract String buildLoginUrl(String serverUrl);

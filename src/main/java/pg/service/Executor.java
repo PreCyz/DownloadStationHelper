@@ -11,4 +11,5 @@ public interface Executor {
     void createDownloadStationTasks();
     void listOfTasks();
     void writeTorrentsOnDS();
+    boolean hasFoundTorrents();
 }
