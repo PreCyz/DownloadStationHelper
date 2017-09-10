@@ -71,7 +71,7 @@ public class Main {
             logger.info("{} file loaded", fileName);
             return properties;
         } catch (IOException ex) {
-            logger.info("Can't find user's {}. Load default one.", fileName);
+            logger.info("Can't find user's {}. Loading default one.", fileName);
         }
 
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
