@@ -85,8 +85,12 @@ public class Main {
                 .filter(arg -> arg.contains(StartParameters.USERNAME.param()))
                 .findFirst();
         if (username.isPresent()) {
-            username.ifPresent(pass -> applications.setProperty(SettingKeys.USERNAME.key(),
-                    pass.substring(pass.lastIndexOf("=") + 1)));
+            String usernameArg = username.get();
+            if (usernameArg.contains("'")) {
+                usernameArg = usernameArg.replaceAll("'", "");
+            }
+            applications.setProperty(SettingKeys.USERNAME.key(),
+                    usernameArg.substring(usernameArg.lastIndexOf("=") + 1));
         } else {
             throw new IllegalArgumentException("No userName where given. Add username to application.properties " +
                     "or run program with username param (username=login).");
@@ -105,8 +109,11 @@ public class Main {
                 .filter(arg -> arg.contains(StartParameters.PASSWORD.param()))
                 .findFirst();
         if (passwd.isPresent()) {
-            passwd.ifPresent(pass -> applications.setProperty(SettingKeys.PASSWORD.key(),
-                    pass.substring(pass.lastIndexOf("=") + 1)));
+            String pass = passwd.get();
+            if (pass.contains("'")) {
+                pass = pass.replaceAll("'", "");
+            }
+            applications.setProperty(SettingKeys.PASSWORD.key(), pass.substring(pass.lastIndexOf("=") + 1));
         } else {
             throw new IllegalArgumentException("No password where given. Add password to application.properties " +
                     "or run program with passwd param (passwd=somePass).");
