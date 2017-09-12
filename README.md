@@ -47,6 +47,6 @@ _`synology.download.folder`_ location where completed torrents will be saved. Lo
 shared folders. For instance when `downloads` is the name of directory then `downloads` is the value of this 
 parameter. 
 
-If user wants to see torrent matching result, one can specify _result.filePath_ property. This is location of 
+If user wants to see torrent matching result, one can specify _`result.filePath`_ property. This is location of 
 directory where json files with matched torrents will be stored. If not given (value is empty or property deleted) 
 than no result will be saved. 
