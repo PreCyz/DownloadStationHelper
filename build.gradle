@@ -1,5 +1,5 @@
 group 'download-station-helper'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -27,8 +27,8 @@ dependencies {
 
 task copyAppProperties( type: Copy ) {
     from 'src/main/resources/distro'
-    into "$buildDir/libs"
-    include '*.properties','run.sh','credentials'
+    into "$buildDir/libs/settings"
+    include '*.properties','credentials','run.sh'
 }
 
 //create a single Jar with all dependencies

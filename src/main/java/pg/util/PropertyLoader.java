@@ -43,11 +43,11 @@ public final class PropertyLoader {
     }
 
     protected static Optional<Properties> loadProperties(String fileName) {
-        String applicationProperties = "."+ File.separator + fileName;
+        String applicationProperties = "." + File.separator + "settings" + File.separator + fileName;
         try (FileInputStream fis = new FileInputStream(applicationProperties)) {
             Properties properties = new Properties();
             properties.load(fis);
-            logger.info("{} file loaded", fileName);
+            logger.info("User {} file loaded.", fileName);
             return Optional.of(properties);
         } catch (IOException ex) {
             logger.info("Can't find user's {}. Loading default one.", fileName);
@@ -60,7 +60,7 @@ public final class PropertyLoader {
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
             Properties properties = new Properties();
             properties.load(resourceIS);
-            logger.info("{} file loaded", fileName);
+            logger.info("Program {} file loaded.", fileName);
             return properties;
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format("No %s file.", fileName));

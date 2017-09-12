@@ -2,7 +2,7 @@
 echo 'Start program'
 echo '.............'
 
-java -jar DownloadStationHelper-core-1.0-SNAPSHOT.jar $(cat credentials)
+java -jar DownloadStationHelper-core-1.0.jar $(cat settings/credentials)
 
 echo '.............'
 echo 'Program ended'
