@@ -2,7 +2,7 @@ package pg.web.model;
 
 /**Created by Gawa on 15/08/17.*/
 public enum SettingKeys {
-    URL("restUrl"),
+    URL("eztv.restUrl"),
     LIMIT("query.limit"),
     PAGE("query.page"),
     FILE_PATH("result.filePath"),
