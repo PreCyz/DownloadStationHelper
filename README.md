@@ -13,16 +13,16 @@ Application does two separate things:
 Whole configuration is located in _application.properties_ file. In order to work user has to set up application 
 first. Further in this intro you will find hwo to set up program.
 
-_application.properties_ has several parameters that could be changed in different ways.
+_`application.properties`_ has several parameters that could be changed in different ways.
 
-_query.page_ defines how many times request for new torrents is executed. Default value is 1. 
+_`query.page`_ defines how many times request for new torrents is executed. Default value is 1. 
 Greater value equals longer program execution time.
 
-_torrent.age_ is age of the torrent given in days. This parameter is required on order to have filtering torrents 
+_`torrent.age`_ is age of the torrent given in days. This parameter is required on order to have filtering torrents 
 by creation date. If not specified then no filtering by date will be applied. If parameter for instance set as **2**
 days, then torrents older than 2 days will be filtered out.
 
-_task.creation.method_ method of task creation. Possible values: [REST, COPY_FILE]. When REST is set than program
+_`task.creation.method`_ method of task creation. Possible values: [REST, COPY_FILE]. When REST is set than program
 will create torrent task by calling DownloadStation API. With this option program can be run from whole internet.
 When COPY_FILE is set, then program will download torrent files and save them in specified directory. `I use this
 option when program is launched from LAN`.
@@ -32,18 +32,18 @@ directory, where downloaded torrents will be saved
 
 When **REST** option is set all below parameters are mandatory.
 
-_torrent.url.type_ what link to use in order to create task. Default value is torrent. 
+_`torrent.url.type`_ what link to use in order to create task. Default value is torrent. 
 Possible values [magnet,torrent].
-_synology.http.username_ login to Synology server. If you specified here, it will override username given as run 
+_`synology.http.username`_ login to Synology server. If you specified here, it will override username given as run 
 parameter.
-_synology.http.password_ password to Synology server. If you specified here, it will override password given as run 
+_`synology.http.password`_ password to Synology server. If you specified here, it will override password given as run 
 parameter.
-_synology.server.url_ url of Synology device. When user wants to use url address from LAN than one may
+_`synology.server.url`_ url of Synology device. When user wants to use url address from LAN than one may
 use for instance `192.168.0.103` (In my LAN this is address of Synlogy server).
-_synology.server.port_ port used to communication with Synology device. For http is 5000 and for https is 5001.
+_`synology.server.port`_ port used to communication with Synology device. For http is 5000 and for https is 5001.
 If 5000 is given then `http` protocol is used otherwise `https` is used. If you do not have valid https certificate
 use port 5000, otherwise program will not be able to make request to your Synology server.
-_synology.download.folder_ location where completed torrents will be saved. Location should start from one of the 
+_`synology.download.folder`_ location where completed torrents will be saved. Location should start from one of the 
 shared folders. For instance when `downloads` is the name of directory then `downloads` is the value of this 
 parameter. 
 
