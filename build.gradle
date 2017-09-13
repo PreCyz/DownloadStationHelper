@@ -25,15 +25,29 @@ dependencies {
 
 }
 
-task copyAppProperties( type: Copy ) {
+def copyRunScript = copySpec {
     from 'src/main/resources/distro'
+    include 'run.sh'
+}
+
+def copyApplicationProperties = copySpec {
+    from 'src/main/resources/distro'
+    include '*.properties','credentials'
+}
+
+task copyAppPropertiesTask( type: Copy ) {
     into "$buildDir/libs/settings"
-    include '*.properties','credentials','run.sh'
+    with copyApplicationProperties
+}
+
+task copyRunScripTask( type: Copy ) {
+    into "$buildDir/libs"
+    with copyRunScript
 }
 
 //create a single Jar with all dependencies
 task oneJar(type: Jar) {
-    dependsOn copyAppProperties
+    dependsOn copyAppPropertiesTask, copyRunScripTask
     manifest {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': version,
@@ -50,7 +64,7 @@ task copyToLib( type: Copy ) {
 }
 
 jar {
-    dependsOn copyToLib, copyAppProperties
+    dependsOn copyToLib, copyAppPropertiesTask, copyRunScripTask
     manifest {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': version,
