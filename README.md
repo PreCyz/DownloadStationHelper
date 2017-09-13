@@ -5,10 +5,10 @@ Application is useful for people who are lazy like me and do not want to manuall
 Application does two separate things:
 1) Scan for new torrents,
 2) Prepare or create task for DownloadStation on Synology device:
-    - creates new torrent tasks via DownloadStation API
-    - saves torrent files in directory, which is pointed to automatic scan by DownloadStation.
+    - creates new torrent tasks via DownloadStation API,
+    - saves torrent files in directory. Directory is pointed out to automatic scan by application DownloadStation.
 
-### How to set up
+### How to setup application
 
 Whole configuration is located in _application.properties_ file. In order to work user has to set up application 
 first. Further in this intro you will find hwo to set up program.
@@ -50,3 +50,35 @@ parameter.
 If user wants to see torrent matching result, one can specify _`result.filePath`_ property. This is location of 
 directory where json files with matched torrents will be stored. If not given (value is empty or property deleted) 
 than no result will be saved. 
+
+### How to specify shows
+There is one more property file, that contains setup regarding shows which should be filtered from all torrents.
+This file is _`shows.properties`_ and its setup is very simple. There is one mandatory property:
+_`show.1.baseWords`_ property defines phrases used to filter out needed torrents. For example there is need to
+find _`Seth Meyers 2017 09 12 Emma Roberts 720p HDTV x264-CROOKS`_ show then definition of property 
+_`show.1.baseWords`_ might looks like this:
+
+#### `show.1.baseWords=Seth Meyers 2017 09 12,Emma Roberts,720p` 
+
+Important thing is that phrases has to be comma separated. Otherwise it will be only one phrase defined.
+
+Definition of second show the same as first with exception, that instead of `1` in name of property has to be used
+`2`. For example:
+
+#### `show.2.baseWords=The Murder of Laci Peterson,S01E04,HDTV`
+
+Similarly is with the next shows. Digit in the name of the property has to be incremented by 1 with each new show.
+
+There is one optional property in this file.
+_`show.1.matchPrecision`_ defines how many phrases torrent's title has to contain in order to match the torrent.
+If not specified, than match precision is equal to number of commas plus 1 from _show.2.baseWords_
+
+Example:
+
+`show.1.baseWords=Seth Meyers 2017 09 12,Emma Roberts,720p`
+
+`show.1.matchPrecision=2`
+
+It means that if title of each founded torrent has 2 phrases such as ( _Seth Meyers 2017 09 12,Emma Roberts_ ) or 
+( _Seth Meyers 2017 09 12,720p_ ) or ( _Emma Roberts,720p_ ), than it will be matched.
+So my advice is to choose precision wisely or do not specify at all and leave it with default value.  
