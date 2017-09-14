@@ -34,6 +34,8 @@ public class Main {
                 final String filePath = application.getProperty(SettingKeys.FILE_PATH.key(), notGiven);
                 if (!notGiven.equals(filePath.trim())) {
                     executor.writeTorrentsToFile();
+                    executor.buildImdbMap();
+                    executor.writeImdbMapToFile();
                 }
                 String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
                         DSMethod.COPY_FILE.name());

@@ -61,7 +61,15 @@ public final class ReducedDetailBuilder {
     }
 
     public ReducedDetail create() {
-        return new ReducedDetail(title, matchPrecision, dateReleased, magnetUrl, torrentUrl, imdbId, season,
-                episode);
+        return new ReducedDetail(
+                title,
+                matchPrecision,
+                dateReleased,
+                magnetUrl,
+                torrentUrl,
+                imdbId,
+                season,
+                episode
+        );
     }
 }

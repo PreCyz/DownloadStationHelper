@@ -3,6 +3,7 @@ package pg.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.JsonUtils;
+import pg.util.StringUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.SettingKeys;
@@ -37,7 +38,9 @@ public abstract class AbstractExecutor implements Executor {
     protected List<ReducedDetail> foundTorrents;
     protected String sid;
 
+    private final String imdbFileName = "imdbTitleMap";
     private List<TorrentResponse> torrentResponses;
+    private Map<String, String> imdbTitleMap;
     private String serverUrl;
 
     protected static Map<Integer, String> authErrorMap = new HashMap<>();
@@ -88,6 +91,7 @@ public abstract class AbstractExecutor implements Executor {
         torrentResponses = new LinkedList<>();
     }
 
+    @Override
     public void findTorrents() {
         int pages = Integer.valueOf(application.getProperty(SettingKeys.PAGE.key(), String.valueOf(defaultPage)));
         for (int page = defaultPage; page <= pages; page++) {
@@ -113,6 +117,7 @@ public abstract class AbstractExecutor implements Executor {
         return String.format("%s?%s&%s", url, limit, page);
     }
 
+    @Override
     public void matchTorrents() {
         List<TorrentDetail> torrentDetails = torrentResponses.stream()
                 .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
@@ -124,11 +129,34 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    @Override
     public void writeTorrentsToFile() {
-        Path filePath = createFilePath();
-        logger.info("Writing {} torrents to file [{}].", foundTorrents.size(), filePath);
+        String fileName = new SimpleDateFormat("yyyyMMdd-hhmmss").format(Calendar.getInstance().getTime());
+        Path filePath = createFilePath(fileName);
+        logger.info("Writing [{}] torrents to file [{}].", foundTorrents.size(), filePath);
         JsonUtils.writeToFile(filePath, foundTorrents);
         logger.info(JsonUtils.convertToString(foundTorrents));
+    }
+
+    @Override
+    public void buildImdbMap() {
+        imdbTitleMap = new HashMap<>();
+        foundTorrents.stream()
+                .filter(torrent -> !StringUtils.nullOrEmpty(torrent.getImdbId()))
+                .forEach(torrent -> imdbTitleMap.put(torrent.getImdbId(), torrent.getTitle()));
+        logger.info("Found [{}] unique imdb ids.", imdbTitleMap.size());
+    }
+
+    @Override
+    public void writeImdbMapToFile() {
+        if (!imdbTitleMap.isEmpty()) {
+            Path filePath = createFilePath(imdbFileName);
+            Optional<Map> mapOpt = JsonUtils.convertFromFile(filePath, Map.class);
+            imdbTitleMap.putAll(mapOpt.orElse(Collections.emptyMap()));
+            JsonUtils.writeToFile(filePath, imdbTitleMap);
+        } else {
+            logger.info("No new imdb ids where found.");
+        }
     }
 
     protected Map<String, Integer> buildPrecisionWordMap() {
@@ -153,7 +181,7 @@ public abstract class AbstractExecutor implements Executor {
         return map;
     }
 
-    protected Path createFilePath() {
+    protected Path createFilePath(String fileName) {
         String directoryPath = application.getProperty(SettingKeys.FILE_PATH.key());
         if (Files.notExists(Paths.get(directoryPath))) {
             try {
@@ -162,11 +190,11 @@ public abstract class AbstractExecutor implements Executor {
                 throw new IllegalArgumentException(ex.getLocalizedMessage());
             }
         }
-        String fileName = new SimpleDateFormat("yyyyMMdd-hhmmss").format(Calendar.getInstance().getTime());
         String filePath = String.format("%s/%s.json", directoryPath, fileName);
         return Paths.get(filePath).toAbsolutePath();
     }
 
+    @Override
     public void prepareAvailableOperations() {
         String requestUrl = prepareServerUrl();
         if (requestUrl.isEmpty()) {
@@ -202,6 +230,7 @@ public abstract class AbstractExecutor implements Executor {
         return serverUrl = "";
     }
 
+    @Override
     public void loginToDiskStation() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
@@ -234,6 +263,7 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    @Override
     public void createDownloadStationTasks() {
         if (!foundTorrents.isEmpty()) {
             String serverUrl = prepareServerUrl();
@@ -267,6 +297,7 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    @Override
     public void listOfTasks() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
@@ -298,6 +329,7 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    @Override
     public void logoutFromDiskStation() {
         String serverUrl = prepareServerUrl();
         if (serverUrl.isEmpty()) {
@@ -326,6 +358,7 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    @Override
     public void writeTorrentsOnDS() {
         String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
         if (destination == null || destination.isEmpty()) {

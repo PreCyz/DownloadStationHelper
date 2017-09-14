@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,13 +29,9 @@ public class JsonUtils {
         return Optional.empty();
     }
 
-    public static <T> Optional<T> convertFromFile(String jsonFileName, Class<T> clazz) {
-        URL resource = JsonUtils.class.getClassLoader().getResource(jsonFileName);
-        if (resource == null) {
-            return Optional.empty();
-        }
+    public static <T> Optional<T> convertFromFile(Path jsonPath, Class<T> clazz) {
         try {
-            return Optional.of(new ObjectMapper().readValue(resource, clazz));
+            return Optional.of(new ObjectMapper().readValue(jsonPath.toFile(), clazz));
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
@@ -48,6 +43,7 @@ public class JsonUtils {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
             mapper.writeValue(filePath.toFile(), object);
+            logger.info("File {} was written. Path {}.", filePath.getFileName(), filePath.toAbsolutePath());
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }

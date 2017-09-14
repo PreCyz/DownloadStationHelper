@@ -5,6 +5,8 @@ public interface Executor {
     void findTorrents();
     void matchTorrents();
     void writeTorrentsToFile();
+    void buildImdbMap();
+    void writeImdbMapToFile();
     void prepareAvailableOperations();
     void loginToDiskStation();
     void logoutFromDiskStation();

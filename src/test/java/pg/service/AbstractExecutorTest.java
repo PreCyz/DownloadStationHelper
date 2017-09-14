@@ -20,12 +20,12 @@ public class AbstractExecutorTest {
         Properties properties = PropertyLoader.loadApplicationProperties();
         sidExecutor = new SidExecutor(new Properties(), properties);
 
-        Path actual = sidExecutor.createFilePath();
+        Path actual = sidExecutor.createFilePath("dada");
 
         assertThat(actual, notNullValue());
         Path path = actual.toAbsolutePath();
         assertThat(path.startsWith("/home/gawa/Workspace/"), is(equalTo(true)));
-        assertThat(path.toFile().getName().endsWith(".json"), is(equalTo(true)));
+        assertThat(path.toFile().getName().endsWith("dada.json"), is(equalTo(true)));
     }
 
     @Test
