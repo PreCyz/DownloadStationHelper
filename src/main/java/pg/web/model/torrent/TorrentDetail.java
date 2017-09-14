@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TorrentDetail {
     private int id;
+    private String hash;
+    private String filename;
     @JsonProperty("episode_url")
     private String episodeUrl;
     @JsonProperty("torrent_url")
@@ -14,8 +16,10 @@ public class TorrentDetail {
     @JsonProperty("magnet_url")
     private String magnetUrl;
     private String title;
-    private String hash;
-    private String filename;
+    @JsonProperty("imdb_id")
+    private String imdbId;
+    private String season;
+    private String episode;
     @JsonProperty("small_screenshot")
     private String smallScreenshot;
     @JsonProperty("large_screenshot")
@@ -29,6 +33,14 @@ public class TorrentDetail {
 
     public int getId() {
         return id;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public String getFilename() {
+        return filename;
     }
 
     public String getEpisodeUrl() {
@@ -47,12 +59,16 @@ public class TorrentDetail {
         return title;
     }
 
-    public String getHash() {
-        return hash;
+    public String getImdbId() {
+        return imdbId;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getSeason() {
+        return season;
+    }
+
+    public String getEpisode() {
+        return episode;
     }
 
     public String getSmallScreenshot() {
