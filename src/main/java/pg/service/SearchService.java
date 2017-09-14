@@ -2,6 +2,7 @@ package pg.service;
 
 import pg.util.JsonUtils;
 import pg.web.model.torrent.ReducedDetail;
+import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
 
 import java.util.*;
@@ -59,12 +60,16 @@ public class SearchService {
             matchPrecision = words.length;
         }
         if (match >= matchPrecision) {
-            return Optional.of(new ReducedDetail(
-                    torrent.getTitle(),
-                    torrent.getMagnetUrl(),
-                    JsonUtils.dateFromLong(torrent.getDateReleased() * 1000),
-                    match,
-                    torrent.getTorrentUrl()));
+            return Optional.of(ReducedDetailBuilder.newInstance()
+                    .withTitle(torrent.getTitle())
+                    .withMagnetUrl(torrent.getMagnetUrl())
+                    .withDateReleased(JsonUtils.dateFromLong(torrent.getDateReleased() * 1000))
+                    .withMatchPrecision(match)
+                    .withTorrentUrl(torrent.getTorrentUrl())
+                    .withImdbId(torrent.getImdbId())
+                    .withEpisode(torrent.getEpisode())
+                    .withSeason(torrent.getSeason())
+                    .create());
         }
         return Optional.empty();
     }

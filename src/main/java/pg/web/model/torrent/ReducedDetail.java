@@ -13,13 +13,20 @@ public class ReducedDetail {
     private Date dateReleased;
     private String magnetUrl;
     private String torrentUrl;
+    private String imdbId;
+    private String season;
+    private String episode;
 
-    public ReducedDetail(String title, String magnetUrl, Date dateReleased, int matchPrecision, String torrentUrl) {
+    ReducedDetail(String title, int matchPrecision, Date dateReleased, String magnetUrl, String torrentUrl,
+                         String imdbId, String season, String episode) {
         this.title = title;
-        this.magnetUrl = magnetUrl;
-        this.dateReleased = dateReleased;
         this.matchPrecision = matchPrecision;
+        this.dateReleased = dateReleased;
+        this.magnetUrl = magnetUrl;
         this.torrentUrl = torrentUrl;
+        this.imdbId = imdbId;
+        this.season = season;
+        this.episode = episode;
     }
 
     public String getTitle() {
@@ -40,5 +47,17 @@ public class ReducedDetail {
 
     public String getTorrentUrl() {
         return torrentUrl;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public String getEpisode() {
+        return episode;
     }
 }
