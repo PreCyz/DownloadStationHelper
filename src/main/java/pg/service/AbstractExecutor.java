@@ -141,7 +141,8 @@ public abstract class AbstractExecutor implements Executor {
     @Override
     public void buildImdbMap() {
         imdbTitleMap = new HashMap<>();
-        foundTorrents.stream()
+        torrentResponses.stream()
+                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
                 .filter(torrent -> !StringUtils.nullOrEmpty(torrent.getImdbId()))
                 .forEach(torrent -> imdbTitleMap.put(torrent.getImdbId(), torrent.getTitle()));
         logger.info("Found [{}] unique imdb ids.", imdbTitleMap.size());
