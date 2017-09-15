@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 public class DiskStationServiceImpl implements DiskStationService {
 
-    private static final Logger logger = LogManager.getLogger(AbstractExecutor.class);
+    private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
 
     private final int defaultServerPort = 5001;
     private final Properties application;
