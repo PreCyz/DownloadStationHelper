@@ -2,10 +2,8 @@ package pg;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.service.Executor;
-import pg.service.SidExecutor;
+import pg.executor.Launcher;
 import pg.util.PropertyLoader;
-import pg.web.model.DSMethod;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
@@ -26,34 +24,8 @@ public class Main {
             extractPasswordFromArgs(args, application);
             Properties shows = PropertyLoader.loadShowsProperties();
 
-            Executor executor = new SidExecutor(shows, application);
-            executor.findTorrents();
-            executor.matchTorrents();
-            if (executor.hasFoundTorrents()) {
-                final String notGiven = "NOT_GIVEN";
-                final String filePath = application.getProperty(SettingKeys.FILE_PATH.key(), notGiven);
-                if (!notGiven.equals(filePath.trim())) {
-                    executor.writeTorrentsToFile();
-                    executor.buildImdbMap();
-                    executor.writeImdbMapToFile();
-                }
-                String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
-                        DSMethod.COPY_FILE.name());
-                switch (DSMethod.valueOf(creationMethod)) {
-                    case COPY_FILE:
-                        executor.writeTorrentsOnDS();
-                        break;
-                    case REST:
-                        executor.prepareAvailableOperations();
-                        executor.loginToDiskStation();
-                        executor.createDownloadStationTasks();
-                        executor.listOfTasks();
-                        executor.logoutFromDiskStation();
-                        break;
-                }
-            } else {
-                logger.info("No matching torrents found.");
-            }
+            Runnable launcher = new Launcher(application, shows);
+            launcher.run();
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
         }

@@ -6,6 +6,8 @@ import pg.util.JsonUtils;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.TorrentResponse;
 
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -15,15 +17,17 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**Created by Gawa on 15/08/17.*/
-public class SearchServiceTest {
+public class SearchServiceImplTest {
 
-    private SearchService searchService;
+    private SearchServiceImpl searchService;
     private TorrentResponse torrentResponse;
 
     @Before
     public void setUp() throws Exception {
-        Optional<TorrentResponse> jsonResponse =
-                JsonUtils.convertFromFile("testTorrentDetails.json", TorrentResponse.class);
+        URL jsonUrl = getClass().getClassLoader().getResource("testTorrentDetails.json");
+        Optional<TorrentResponse> jsonResponse = JsonUtils.convertFromFile(
+                Paths.get(jsonUrl.getPath()),
+                TorrentResponse.class);
         this.torrentResponse = jsonResponse.get();
     }
 
@@ -36,7 +40,7 @@ public class SearchServiceTest {
     public void givenTorrentsDetailWhenSearchThenReturnTorrents() {
         int matchPrecision = 3;
         final String word = "Stephen Colbert 2017 08 14 Anthony Scaramucci,720p,HDTV";
-        searchService = new SearchService(0);
+        searchService = new SearchServiceImpl(0);
         searchService.setMatchPrecision(matchPrecision);
         List<ReducedDetail> filtered = new LinkedList<>();
 
@@ -51,7 +55,7 @@ public class SearchServiceTest {
     public void givenTorrentsDetailWhenSearchThenReturnTorrents2() {
         int matchPrecision = 2;
         final String word = "Cheaters,720p";
-        searchService = new SearchService(0);
+        searchService = new SearchServiceImpl(0);
         searchService.setMatchPrecision(matchPrecision);
         List<ReducedDetail> filtered = new LinkedList<>();
 

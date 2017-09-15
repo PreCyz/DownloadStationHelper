@@ -1,4 +1,4 @@
-package pg.service;
+package pg.executor;
 
 import org.junit.Test;
 import pg.util.PropertyLoader;

@@ -3,44 +3,35 @@ package pg.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.JsonUtils;
-import pg.util.StringUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
+import pg.web.model.ApiName;
 import pg.web.model.SettingKeys;
-import pg.web.model.ShowKeys;
+import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.*;
+import pg.web.response.GeneralResponse;
+import pg.web.response.LoginResponse;
+import pg.web.response.SynologyResponse;
+import pg.web.response.TaskListResponse;
+import pg.web.synology.AuthMethod;
+import pg.web.synology.DSTaskMethod;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**Created by Gawa on 15/08/17*/
-public abstract class AbstractExecutor implements Executor {
+/**
+ * Created by Gawa 2017-09-15
+ */
+public class DiskStationServiceImpl implements DiskStationService {
 
     private static final Logger logger = LogManager.getLogger(AbstractExecutor.class);
 
-    protected final int defaultLimit = 100;
-    protected final int defaultPage = 1;
-    protected final int defaultTorrentAge = 0;
-    protected final String defaultUrl = "https://eztv.ag/api/get-torrents";
-    protected final int defaultServerPort = 5001;
-    protected final Properties shows;
-    protected final Properties application;
-    protected ApiDetails authInfo;
-    protected ApiDetails downloadStationTask;
-    protected SearchService searchService;
-    protected List<ReducedDetail> foundTorrents;
-    protected String sid;
-
-    private final String imdbFileName = "imdbTitleMap";
-    private List<TorrentResponse> torrentResponses;
-    private Map<String, String> imdbTitleMap;
+    private final int defaultServerPort = 5001;
+    private final Properties application;
+    private ApiDetails authInfo;
+    private ApiDetails downloadStationTask;
+    private List<ReducedDetail> foundTorrents;
+    private String sid;
     private String serverUrl;
 
     protected static Map<Integer, String> authErrorMap = new HashMap<>();
@@ -81,118 +72,9 @@ public abstract class AbstractExecutor implements Executor {
         taskErrorMap.put(408, "File does not exist");
     }
 
-    public AbstractExecutor(Properties shows, Properties application) {
-        this.shows = shows;
+    public DiskStationServiceImpl(Properties application, List<ReducedDetail> foundTorrents) {
         this.application = application;
-        searchService = new SearchService(Integer.valueOf(
-                application.getProperty(SettingKeys.TORRENT_AGE.key(), String.valueOf(defaultTorrentAge))
-        ));
-        foundTorrents = new LinkedList<>();
-        torrentResponses = new LinkedList<>();
-    }
-
-    @Override
-    public void findTorrents() {
-        int pages = Integer.valueOf(application.getProperty(SettingKeys.PAGE.key(), String.valueOf(defaultPage)));
-        for (int page = defaultPage; page <= pages; page++) {
-            String url = prepareTorrentUrl(page);
-            logger.info("Executing request for url {}", url);
-            GetClient client = new GetClient(url);
-            if (client.get().isPresent()) {
-                String json = client.get().get();
-                Optional<TorrentResponse> response = JsonUtils.convertFromString(json, TorrentResponse.class);
-                response.ifPresent(torrentResponse -> torrentResponses.add(torrentResponse));
-            } else {
-                logger.info("No response for url {}", url);
-            }
-        }
-        logger.info(torrentResponses);
-    }
-
-    protected String prepareTorrentUrl(int currentPage) {
-        String url = application.getProperty(SettingKeys.URL.key(), defaultUrl);
-        String limit = String.format("limit=%s", application.getProperty(SettingKeys.LIMIT.key(),
-                String.valueOf(defaultLimit)));
-        String page = String.format("page=%d", currentPage);
-        return String.format("%s?%s&%s", url, limit, page);
-    }
-
-    @Override
-    public void matchTorrents() {
-        List<TorrentDetail> torrentDetails = torrentResponses.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
-                .collect(Collectors.toList());
-        Map<String, Integer> map = buildPrecisionWordMap();
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            searchService.setMatchPrecision(entry.getValue());
-            foundTorrents.addAll(searchService.search(entry.getKey(), torrentDetails));
-        }
-    }
-
-    @Override
-    public void writeTorrentsToFile() {
-        String fileName = new SimpleDateFormat("yyyyMMdd-hhmmss").format(Calendar.getInstance().getTime());
-        Path filePath = createFilePath(fileName);
-        logger.info("Writing [{}] torrents to file [{}].", foundTorrents.size(), filePath);
-        JsonUtils.writeToFile(filePath, foundTorrents);
-        logger.info(JsonUtils.convertToString(foundTorrents));
-    }
-
-    @Override
-    public void buildImdbMap() {
-        imdbTitleMap = new HashMap<>();
-        torrentResponses.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
-                .filter(torrent -> !StringUtils.nullOrEmpty(torrent.getImdbId()))
-                .forEach(torrent -> imdbTitleMap.put(torrent.getImdbId(), torrent.getTitle()));
-        logger.info("Found [{}] unique imdb ids.", imdbTitleMap.size());
-    }
-
-    @Override
-    public void writeImdbMapToFile() {
-        if (!imdbTitleMap.isEmpty()) {
-            Path filePath = createFilePath(imdbFileName);
-            Optional<Map> mapOpt = JsonUtils.convertFromFile(filePath, Map.class);
-            imdbTitleMap.putAll(mapOpt.orElse(Collections.emptyMap()));
-            JsonUtils.writeToFile(filePath, imdbTitleMap);
-        } else {
-            logger.info("No new imdb ids where found.");
-        }
-    }
-
-    protected Map<String, Integer> buildPrecisionWordMap() {
-        Map<String, Integer> map = new HashMap<>();
-        for (Object keyObject : shows.keySet()) {
-            String key = (String) keyObject;
-            if (key.endsWith(ShowKeys.baseWords.name())) {
-                String baseWords = shows.getProperty(key);
-                if (baseWords != null && baseWords.trim().length() > 0) {
-                    String precisionKey = key.substring(0, key.indexOf(ShowKeys.baseWords.name())) +
-                            ShowKeys.matchPrecision.name();
-                    String precision = shows.getProperty(precisionKey,
-                            String.valueOf(baseWords.split(",").length));
-                    Integer matchPrecision = Integer.valueOf(precision);
-                    map.put(baseWords, matchPrecision);
-                }
-            }
-        }
-        if (map.isEmpty()) {
-            throw new IllegalArgumentException("No shows were specified. Add some base words to shows.properties.");
-        }
-        return map;
-    }
-
-    protected Path createFilePath(String fileName) {
-        String directoryPath = application.getProperty(SettingKeys.FILE_PATH.key());
-        if (Files.notExists(Paths.get(directoryPath))) {
-            try {
-                Files.createDirectory(Paths.get(directoryPath));
-            } catch(IOException ex) {
-                throw new IllegalArgumentException(ex.getLocalizedMessage());
-            }
-        }
-        String filePath = String.format("%s/%s.json", directoryPath, fileName);
-        return Paths.get(filePath).toAbsolutePath();
+        this.foundTorrents = foundTorrents;
     }
 
     @Override
@@ -239,7 +121,7 @@ public abstract class AbstractExecutor implements Executor {
         } else {
             String requestUrl = buildLoginUrl(serverUrl);
             GetClient client = new GetClient(requestUrl);
-            Optional<String> response = client.get(createCookieMap());
+            Optional<String> response = client.get();
             if (response.isPresent()) {
                 Optional<LoginResponse> jsonResponse =
                         JsonUtils.convertFromString(response.get(), LoginResponse.class);
@@ -264,6 +146,20 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    private String buildLoginUrl(String serverUrl) {
+        String userName = application.getProperty(SettingKeys.USERNAME.key());
+        String password = application.getProperty(SettingKeys.PASSWORD.key());
+        return serverUrl + "/webapi/" + authInfo.getPath() +
+                "?" +
+                "api=" + ApiName.API_AUTH + "&" +
+                "version=" + authInfo.getMaxVersion() + "&" +
+                "method=" + AuthMethod.LOGIN.method() + "&" +
+                "account=" + userName + "&" +
+                "passwd=" + password + "&" +
+                "session=" + "DownloadStation" + "&" +
+                "format=" + "sid";
+    }
+
     @Override
     public void createDownloadStationTasks() {
         if (!foundTorrents.isEmpty()) {
@@ -275,7 +171,7 @@ public abstract class AbstractExecutor implements Executor {
                 logger.info("RestURL: ["+requestUrl+"].");
 
                 GetClient client = new GetClient(requestUrl);
-                Optional<String> response = client.get(createCookieMap());
+                Optional<String> response = client.get();
                 if (response.isPresent()) {
                     Optional<GeneralResponse> jsonResponse = JsonUtils.convertFromString(response.get(), GeneralResponse.class);
                     if (jsonResponse.isPresent()) {
@@ -298,6 +194,34 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    private String buildCreateTaskUrl(String serverUrl) {
+        final TorrentUrlType urlType = TorrentUrlType.valueOf(
+                application.getProperty(SettingKeys.TORRENT_URL_TYPE.key(), TorrentUrlType.torrent.name())
+        );
+        String uri = String.join(",", foundTorrents.stream()
+                .map(reducedDetail -> {
+                    switch (urlType) {
+                        case magnet:
+                            return reducedDetail.getMagnetUrl();
+                        default:
+                            return reducedDetail.getTorrentUrl();
+                    }
+                })
+                .collect(Collectors.toList())
+        );
+
+        String destination = application.getProperty(SettingKeys.DESTINATION.key());
+
+        return serverUrl + "/webapi/" + downloadStationTask.getPath() +
+                "?" +
+                "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
+                "version=" + downloadStationTask.getMaxVersion() + "&" +
+                "method=" + DSTaskMethod.CREATE.method() + "&" +
+                "_sid=" + sid + "&" +
+                "destination=" + destination + "&" +
+                "uri=" + uri;
+    }
+
     @Override
     public void listOfTasks() {
         String serverUrl = prepareServerUrl();
@@ -307,7 +231,7 @@ public abstract class AbstractExecutor implements Executor {
             String requestUrl = buildTaskListUrl(serverUrl);
 
             GetClient client = new GetClient(requestUrl);
-            Optional<String> response = client.get(createCookieMap());
+            Optional<String> response = client.get();
             if (response.isPresent()) {
                 Optional<TaskListResponse> jsonResponse =
                         JsonUtils.convertFromString(response.get(), TaskListResponse.class);
@@ -330,6 +254,15 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    private String buildTaskListUrl(String serverUrl) {
+        return serverUrl + "/webapi/" + downloadStationTask.getPath() +
+                "?" +
+                "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
+                "version=" + downloadStationTask.getMaxVersion() + "&" +
+                "method=" + "list" + "&" +
+                "_sid=" + sid;
+    }
+
     @Override
     public void logoutFromDiskStation() {
         String serverUrl = prepareServerUrl();
@@ -338,7 +271,7 @@ public abstract class AbstractExecutor implements Executor {
         } else {
             String requestUrl = buildLogoutUrl(serverUrl);
             GetClient client = new GetClient(requestUrl);
-            Optional<String> response = client.get(createCookieMap());
+            Optional<String> response = client.get();
             if (response.isPresent()) {
                 Optional<GeneralResponse> jsonResponse =
                         JsonUtils.convertFromString(response.get(), GeneralResponse.class);
@@ -359,6 +292,16 @@ public abstract class AbstractExecutor implements Executor {
         }
     }
 
+    private String buildLogoutUrl(String serverUrl) {
+        return serverUrl + "/webapi/" + authInfo.getPath() +
+                "?" +
+                "api=" + ApiName.API_AUTH + "&" +
+                "version=" + authInfo.getMaxVersion() + "&" +
+                "method=" + AuthMethod.LOGOUT.method() + "&" +
+                "session=" + "DownloadStation" + "&" +
+                "format=" + "sid";
+    }
+
     @Override
     public void writeTorrentsOnDS() {
         String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
@@ -377,14 +320,4 @@ public abstract class AbstractExecutor implements Executor {
         });
     }
 
-    @Override
-    public boolean hasFoundTorrents() {
-        return foundTorrents != null && !foundTorrents.isEmpty();
-    }
-
-    protected abstract String buildLoginUrl(String serverUrl);
-    protected abstract String buildCreateTaskUrl(String serverUrl);
-    protected abstract String buildTaskListUrl(String serverUrl);
-    protected abstract String buildLogoutUrl(String serverUrl);
-    protected abstract Map<String, String> createCookieMap();
 }
