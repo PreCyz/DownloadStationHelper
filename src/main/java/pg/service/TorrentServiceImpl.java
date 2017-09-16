@@ -25,7 +25,7 @@ public class TorrentServiceImpl implements TorrentService {
     private final Properties application;
     private final Properties shows;
     private SearchService searchService;
-    private List<ReducedDetail> foundTorrents;
+    private List<ReducedDetail> matchingTorrents;
     private List<TorrentResponse> torrentResponses;
 
     public TorrentServiceImpl(Properties application, Properties shows) {
@@ -34,7 +34,7 @@ public class TorrentServiceImpl implements TorrentService {
         searchService = new SearchServiceImpl(Integer.valueOf(
                 application.getProperty(SettingKeys.TORRENT_AGE.key(), String.valueOf(defaultTorrentAge))
         ));
-        foundTorrents = new LinkedList<>();
+        matchingTorrents = new LinkedList<>();
         torrentResponses = new LinkedList<>();
     }
 
@@ -72,7 +72,7 @@ public class TorrentServiceImpl implements TorrentService {
         Map<String, Integer> map = buildPrecisionWordMap();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             searchService.setMatchPrecision(entry.getValue());
-            foundTorrents.addAll(searchService.search(entry.getKey(), torrentDetails));
+            matchingTorrents.addAll(searchService.search(entry.getKey(), torrentDetails));
         }
     }
 
@@ -99,13 +99,13 @@ public class TorrentServiceImpl implements TorrentService {
     }
 
     @Override
-    public boolean hasFoundTorrents() {
-        return foundTorrents != null && !foundTorrents.isEmpty();
+    public boolean hasFoundMatchingTorrents() {
+        return matchingTorrents != null && !matchingTorrents.isEmpty();
     }
 
     @Override
-    public List<ReducedDetail> getFoundTorrents() {
-        return foundTorrents;
+    public List<ReducedDetail> getMatchingTorrents() {
+        return matchingTorrents;
     }
 
     @Override

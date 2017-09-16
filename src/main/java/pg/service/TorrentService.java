@@ -9,8 +9,7 @@ import java.util.List;
 public interface TorrentService {
     void findTorrents();
     void matchTorrents();
-    boolean hasFoundTorrents();
-    List<ReducedDetail> getFoundTorrents();
-
+    boolean hasFoundMatchingTorrents();
+    List<ReducedDetail> getMatchingTorrents();
     List<TorrentResponse> getTorrentResponses();
 }
