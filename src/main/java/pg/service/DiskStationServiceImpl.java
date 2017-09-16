@@ -19,9 +19,7 @@ import pg.web.synology.DSTaskMethod;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by Gawa 2017-09-15
- */
+/**Created by Gawa 2017-09-15*/
 public class DiskStationServiceImpl implements DiskStationService {
 
     private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
@@ -146,7 +144,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
     }
 
-    private String buildLoginUrl(String serverUrl) {
+    protected String buildLoginUrl(String serverUrl) {
         String userName = application.getProperty(SettingKeys.USERNAME.key());
         String password = application.getProperty(SettingKeys.PASSWORD.key());
         return serverUrl + "/webapi/" + authInfo.getPath() +
@@ -194,7 +192,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
     }
 
-    private String buildCreateTaskUrl(String serverUrl) {
+    protected String buildCreateTaskUrl(String serverUrl) {
         final TorrentUrlType urlType = TorrentUrlType.valueOf(
                 application.getProperty(SettingKeys.TORRENT_URL_TYPE.key(), TorrentUrlType.torrent.name())
         );
@@ -254,7 +252,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
     }
 
-    private String buildTaskListUrl(String serverUrl) {
+    protected String buildTaskListUrl(String serverUrl) {
         return serverUrl + "/webapi/" + downloadStationTask.getPath() +
                 "?" +
                 "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
@@ -292,7 +290,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
     }
 
-    private String buildLogoutUrl(String serverUrl) {
+    protected String buildLogoutUrl(String serverUrl) {
         return serverUrl + "/webapi/" + authInfo.getPath() +
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
