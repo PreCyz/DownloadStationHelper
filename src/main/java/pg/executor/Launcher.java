@@ -25,14 +25,14 @@ public class Launcher implements Runnable {
     public void run() {
         torrentService.findTorrents();
         torrentService.matchTorrents();
+        FileService fileService = new FileServiceImpl(application);
+        fileService.buildImdbMap(torrentService.getTorrentResponses());
+        fileService.writeImdbMapToFile();
         if (torrentService.hasFoundTorrents()) {
             final String notGiven = "NOT_GIVEN";
             final String filePath = application.getProperty(SettingKeys.FILE_PATH.key(), notGiven);
             if (!notGiven.equals(filePath.trim())) {
-                FileService fileService = new FileServiceImpl(application);
                 fileService.writeTorrentsToFile(torrentService.getFoundTorrents());
-                fileService.buildImdbMap(torrentService.getTorrentResponses());
-                fileService.writeImdbMapToFile();
             }
             String creationMethod = application.getProperty(SettingKeys.CREATION_METHOD.key(),
                     DSMethod.COPY_FILE.name());
