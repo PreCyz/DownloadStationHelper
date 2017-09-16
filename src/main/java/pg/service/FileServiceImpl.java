@@ -39,7 +39,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void buildImdbMap(List<TorrentResponse> torrentResponses) {
-        imdbTitleMap = new HashMap<>();
+        imdbTitleMap = new TreeMap<>(Comparator.comparing(Integer::valueOf));
         torrentResponses.stream()
                 .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
                 .filter(torrent -> !StringUtils.nullOrEmpty(torrent.getImdbId()))
