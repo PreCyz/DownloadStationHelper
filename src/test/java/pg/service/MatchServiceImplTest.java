@@ -17,9 +17,24 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**Created by Gawa on 15/08/17.*/
-public class SearchServiceImplTest {
+public class MatchServiceImplTest {
+    @Test
+    public void search() throws Exception {
+    }
 
-    private SearchServiceImpl searchService;
+    @Test
+    public void filterByDate() throws Exception {
+    }
+
+    @Test
+    public void matchTorrent() throws Exception {
+    }
+
+    @Test
+    public void setMatchPrecision() throws Exception {
+    }
+
+    private MatchServiceImpl searchService;
     private TorrentResponse torrentResponse;
 
     @Before
@@ -40,8 +55,7 @@ public class SearchServiceImplTest {
     public void givenTorrentsDetailWhenSearchThenReturnTorrents() {
         int matchPrecision = 3;
         final String word = "Stephen Colbert 2017 08 14 Anthony Scaramucci,720p,HDTV";
-        searchService = new SearchServiceImpl(0);
-        searchService.setMatchPrecision(matchPrecision);
+        searchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->
@@ -55,8 +69,7 @@ public class SearchServiceImplTest {
     public void givenTorrentsDetailWhenSearchThenReturnTorrents2() {
         int matchPrecision = 2;
         final String word = "Cheaters,720p";
-        searchService = new SearchServiceImpl(0);
-        searchService.setMatchPrecision(matchPrecision);
+        searchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->

@@ -15,7 +15,8 @@ public enum SettingKeys {
     TORRENT_URL_TYPE("torrent.url.type"),
     CREATION_METHOD("task.creation.method"),
     TORRENT_LOCATION("torrent.file.location"),
-    TORRENT_AGE("torrent.age");
+    TORRENT_AGE("torrent.age"),
+    REPEAT_DOWNLOAD("download.torrent.again");
 
     private String key;
 

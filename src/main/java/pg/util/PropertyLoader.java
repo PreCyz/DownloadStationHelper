@@ -17,15 +17,15 @@ public final class PropertyLoader {
 
     private static final Logger logger = LogManager.getLogger(PropertyLoader.class);
 
-    private static final String APPLICATION_PROPERTIES = "application.properties";
-    private static final String SHOWS_PROPERTIES = "shows.properties";
+    private static Properties application = null;
+    private static Properties shows = null;
 
     private PropertyLoader() {}
 
-    public static Properties loadApplicationProperties() {
-        Optional<Properties> applicationOpt = loadProperties(APPLICATION_PROPERTIES);
+    protected static Properties loadApplicationProperties() {
+        Optional<Properties> applicationOpt = loadProperties(AppConstants.APPLICATION_PROPERTIES);
         if (applicationOpt.isPresent()) {
-            Properties defaultApplication = loadDefaultProperties(APPLICATION_PROPERTIES);
+            Properties defaultApplication = loadDefaultProperties(AppConstants.APPLICATION_PROPERTIES);
             Properties application = applicationOpt.get();
             if (!application.containsKey(SettingKeys.URL.key())) {
                 application.put(SettingKeys.URL.key(), defaultApplication.getProperty(SettingKeys.URL.key()));
@@ -39,7 +39,7 @@ public final class PropertyLoader {
             }
             return application;
         }
-        return loadDefaultProperties(APPLICATION_PROPERTIES);
+        return loadDefaultProperties(AppConstants.APPLICATION_PROPERTIES);
     }
 
     protected static Optional<Properties> loadProperties(String fileName) {
@@ -67,8 +67,23 @@ public final class PropertyLoader {
         }
     }
 
-    public static Properties loadShowsProperties() {
-        Optional<Properties> showsOpt = loadProperties(SHOWS_PROPERTIES);
-        return showsOpt.orElseGet(() -> loadDefaultProperties(SHOWS_PROPERTIES));
+    protected static Properties loadShowsProperties() {
+        Optional<Properties> showsOpt = loadProperties(AppConstants.SHOWS_PROPERTIES);
+        return showsOpt.orElseGet(() -> loadDefaultProperties(AppConstants.SHOWS_PROPERTIES));
     }
+
+    public static Properties getApplicationProperties() {
+        if (application == null) {
+            application = loadApplicationProperties();
+        }
+        return application;
+    }
+
+    public static Properties getShowsProperties() {
+        if (shows == null) {
+            shows = loadShowsProperties();
+        }
+        return shows;
+    }
+
 }

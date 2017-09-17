@@ -3,6 +3,7 @@ package pg.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.JsonUtils;
+import pg.util.PropertyLoader;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
@@ -70,8 +71,8 @@ public class DiskStationServiceImpl implements DiskStationService {
         taskErrorMap.put(408, "File does not exist");
     }
 
-    public DiskStationServiceImpl(Properties application, List<ReducedDetail> foundTorrents) {
-        this.application = application;
+    public DiskStationServiceImpl(List<ReducedDetail> foundTorrents) {
+        this.application = PropertyLoader.getApplicationProperties();
         this.foundTorrents = foundTorrents;
     }
 

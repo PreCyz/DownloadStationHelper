@@ -19,13 +19,11 @@ public class Main {
     public static void main(String[] args) {
         logger.info("Start of application.");
         try {
-            Properties application = PropertyLoader.loadApplicationProperties();
+            Properties application = PropertyLoader.getApplicationProperties();
             extractUsernameFromArgs(args, application);
             extractPasswordFromArgs(args, application);
-            Properties shows = PropertyLoader.loadShowsProperties();
 
-            Runnable launcher = new Launcher(application, shows);
-            launcher.run();
+            new Launcher().run();
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
         }

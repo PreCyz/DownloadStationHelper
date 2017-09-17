@@ -3,7 +3,6 @@ package pg.service;
 import org.junit.Test;
 import pg.util.PropertyLoader;
 
-import java.util.Collections;
 import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,12 +16,31 @@ public class DiskStationServiceImplTest {
 
     @Test
     public void givenNoServerAddressInSettingsWhenPrepareServerUrlTheReturnHttpServerAddress() {
-        Properties properties = PropertyLoader.loadApplicationProperties();
-        diskStationService = new DiskStationServiceImpl(properties, Collections.emptyList());
+        Properties properties = PropertyLoader.getApplicationProperties();
+        //diskStationService = new DiskStationServiceImpl();
 
         String actual = diskStationService.prepareServerUrl();
 
         assertThat(actual, is( equalTo("http://some.address.com:5000")));
     }
 
+    @Test
+    public void buildLoginUrl() throws Exception {
+
+    }
+
+    @Test
+    public void buildCreateTaskUrl() throws Exception {
+
+    }
+
+    @Test
+    public void buildTaskListUrl() throws Exception {
+
+    }
+
+    @Test
+    public void buildLogoutUrl() throws Exception {
+
+    }
 }
