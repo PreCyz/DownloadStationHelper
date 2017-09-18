@@ -1,7 +1,7 @@
 package pg.service;
 
 import org.junit.Test;
-import pg.util.PropertyLoader;
+import pg.loader.ApplicationPropertiesLoader;
 
 import java.util.Properties;
 
@@ -16,7 +16,6 @@ public class DiskStationServiceImplTest {
 
     @Test
     public void givenNoServerAddressInSettingsWhenPrepareServerUrlTheReturnHttpServerAddress() {
-        Properties properties = PropertyLoader.getApplicationProperties();
         //diskStationService = new DiskStationServiceImpl();
 
         String actual = diskStationService.prepareServerUrl();

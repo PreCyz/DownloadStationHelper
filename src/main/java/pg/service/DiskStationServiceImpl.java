@@ -3,7 +3,7 @@ package pg.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.JsonUtils;
-import pg.util.PropertyLoader;
+import pg.loader.ApplicationPropertiesLoader;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
@@ -26,7 +26,7 @@ public class DiskStationServiceImpl implements DiskStationService {
     private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
 
     private final int defaultServerPort = 5001;
-    private final Properties application;
+    private final ApplicationPropertiesLoader application;
     private ApiDetails authInfo;
     private ApiDetails downloadStationTask;
     private List<ReducedDetail> foundTorrents;
@@ -72,7 +72,7 @@ public class DiskStationServiceImpl implements DiskStationService {
     }
 
     public DiskStationServiceImpl(List<ReducedDetail> foundTorrents) {
-        this.application = PropertyLoader.getApplicationProperties();
+        this.application = ApplicationPropertiesLoader.getInstance();
         this.foundTorrents = foundTorrents;
     }
 
@@ -82,7 +82,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         if (requestUrl.isEmpty()) {
             logger.info("Server URL not specified.");
         } else {
-            requestUrl += application.getProperty(SettingKeys.API_INFO.key());
+            requestUrl += application.getApiInfo();
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
@@ -103,10 +103,10 @@ public class DiskStationServiceImpl implements DiskStationService {
         if (serverUrl != null) {
             return serverUrl;
         }
-        String server = application.getProperty(SettingKeys.SERVER_URL.key());
+        String server = application.getServerUrl();
         if (server != null && !server.isEmpty()) {
-            String port = application.getProperty(SettingKeys.SERVER_PORT.key(), String.valueOf(defaultServerPort));
-            String protocol = port.equals(String.valueOf(defaultServerPort)) ? "https" : "http";
+            Integer port = application.getServerPort(defaultServerPort);
+            String protocol = port == defaultServerPort ? "https" : "http";
             return serverUrl = String.format("%s://%s:%s", protocol, server, port);
         }
         return serverUrl = "";
@@ -146,8 +146,8 @@ public class DiskStationServiceImpl implements DiskStationService {
     }
 
     protected String buildLoginUrl(String serverUrl) {
-        String userName = application.getProperty(SettingKeys.USERNAME.key());
-        String password = application.getProperty(SettingKeys.PASSWORD.key());
+        String userName = application.getUsername();
+        String password = application.getPassword();
         return serverUrl + "/webapi/" + authInfo.getPath() +
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
@@ -195,7 +195,7 @@ public class DiskStationServiceImpl implements DiskStationService {
 
     protected String buildCreateTaskUrl(String serverUrl) {
         final TorrentUrlType urlType = TorrentUrlType.valueOf(
-                application.getProperty(SettingKeys.TORRENT_URL_TYPE.key(), TorrentUrlType.torrent.name())
+                application.getTorrentUrlType(TorrentUrlType.torrent.name())
         );
         String uri = String.join(",", foundTorrents.stream()
                 .map(reducedDetail -> {
@@ -209,7 +209,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                 .collect(Collectors.toList())
         );
 
-        String destination = application.getProperty(SettingKeys.DESTINATION.key());
+        String destination = application.getDestination();
 
         return serverUrl + "/webapi/" + downloadStationTask.getPath() +
                 "?" +
@@ -303,7 +303,7 @@ public class DiskStationServiceImpl implements DiskStationService {
 
     @Override
     public void writeTorrentsOnDS() {
-        String destination = application.getProperty(SettingKeys.TORRENT_LOCATION.key(), "");
+        String destination = application.getTorrentLocation("");
         if (destination == null || destination.isEmpty()) {
             logger.info("{} not specified. Add it to application.properties.", SettingKeys.TORRENT_LOCATION.key());
             return;

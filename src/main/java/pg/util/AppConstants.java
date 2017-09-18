@@ -1,5 +1,6 @@
 package pg.util;
 
+import pg.loader.ApplicationPropertiesLoader;
 import pg.web.model.SettingKeys;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public final class AppConstants {
     public static final String SHOWS_PROPERTIES = "shows.properties";
 
     public static Path fullFilePath(String fileName) {
-        String directoryPath = PropertyLoader.loadApplicationProperties().getProperty(SettingKeys.FILE_PATH.key());
+        String directoryPath = ApplicationPropertiesLoader.getInstance().getFilePath("");
         if (Files.notExists(Paths.get(directoryPath))) {
             try {
                 Files.createDirectory(Paths.get(directoryPath));

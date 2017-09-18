@@ -3,7 +3,7 @@ package pg.executor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.service.*;
-import pg.util.PropertyLoader;
+import pg.loader.ApplicationPropertiesLoader;
 import pg.web.model.DSMethod;
 import pg.web.model.SettingKeys;
 import pg.web.response.TorrentResponse;
@@ -16,10 +16,10 @@ public class Launcher implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(Launcher.class);
 
-    private final Properties application;
+    private final ApplicationPropertiesLoader application;
 
     public Launcher() {
-        this.application = PropertyLoader.getApplicationProperties();
+        this.application = ApplicationPropertiesLoader.getInstance();
     }
 
     @Override
@@ -33,14 +33,11 @@ public class Launcher implements Runnable {
         matchService.filterTorrents(torrents);
         if (matchService.hasFoundMatchingTorrents()) {
             final String notGiven = "NOT_GIVEN";
-            final String filePath = application.getProperty(SettingKeys.FILE_PATH.key(), notGiven);
+            final String filePath = application.getFilePath(notGiven);
             if (!notGiven.equals(filePath.trim())) {
                 fileService.writeTorrentsToFile(matchService.getMatchingTorrents());
             }
-            String creationMethod = application.getProperty(
-                    SettingKeys.CREATION_METHOD.key(),
-                    DSMethod.COPY_FILE.name()
-            );
+            String creationMethod = application.getCreationMethod(DSMethod.COPY_FILE.name());
             DiskStationService dsService = new DiskStationServiceImpl(matchService.getMatchingTorrents());
             switch (DSMethod.valueOf(creationMethod)) {
                 case COPY_FILE:

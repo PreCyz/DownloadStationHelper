@@ -2,9 +2,10 @@ package pg.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.loader.ShowsPropertiesLoader;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
-import pg.util.PropertyLoader;
+import pg.loader.ApplicationPropertiesLoader;
 import pg.util.StringUtils;
 import pg.web.model.SettingKeys;
 import pg.web.model.ShowKeys;
@@ -22,18 +23,16 @@ public class MatchServiceImpl implements MatchService {
     private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
     private final int defaultTorrentAge = 0;
-    private final Properties application;
+    private final ApplicationPropertiesLoader application;
     private final Properties shows;
     private int torrentAge;
     private int matchPrecision;
     private List<ReducedDetail> matchingTorrents;
 
     public MatchServiceImpl() {
-        this.application = PropertyLoader.getApplicationProperties();
-        this.shows = PropertyLoader.getShowsProperties();
-        this.torrentAge = Integer.valueOf(application.getProperty(
-                SettingKeys.TORRENT_AGE.key(), String.valueOf(defaultTorrentAge))
-        );
+        this.application = ApplicationPropertiesLoader.getInstance();
+        this.shows = ShowsPropertiesLoader.getInstance().getShowsProperties();
+        this.torrentAge = application.getTorrentAge(defaultTorrentAge);
         this.matchPrecision = 0;
         matchingTorrents = new LinkedList<>();
     }
@@ -48,9 +47,7 @@ public class MatchServiceImpl implements MatchService {
         } else {
             filtered = new LinkedList<>(torrents);
         }
-        boolean allowRepeat = StringUtils.booleanFromString(PropertyLoader.getApplicationProperties().
-                getProperty(SettingKeys.REPEAT_DOWNLOAD.key(), "false")
-        );
+        boolean allowRepeat = StringUtils.booleanFromString(application.getRepeatDownload("false"));
         if (!allowRepeat) {
             filtered = filterByMatchingHistorically(filtered);
         }
@@ -125,7 +122,11 @@ public class MatchServiceImpl implements MatchService {
             matchPrecision = entry.getValue();
             matchingTorrents.addAll(matchTorrents(entry.getKey(), torrentDetails));
         }
-        logger.info(JsonUtils.convertToString(matchingTorrents));
+        if (hasFoundMatchingTorrents()) {
+            logger.info(JsonUtils.convertToString(matchingTorrents));
+        } else {
+            logger.info("No matching torrents found.");
+        }
     }
 
     protected Map<String, Integer> buildPrecisionWordMap() {
@@ -137,9 +138,8 @@ public class MatchServiceImpl implements MatchService {
                 if (baseWords != null && baseWords.trim().length() > 0) {
                     String precisionKey = key.substring(0, key.indexOf(ShowKeys.baseWords.name())) +
                             ShowKeys.matchPrecision.name();
-                    String precision = shows.getProperty(precisionKey,
-                            String.valueOf(baseWords.split(",").length));
-                    Integer matchPrecision = Integer.valueOf(precision);
+                    Integer matchPrecision = Integer.valueOf(shows.getProperty(precisionKey,
+                            String.valueOf(baseWords.split(",").length)));
                     map.put(baseWords, matchPrecision);
                 }
             }

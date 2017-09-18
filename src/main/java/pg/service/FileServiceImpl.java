@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
-import pg.util.PropertyLoader;
+import pg.loader.ApplicationPropertiesLoader;
 import pg.util.StringUtils;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.TorrentResponse;
@@ -17,12 +17,7 @@ public class FileServiceImpl implements FileService {
 
     private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
-    private final Properties application;
     private Map<String, String> imdbTitleMap;
-
-    public FileServiceImpl() {
-        this.application = PropertyLoader.getApplicationProperties();
-    }
 
     @Override
     public void writeTorrentsToFile(List<ReducedDetail> foundTorrents) {
