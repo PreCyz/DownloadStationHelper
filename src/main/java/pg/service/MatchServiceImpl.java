@@ -2,6 +2,8 @@ package pg.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.filter.Filter;
+import pg.filter.factory.FilterFactory;
 import pg.loader.ShowsPropertiesLoader;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
@@ -41,15 +43,9 @@ public class MatchServiceImpl implements MatchService {
         if (torrents == null || torrents.isEmpty()) {
             return Collections.emptyList();
         }
-        List<TorrentDetail> filtered;
-        if (isFilterByDate()) {
-            filtered = filterByDate(torrents);
-        } else {
-            filtered = new LinkedList<>(torrents);
-        }
-        boolean allowRepeat = StringUtils.booleanFromString(application.getRepeatDownload("false"));
-        if (!allowRepeat) {
-            filtered = filterByMatchingHistorically(filtered);
+        List<TorrentDetail> filtered = new LinkedList<>(torrents);
+        for (Filter filter : FilterFactory.getFilters()) {
+            filtered = new LinkedList<>(filter.apply(filtered));
         }
 
         List<ReducedDetail> matchedTorrents = new LinkedList<>();
@@ -59,32 +55,6 @@ public class MatchServiceImpl implements MatchService {
         });
 
         return matchedTorrents;
-    }
-
-    private boolean isFilterByDate() {
-        return torrentAge > 0;
-    }
-
-    protected List<TorrentDetail> filterByDate(List<TorrentDetail> torrents) {
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add(Calendar.DAY_OF_MONTH, -torrentAge);
-        final long timestamp = yesterday.getTimeInMillis() / 1000;
-        return torrents.stream()
-                    .filter(torrent -> torrent.getDateReleased() > timestamp)
-                    .collect(Collectors.toList());
-    }
-
-    private List<TorrentDetail> filterByMatchingHistorically(List<TorrentDetail> filtered) {
-        Optional<Map> mapOpt = JsonUtils.convertFromFile(
-                AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE),
-                Map.class
-        );
-        if (mapOpt.isPresent()) {
-            return filtered.stream()
-                    .filter(torrentDetail -> !mapOpt.get().containsKey(torrentDetail.getTitle()))
-                    .collect(Collectors.toList());
-        }
-        return filtered;
     }
 
     protected Optional<ReducedDetail> matchTorrent(String[] words, TorrentDetail torrent) {

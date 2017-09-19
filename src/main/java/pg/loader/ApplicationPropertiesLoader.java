@@ -112,6 +112,10 @@ public final class ApplicationPropertiesLoader {
         return getApplicationProperties().getProperty(SettingKeys.REPEAT_DOWNLOAD.key(), defaultValue);
     }
 
+    public String getMaxFileSize(String defaultValue) {
+        return getApplicationProperties().getProperty(SettingKeys.MAX_FILE_SIZE.key(), defaultValue).trim().replace(",", ".");
+    }
+
     public void extractUsernameFromArgs(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.USERNAME.key())) {
             return;

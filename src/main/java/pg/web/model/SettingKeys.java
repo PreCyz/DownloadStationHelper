@@ -16,7 +16,8 @@ public enum SettingKeys {
     CREATION_METHOD("task.creation.method"),
     TORRENT_LOCATION("torrent.file.location"),
     TORRENT_AGE("torrent.age"),
-    REPEAT_DOWNLOAD("download.torrent.again");
+    REPEAT_DOWNLOAD("download.torrent.again"),
+    MAX_FILE_SIZE("max.file.size");
 
     private String key;
 

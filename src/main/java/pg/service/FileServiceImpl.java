@@ -22,10 +22,11 @@ public class FileServiceImpl implements FileService {
     @Override
     public void writeTorrentsToFile(List<ReducedDetail> foundTorrents) {
         Path filePath = AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE);
-        Map<String, ReducedDetail> torrentsMap = new TreeMap<>();
+        Optional<TreeMap> treeMap = JsonUtils.convertFromFile(filePath, TreeMap.class);
+        Map<String, ReducedDetail> torrentsMap = treeMap.orElse(new TreeMap<String, ReducedDetail>());
         foundTorrents.forEach(reducedDetail -> torrentsMap.put(reducedDetail.getTitle(), reducedDetail));
         JsonUtils.writeToFile(filePath, torrentsMap);
-        logger.info("[{}] torrents was written to file [{}].", torrentsMap.size(), filePath);
+        logger.info("[{}] torrents stored in file [{}].", torrentsMap.size(), filePath);
     }
 
     @Override
@@ -42,8 +43,8 @@ public class FileServiceImpl implements FileService {
     public void writeImdbMapToFile() {
         if (!imdbTitleMap.isEmpty()) {
             Path filePath = AppConstants.fullFilePath(AppConstants.IMDB_FILE_NAME);
-            Optional<Map> mapOpt = JsonUtils.convertFromFile(filePath, Map.class);
-            imdbTitleMap.putAll(mapOpt.orElse(Collections.emptyMap()));
+            Optional<TreeMap> mapOpt = JsonUtils.convertFromFile(filePath, TreeMap.class);
+            imdbTitleMap.putAll(mapOpt.orElse(new TreeMap<String,String>()));
             JsonUtils.writeToFile(filePath, imdbTitleMap);
         } else {
             logger.info("No new imdb ids where found.");
