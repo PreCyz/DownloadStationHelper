@@ -25,10 +25,10 @@ public final class ApplicationPropertiesLoader {
         return instance;
     }
 
-    protected static Properties loadApplicationProperties() {
-        Optional<Properties> applicationOpt = PropertiesLoader.loadProperties(AppConstants.APPLICATION_PROPERTIES);
+    protected Properties loadApplicationProperties(String fileName) {
+        Optional<Properties> applicationOpt = PropertiesLoader.loadProperties(fileName);
         if (applicationOpt.isPresent()) {
-            Properties defaultApplication = PropertiesLoader.loadDefaultProperties(AppConstants.APPLICATION_PROPERTIES);
+            Properties defaultApplication = PropertiesLoader.loadDefaultProperties(fileName);
             Properties application = applicationOpt.get();
             if (!application.containsKey(SettingKeys.URL.key())) {
                 application.put(SettingKeys.URL.key(), defaultApplication.getProperty(SettingKeys.URL.key()));
@@ -42,12 +42,12 @@ public final class ApplicationPropertiesLoader {
             }
             return application;
         }
-        return PropertiesLoader.loadDefaultProperties(AppConstants.APPLICATION_PROPERTIES);
+        return PropertiesLoader.loadDefaultProperties(fileName);
     }
 
     protected Properties getApplicationProperties() {
         if (application == null) {
-            application = loadApplicationProperties();
+            application = loadApplicationProperties(AppConstants.APPLICATION_PROPERTIES);
         }
         return application;
     }

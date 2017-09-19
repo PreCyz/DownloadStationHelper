@@ -7,6 +7,7 @@ import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.TorrentResponse;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,9 +40,16 @@ public class MatchServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
+        String osName = System.getProperty("os.name");
         URL jsonUrl = getClass().getClassLoader().getResource("testTorrentDetails.json");
+        Path jsonPath;
+        if (osName.startsWith("Windows")) {
+            jsonPath = Paths.get(jsonUrl.getPath().substring(1));
+        } else {
+            jsonPath = Paths.get(jsonUrl.getPath());
+        }
         Optional<TorrentResponse> jsonResponse = JsonUtils.convertFromFile(
-                Paths.get(jsonUrl.getPath()),
+                jsonPath,
                 TorrentResponse.class);
         this.torrentResponse = jsonResponse.get();
     }
@@ -53,7 +61,6 @@ public class MatchServiceImplTest {
 
     @Test
     public void givenTorrentsDetailWhenSearchThenReturnTorrents() {
-        int matchPrecision = 3;
         final String word = "Stephen Colbert 2017 08 14 Anthony Scaramucci,720p,HDTV";
         searchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();
@@ -67,7 +74,6 @@ public class MatchServiceImplTest {
 
     @Test
     public void givenTorrentsDetailWhenSearchThenReturnTorrents2() {
-        int matchPrecision = 2;
         final String word = "Cheaters,720p";
         searchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();

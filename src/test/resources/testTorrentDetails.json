@@ -16,7 +16,10 @@
       "seeds": 72,
       "peers": 88,
       "date_released_unix": 1502800201,
-      "size_bytes": "1223056119"
+      "size_bytes": "1223056119",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367753,
@@ -31,7 +34,10 @@
       "seeds": 35,
       "peers": 56,
       "date_released_unix": 1502797863,
-      "size_bytes": "1092885031"
+      "size_bytes": "1092885031",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367751,
@@ -46,7 +52,10 @@
       "seeds": 39,
       "peers": 20,
       "date_released_unix": 1502797142,
-      "size_bytes": "831053971"
+      "size_bytes": "831053971",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367752,
@@ -61,7 +70,10 @@
       "seeds": 91,
       "peers": 57,
       "date_released_unix": 1502797142,
-      "size_bytes": "608839133"
+      "size_bytes": "608839133",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367750,
@@ -76,7 +88,10 @@
       "seeds": 14,
       "peers": 21,
       "date_released_unix": 1502796061,
-      "size_bytes": "1448658465"
+      "size_bytes": "1448658465",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367749,
@@ -91,7 +106,10 @@
       "seeds": 148,
       "peers": 86,
       "date_released_unix": 1502795701,
-      "size_bytes": "303224631"
+      "size_bytes": "303224631",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367747,
@@ -106,7 +124,10 @@
       "seeds": 15,
       "peers": 9,
       "date_released_unix": 1502794261,
-      "size_bytes": "1088446453"
+      "size_bytes": "1088446453",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367746,
@@ -121,7 +142,10 @@
       "seeds": 55,
       "peers": 25,
       "date_released_unix": 1502794081,
-      "size_bytes": "340268488"
+      "size_bytes": "340268488",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367744,
@@ -136,7 +160,10 @@
       "seeds": 55,
       "peers": 19,
       "date_released_unix": 1502793541,
-      "size_bytes": "832672005"
+      "size_bytes": "832672005",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     },
     {
       "id": 367745,
@@ -151,7 +178,10 @@
       "seeds": 103,
       "peers": 56,
       "date_released_unix": 1502793541,
-      "size_bytes": "610517381"
+      "size_bytes": "610517381",
+      "imdb_id": "1",
+      "season" : "1",
+      "episode": "1"
     }
   ]
 }
