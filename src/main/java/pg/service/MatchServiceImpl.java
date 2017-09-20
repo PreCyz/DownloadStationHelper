@@ -3,13 +3,10 @@ package pg.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.filter.Filter;
-import pg.filter.factory.FilterFactory;
+import pg.factory.FilterFactory;
 import pg.loader.ShowsPropertiesLoader;
-import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.loader.ApplicationPropertiesLoader;
-import pg.util.StringUtils;
-import pg.web.model.SettingKeys;
 import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;
@@ -24,17 +21,12 @@ public class MatchServiceImpl implements MatchService {
 
     private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
-    private final int defaultTorrentAge = 0;
-    private final ApplicationPropertiesLoader application;
     private final Properties shows;
-    private int torrentAge;
     private int matchPrecision;
     private List<ReducedDetail> matchingTorrents;
 
     public MatchServiceImpl() {
-        this.application = ApplicationPropertiesLoader.getInstance();
         this.shows = ShowsPropertiesLoader.getInstance().getShowsProperties();
-        this.torrentAge = application.getTorrentAge(defaultTorrentAge);
         this.matchPrecision = 0;
         matchingTorrents = new LinkedList<>();
     }

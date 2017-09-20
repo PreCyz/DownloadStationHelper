@@ -2,14 +2,8 @@ package pg;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.executor.Launcher;
+import pg.executor.GetTorrentLauncher;
 import pg.loader.ApplicationPropertiesLoader;
-import pg.web.model.SettingKeys;
-import pg.web.model.StartParameters;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Properties;
 
 /**Created by Gawa on 15/08/17.*/
 public class Main {
@@ -23,7 +17,7 @@ public class Main {
             instance.extractUsernameFromArgs(args);
             instance.extractPasswordFromArgs(args);
 
-            new Launcher().run();
+            new GetTorrentLauncher().run();
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
         }

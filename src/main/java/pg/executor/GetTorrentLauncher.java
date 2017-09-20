@@ -5,20 +5,18 @@ import org.apache.logging.log4j.Logger;
 import pg.service.*;
 import pg.loader.ApplicationPropertiesLoader;
 import pg.web.model.DSMethod;
-import pg.web.model.SettingKeys;
 import pg.web.response.TorrentResponse;
 
 import java.util.List;
-import java.util.Properties;
 
 /**Created by Gawa 2017-09-15*/
-public class Launcher implements Runnable {
+public class GetTorrentLauncher implements Runnable {
 
-    private static final Logger logger = LogManager.getLogger(Launcher.class);
+    private static final Logger logger = LogManager.getLogger(GetTorrentLauncher.class);
 
     private final ApplicationPropertiesLoader application;
 
-    public Launcher() {
+    public GetTorrentLauncher() {
         this.application = ApplicationPropertiesLoader.getInstance();
     }
 

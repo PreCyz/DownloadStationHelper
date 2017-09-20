@@ -1,4 +1,4 @@
-package pg.filter.factory;
+package pg.factory;
 
 import pg.filter.AgeFilter;
 import pg.filter.FileSizeFilter;

@@ -40,8 +40,13 @@ public final class ShowsPropertiesLoader {
         return getShowsProperties().getProperty(key);
     }
 
-    public Integer getMatchPrecysion(int showNumber, int defaultValue) {
+    public Integer getMatchPrecision(int showNumber, int defaultValue) {
         String key = String.format("show.%d.matchPrecision", showNumber);
         return Integer.valueOf(getShowsProperties().getProperty(key, String.valueOf(defaultValue)));
+    }
+
+    public String getMatchPrecision(int showNumber) {
+        String key = String.format("show.%d.imdbId", showNumber);
+        return getShowsProperties().getProperty(key);
     }
 }
