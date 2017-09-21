@@ -20,12 +20,12 @@ public class MatchServiceImpl implements MatchService {
 
     private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
-    private final Properties shows;
+    private final ShowsPropertiesLoader shows;
     private int matchPrecision;
     private List<ReducedDetail> matchingTorrents;
 
     public MatchServiceImpl() {
-        this.shows = ShowsPropertiesLoader.getInstance().getShowsProperties();
+        this.shows = ShowsPropertiesLoader.getInstance();
         this.matchPrecision = 0;
         matchingTorrents = new LinkedList<>();
     }

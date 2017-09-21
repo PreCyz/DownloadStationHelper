@@ -4,6 +4,7 @@ import pg.util.AppConstants;
 
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
 
 /**Created by Gawa on 9/18/2017.*/
 public final class ShowsPropertiesLoader {
@@ -20,7 +21,7 @@ public final class ShowsPropertiesLoader {
         return instance;
     }
 
-    public Properties getShowsProperties() {
+    private Properties getShowsProperties() {
         if (shows == null) {
             shows = loadShowsProperties();
         }
@@ -45,5 +46,17 @@ public final class ShowsPropertiesLoader {
     public String getMatchPrecision(int showNumber) {
         String key = String.format("show.%d.imdbId", showNumber);
         return getShowsProperties().getProperty(key);
+    }
+
+    public String getProperty(String key) {
+        return getShowsProperties().getProperty(key);
+    }
+
+    public String getProperty(String key, String defaultValue) {
+        return getShowsProperties().getProperty(key, defaultValue);
+    }
+
+    public Set<Object> keySet() {
+        return getShowsProperties().keySet();
     }
 }

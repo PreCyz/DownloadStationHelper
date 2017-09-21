@@ -9,11 +9,17 @@ import java.util.List;
 /**Created by Gawa on 15/08/17.*/
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TorrentResponse {
+    @JsonProperty("imdb_id")
+    private String imdbId;
     @JsonProperty("torrents_count")
     private int torrentsCount;
     private int limit;
     private int page;
     private List<TorrentDetail> torrents;
+
+    public String getImdbId() {
+        return imdbId;
+    }
 
     public int getTorrentsCount() {
         return torrentsCount;

@@ -23,10 +23,12 @@ public class TorrentServiceImpl implements TorrentService {
     private final int defaultPage = 1;
     private final String defaultUrl = "https://eztv.ag/api/get-torrents";
     private final ApplicationPropertiesLoader application;
+    private final ShowsPropertiesLoader shows;
     private final String url;
 
     public TorrentServiceImpl() {
         this.application = ApplicationPropertiesLoader.getInstance();
+        this.shows = ShowsPropertiesLoader.getInstance();
         this.url = application.getUrl(defaultUrl);
     }
 
@@ -57,11 +59,12 @@ public class TorrentServiceImpl implements TorrentService {
 
     @Override
     public List<TorrentResponse> findTorrentsByImdbId() {
-        Set<Object> keySet = ShowsPropertiesLoader.getInstance().getShowsProperties().keySet();
+        Set<Object> keySet = ShowsPropertiesLoader.getInstance().keySet();
         Set<Object> imdbIds = keySet.stream().filter(key -> ((String) key).endsWith("imdbId")).collect(Collectors.toSet());
         List<TorrentResponse> torrentResponses = new LinkedList<>();
         for (Object keyObj : imdbIds) {
-            String getTorrentByImdbUrl = createGetTorrentByImdbUrl(String.valueOf(keyObj));
+            String getTorrentByImdbUrl = createGetTorrentByImdbUrl(shows.getProperty(String.valueOf(keyObj)));
+            logger.info("Executing request for url {}", getTorrentByImdbUrl);
             torrentResponses.addAll(getTorrentsFromResponse(getTorrentByImdbUrl));
         }
         return torrentResponses;
