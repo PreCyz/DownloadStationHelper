@@ -2,8 +2,12 @@ package pg;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.executor.GetTorrentLauncher;
+import pg.executor.Launcher;
 import pg.loader.ApplicationPropertiesLoader;
+import pg.service.MatchByImdbService;
+import pg.service.MatchServiceImpl;
+
+import java.util.Arrays;
 
 /**Created by Gawa on 15/08/17.*/
 public class Main {
@@ -17,12 +21,21 @@ public class Main {
             instance.extractUsernameFromArgs(args);
             instance.extractPasswordFromArgs(args);
 
-            new GetTorrentLauncher().run();
+            Runnable launcher = new Launcher(new MatchServiceImpl());
+            if (isFilterByImdb(args)) {
+                logger.info("Running in imdb filtering mode.");
+                launcher = new Launcher(new MatchByImdbService());
+            }
+            launcher.run();
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
         }
 
         logger.info("End of application.");
         System.exit(0);
+    }
+
+    private static boolean isFilterByImdb(String[] args) {
+        return Arrays.stream(args).anyMatch(arg -> arg.equals("imdbMode"));
     }
 }

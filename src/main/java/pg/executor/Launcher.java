@@ -2,32 +2,38 @@ package pg.executor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.service.*;
 import pg.loader.ApplicationPropertiesLoader;
+import pg.service.*;
 import pg.web.model.DSMethod;
 import pg.web.response.TorrentResponse;
 
 import java.util.List;
 
-/**Created by Gawa 2017-09-15*/
-public class GetTorrentLauncher implements Runnable {
+/**Created by Pawel Gawedzki on 9/21/2017.*/
+public class Launcher implements Runnable {
+    private static final Logger logger = LogManager.getLogger(Launcher.class);
 
-    private static final Logger logger = LogManager.getLogger(GetTorrentLauncher.class);
-
+    private final MatchService matchService;
     private final ApplicationPropertiesLoader application;
 
-    public GetTorrentLauncher() {
+
+    public Launcher(MatchService matchService) {
+        this.matchService = matchService;
         this.application = ApplicationPropertiesLoader.getInstance();
     }
 
     @Override
     public void run() {
         TorrentService torrentService = new TorrentServiceImpl();
-        List<TorrentResponse> torrents = torrentService.findTorrents();
+        List<TorrentResponse> torrents;
+        if (matchService instanceof MatchServiceImpl) {
+            torrents = torrentService.findTorrents();
+        } else {
+            torrents = torrentService.findTorrentsByImdbId();
+        }
         FileService fileService = new FileServiceImpl();
         fileService.buildImdbMap(torrents);
         fileService.writeImdbMapToFile();
-        MatchService matchService = new MatchServiceImpl();
         matchService.filterTorrents(torrents);
         if (matchService.hasFoundMatchingTorrents()) {
             final String notGiven = "NOT_GIVEN";

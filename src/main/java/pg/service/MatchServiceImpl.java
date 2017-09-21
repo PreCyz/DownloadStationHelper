@@ -114,7 +114,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public boolean hasFoundMatchingTorrents() {
-        return matchingTorrents != null && !matchingTorrents.isEmpty();
+        return !matchingTorrents.isEmpty();
     }
 
     @Override
