@@ -1,12 +1,9 @@
 package pg.loader;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 
 /**Created by Gawa on 9/18/2017.*/
 public final class ShowsPropertiesLoader {

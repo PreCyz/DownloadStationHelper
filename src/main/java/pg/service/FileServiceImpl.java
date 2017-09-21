@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
-import pg.loader.ApplicationPropertiesLoader;
 import pg.util.StringUtils;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.TorrentResponse;

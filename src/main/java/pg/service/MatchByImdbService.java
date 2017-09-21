@@ -4,14 +4,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.FilterFactory;
 import pg.filter.Filter;
-import pg.loader.ShowsPropertiesLoader;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**Created by Pawel Gawedzki on 9/21/2017.*/

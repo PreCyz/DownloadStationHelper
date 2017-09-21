@@ -1,7 +1,5 @@
 package pg.loader;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;

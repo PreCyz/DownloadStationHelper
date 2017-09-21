@@ -2,11 +2,10 @@ package pg.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.filter.Filter;
 import pg.factory.FilterFactory;
+import pg.filter.Filter;
 import pg.loader.ShowsPropertiesLoader;
 import pg.util.JsonUtils;
-import pg.loader.ApplicationPropertiesLoader;
 import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;

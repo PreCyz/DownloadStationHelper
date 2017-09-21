@@ -1,7 +1,6 @@
 package pg.util;
 
 import pg.loader.ApplicationPropertiesLoader;
-import pg.web.model.SettingKeys;
 
 import java.io.IOException;
 import java.nio.file.Files;

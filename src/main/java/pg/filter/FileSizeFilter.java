@@ -2,8 +2,6 @@ package pg.filter;
 
 import pg.web.model.torrent.TorrentDetail;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
