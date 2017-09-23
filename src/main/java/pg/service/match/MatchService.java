@@ -1,4 +1,4 @@
-package pg.service;
+package pg.service.match;
 
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.TorrentResponse;

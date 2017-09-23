@@ -114,7 +114,7 @@ public final class ApplicationPropertiesLoader {
         return getApplicationProperties().getProperty(SettingKeys.MAX_FILE_SIZE.key(), defaultValue).trim().replace(",", ".");
     }
 
-    public void extractUsernameFromArgs(String[] args) {
+    public void extractUsername(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.USERNAME.key())) {
             return;
         }
@@ -138,7 +138,7 @@ public final class ApplicationPropertiesLoader {
         }
     }
 
-    public void extractPasswordFromArgs(String[] args) {
+    public void extractPassword(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.PASSWORD.key())) {
             return;
         }

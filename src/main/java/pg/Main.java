@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.executor.Launcher;
 import pg.loader.ApplicationPropertiesLoader;
-import pg.service.MatchByImdbService;
-import pg.service.MatchServiceImpl;
+import pg.web.model.ProgramMode;
+import pg.web.model.StartParameters;
 
 import java.util.Arrays;
 
@@ -18,14 +18,11 @@ public class Main {
         logger.info("Start of application.");
         try {
             ApplicationPropertiesLoader instance = ApplicationPropertiesLoader.getInstance();
-            instance.extractUsernameFromArgs(args);
-            instance.extractPasswordFromArgs(args);
+            instance.extractUsername(args);
+            instance.extractPassword(args);
+            ProgramMode programMode = extractMode(args);
 
-            Runnable launcher = new Launcher(new MatchServiceImpl());
-            if (isFilterByImdb(args)) {
-                logger.info("Running in imdb filtering mode.");
-                launcher = new Launcher(new MatchByImdbService());
-            }
+            Runnable launcher = new Launcher(programMode);
             launcher.run();
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage());
@@ -35,7 +32,12 @@ public class Main {
         System.exit(0);
     }
 
-    private static boolean isFilterByImdb(String[] args) {
-        return Arrays.stream(args).anyMatch(arg -> arg.equals("imdbMode"));
+    private static ProgramMode extractMode(String[] args) {
+        if (Arrays.stream(args).anyMatch(StartParameters.IMDB_MODE.param()::equals)) {
+            logger.info("Running in {} filtering mode.", ProgramMode.IMDB);
+            return ProgramMode.IMDB;
+        }
+        logger.info("Running in {} filtering mode.", ProgramMode.ALL);
+        return ProgramMode.ALL;
     }
 }

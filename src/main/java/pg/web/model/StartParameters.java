@@ -3,7 +3,8 @@ package pg.web.model;
 /**Created by Gawa on 27/08/17.*/
 public enum StartParameters {
     USERNAME("username"),
-    PASSWORD("passwd");
+    PASSWORD("passwd"),
+    IMDB_MODE("imdbMode");
 
     private String param;
 

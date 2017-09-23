@@ -1,11 +1,8 @@
-package pg.service;
+package pg.service.match;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import pg.factory.FilterFactory;
 import pg.filter.Filter;
 import pg.util.JsonUtils;
-import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
@@ -15,15 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**Created by Pawel Gawedzki on 9/21/2017.*/
-public class MatchByImdbService implements MatchService {
-
-    private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
-
-    private List<ReducedDetail> matchingTorrents;
-
-    public MatchByImdbService() {
-        matchingTorrents = new LinkedList<>();
-    }
+public class MatchByImdbService extends AbstractMatchService {
 
     @Override
     public void filterTorrents(List<TorrentResponse> torrents) {
@@ -49,15 +38,5 @@ public class MatchByImdbService implements MatchService {
                     .withSeason(torrent.getSeason())
                     .create())
         );
-    }
-
-    @Override
-    public boolean hasFoundMatchingTorrents() {
-        return !matchingTorrents.isEmpty();
-    }
-
-    @Override
-    public List<ReducedDetail> getMatchingTorrents() {
-        return matchingTorrents;
     }
 }

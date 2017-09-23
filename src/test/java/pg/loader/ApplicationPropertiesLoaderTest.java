@@ -28,7 +28,7 @@ public class ApplicationPropertiesLoaderTest {
     public void givenNoUsernameAndNullArgsWhenExtractUsernameFromArgsThenExitProgram() {
         application.getApplicationProperties().remove(SettingKeys.USERNAME.key());
         try {
-            application.extractUsernameFromArgs(null);
+            application.extractUsername(null);
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getLocalizedMessage(), is( equalTo("No userName where given. Add username to " +
@@ -40,7 +40,7 @@ public class ApplicationPropertiesLoaderTest {
     public void givenNoUsernameWhenExtractUsernameFromArgsThenExitProgram() {
         application.getApplicationProperties().remove(SettingKeys.USERNAME.key());
         try {
-            application.extractUsernameFromArgs(new String[]{"someArgument"});
+            application.extractUsername(new String[]{"someArgument"});
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getLocalizedMessage(), is( equalTo("No userName where given. Add username to " +
@@ -53,7 +53,7 @@ public class ApplicationPropertiesLoaderTest {
         application.getApplicationProperties().remove(SettingKeys.USERNAME.key());
         assertThat(application.getUsername(), is(nullValue()) );
 
-        application.extractUsernameFromArgs(new String[]{"username=someUserName"});
+        application.extractUsername(new String[]{"username=someUserName"});
         assertThat(application.getUsername(), is( equalTo("someUserName")));
     }
 
@@ -61,7 +61,7 @@ public class ApplicationPropertiesLoaderTest {
     public void givenUsernameInPropertiesWhenExtractUsernameFromArgsThenUserNameInProperties() {
         application.getApplicationProperties().setProperty(SettingKeys.USERNAME.key(), "someUserName");
 
-        application.extractUsernameFromArgs(null);
+        application.extractUsername(null);
 
         assertThat(application.getUsername(), is( equalTo("someUserName")));
     }
@@ -70,7 +70,7 @@ public class ApplicationPropertiesLoaderTest {
     public void givenUsernameInArgsAndPropertiesWhenExtractUsernameFromArgsThenUserNameFromProperties() {
         application.getApplicationProperties().setProperty(SettingKeys.USERNAME.key(), "userFromProperties");
 
-        application.extractUsernameFromArgs(new String[]{"username=userFromArgs"});
+        application.extractUsername(new String[]{"username=userFromArgs"});
 
         assertThat(application.getUsername(), is( equalTo("userFromProperties")));
     }

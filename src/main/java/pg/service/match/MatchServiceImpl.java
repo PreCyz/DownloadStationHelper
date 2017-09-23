@@ -1,10 +1,10 @@
-package pg.service;
+package pg.service.match;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.FilterFactory;
 import pg.filter.Filter;
-import pg.loader.ShowsPropertiesLoader;
+import pg.service.FileServiceImpl;
 import pg.util.JsonUtils;
 import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
@@ -16,18 +16,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**Created by Gawa on 15/08/17*/
-public class MatchServiceImpl implements MatchService {
+public class MatchServiceImpl extends AbstractMatchService {
 
     private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
-    private final ShowsPropertiesLoader shows;
     private int matchPrecision;
-    private List<ReducedDetail> matchingTorrents;
 
     public MatchServiceImpl() {
-        this.shows = ShowsPropertiesLoader.getInstance();
-        this.matchPrecision = 0;
-        matchingTorrents = new LinkedList<>();
+        super();
+        matchPrecision = 0;
     }
 
     private List<ReducedDetail> matchTorrents(final String baseWord, List<TorrentDetail> torrents) {
@@ -85,8 +82,6 @@ public class MatchServiceImpl implements MatchService {
         }
         if (hasFoundMatchingTorrents()) {
             logger.info(JsonUtils.convertToString(matchingTorrents));
-        } else {
-            logger.info("No matching torrents found.");
         }
     }
 
@@ -109,15 +104,5 @@ public class MatchServiceImpl implements MatchService {
             throw new IllegalArgumentException("No shows were specified. Add some base words to shows.properties.");
         }
         return map;
-    }
-
-    @Override
-    public boolean hasFoundMatchingTorrents() {
-        return !matchingTorrents.isEmpty();
-    }
-
-    @Override
-    public List<ReducedDetail> getMatchingTorrents() {
-        return matchingTorrents;
     }
 }

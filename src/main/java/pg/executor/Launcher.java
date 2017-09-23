@@ -2,9 +2,17 @@ package pg.executor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.factory.MatchServiceFactory;
+import pg.factory.TorrentServiceFactory;
 import pg.loader.ApplicationPropertiesLoader;
-import pg.service.*;
+import pg.service.DiskStationService;
+import pg.service.DiskStationServiceImpl;
+import pg.service.FileService;
+import pg.service.FileServiceImpl;
+import pg.service.match.MatchService;
+import pg.service.torrent.TorrentService;
 import pg.web.model.DSMethod;
+import pg.web.model.ProgramMode;
 import pg.web.response.TorrentResponse;
 
 import java.util.List;
@@ -13,24 +21,20 @@ import java.util.List;
 public class Launcher implements Runnable {
     private static final Logger logger = LogManager.getLogger(Launcher.class);
 
-    private final MatchService matchService;
+    private final ProgramMode programMode;
     private final ApplicationPropertiesLoader application;
 
 
-    public Launcher(MatchService matchService) {
-        this.matchService = matchService;
+    public Launcher(ProgramMode programMode) {
+        this.programMode = programMode;
         this.application = ApplicationPropertiesLoader.getInstance();
     }
 
     @Override
     public void run() {
-        TorrentService torrentService = new TorrentServiceImpl();
-        List<TorrentResponse> torrents;
-        if (matchService instanceof MatchServiceImpl) {
-            torrents = torrentService.findTorrents();
-        } else {
-            torrents = torrentService.findTorrentsByImdbId();
-        }
+        TorrentService torrentService = TorrentServiceFactory.getTorrentService(programMode);
+        MatchService matchService = MatchServiceFactory.getMatchService(programMode);
+        List<TorrentResponse> torrents = torrentService.findTorrents();
         FileService fileService = new FileServiceImpl();
         fileService.buildImdbMap(torrents);
         fileService.writeImdbMapToFile();

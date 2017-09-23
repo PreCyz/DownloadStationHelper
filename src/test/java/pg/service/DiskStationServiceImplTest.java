@@ -1,9 +1,8 @@
 package pg.service;
 
 import org.junit.Test;
-import pg.loader.ApplicationPropertiesLoader;
 
-import java.util.Properties;
+import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +15,8 @@ public class DiskStationServiceImplTest {
 
     @Test
     public void givenNoServerAddressInSettingsWhenPrepareServerUrlTheReturnHttpServerAddress() {
-        //diskStationService = new DiskStationServiceImpl();
+
+        diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
         String actual = diskStationService.prepareServerUrl();
 

@@ -1,4 +1,4 @@
-package pg.service;
+package pg.service.torrent;
 
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class TorrentServiceImplTest {
     public void givenApplicationPropertiesWhenPrepareUrlThenReturnURL() {
         torrentService = new TorrentServiceImpl();
 
-        String actual = torrentService.createGetTorrentUrl(2);
+        String actual = torrentService.createUrl(2);
 
         assertThat(actual, is( equalTo("https://eztv.ag/api/get-torrents?limit=30&page=2")));
     }
