@@ -28,7 +28,7 @@ dependencies {
 
 def copyRunScript = copySpec {
     from 'src/main/resources/distro'
-    include 'run.sh'
+    include '*.sh'
 }
 
 def copyApplicationProperties = copySpec {
