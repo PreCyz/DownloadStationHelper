@@ -9,5 +9,4 @@ gradlew.bat
 HEAD
 config
 description
-src/main/resources/distro/run*.sh
 src/main/resources/distro/credentials

@@ -1,5 +1,6 @@
 group 'download-station-helper'
-version '1.0'
+version ''
+
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -26,9 +27,31 @@ dependencies {
 
 }
 
-def copyRunScript = copySpec {
-    from 'src/main/resources/distro'
-    include '*.sh'
+def buildVersion = '1.1'
+def jarName = "DSHelper-$buildVersion"
+
+def addScriptToRunFile = {
+    def runFile = new File("$buildDir/libs/run.sh")
+    runFile.append('echo \'Start program\'')
+    runFile.append('\necho \'.............\'')
+    runFile.append('\n\njava -jar ')
+    runFile.append(jarName)
+    runFile.append('.jar $(cat settings/credentials)')
+    runFile.append('\n\necho \'.............\'')
+    runFile.append('\necho \'Program ended\'')
+    println("addScriptToRunFile $jarName")
+}
+
+def addScriptToRunImdbFile = {
+    def runImdbFile = new File("$buildDir/libs/runImdb.sh")
+    runImdbFile.append('echo \'Start program\'')
+    runImdbFile.append('\necho \'.............\'')
+    runImdbFile.append('\n\njava -jar ')
+    runImdbFile.append(jarName)
+    runImdbFile.append('.jar $(cat settings/credentials) imdbMode')
+    runImdbFile.append('\n\necho \'.............\'')
+    runImdbFile.append('\necho \'Program ended\'')
+    println("addScriptToRunImdbFile $jarName")
 }
 
 def copyApplicationProperties = copySpec {
@@ -41,14 +64,9 @@ task copyAppPropertiesTask( type: Copy ) {
     with copyApplicationProperties
 }
 
-task copyRunScripTask( type: Copy ) {
-    into "$buildDir/libs"
-    with copyRunScript
-}
-
 //create a single Jar with all dependencies
 task oneJar(type: Jar) {
-    dependsOn copyAppPropertiesTask, copyRunScripTask
+    dependsOn copyAppPropertiesTask
     manifest {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': version,
@@ -65,12 +83,16 @@ task copyToLib( type: Copy ) {
 }
 
 jar {
-    dependsOn copyToLib, copyAppPropertiesTask, copyRunScripTask
+    dependsOn copyToLib, copyAppPropertiesTask
     manifest {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': version,
                 'Main-Class': mainClassName,
                 'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
     }
-    baseName = project.name + '-core'
+    doLast {
+        addScriptToRunFile()
+        addScriptToRunImdbFile()
+    }
+    baseName = jarName
 }
