@@ -1,5 +1,7 @@
 package pg.filter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.TorrentDetail;
@@ -12,6 +14,8 @@ import java.util.stream.Collectors;
 /**Created by Pawel Gawedzki on 9/19/2017.*/
 public class HistoryFilter implements Filter {
 
+    private static final Logger logger = LogManager.getLogger(HistoryFilter.class);
+
     @Override
     public List<TorrentDetail> apply(List<TorrentDetail> torrents) {
         Optional<Map> mapOpt = JsonUtils.convertFromFile(
@@ -19,6 +23,7 @@ public class HistoryFilter implements Filter {
                 Map.class
         );
         if (mapOpt.isPresent()) {
+            logger.info("History filter applied.");
             return torrents.stream()
                     .filter(torrentDetail -> !mapOpt.get().containsKey(torrentDetail.getTitle()))
                     .collect(Collectors.toList());

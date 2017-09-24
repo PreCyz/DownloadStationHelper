@@ -103,7 +103,7 @@ public final class ApplicationPropertiesLoader {
     }
 
     public Integer getTorrentAge(int defaultValue) {
-        return Integer.valueOf(getApplicationProperties().getProperty(SettingKeys.TORRENT_AGE.key(), String.valueOf(defaultValue)));
+        return Integer.valueOf(getApplicationProperties().getProperty(SettingKeys.TORRENT_AGE_DAYS.key(), String.valueOf(defaultValue)));
     }
 
     public String getRepeatDownload(String defaultValue) {
@@ -112,6 +112,10 @@ public final class ApplicationPropertiesLoader {
 
     public String getMaxFileSize(String defaultValue) {
         return getApplicationProperties().getProperty(SettingKeys.MAX_FILE_SIZE.key(), defaultValue).trim().replace(",", ".");
+    }
+
+    public String getTorrentReleaseDate() {
+        return getApplicationProperties().getProperty(SettingKeys.TORRENT_RELEASE_DATE.key(), "");
     }
 
     public void extractUsername(String[] args) {

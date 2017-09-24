@@ -1,14 +1,16 @@
 package pg.filter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.web.model.torrent.TorrentDetail;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Pawel Gawedzki on 9/19/2017.
- */
+/**Created by Pawel Gawedzki on 9/19/2017.*/
 public class FileSizeFilter implements Filter {
+
+    private static final Logger logger = LogManager.getLogger(FileSizeFilter.class);
 
     private final String maxSize;
 
@@ -34,7 +36,10 @@ public class FileSizeFilter implements Filter {
         if (maxFileSize == 0) {
             return torrents;
         }
-        return torrents.stream().filter(torrent -> Long.valueOf(torrent.getSize()) <= maxFileSize).collect(Collectors.toList());
+        logger.info("Max file size filter applied.");
+        return torrents.stream()
+                .filter(torrent -> Long.valueOf(torrent.getSize()) <= maxFileSize)
+                .collect(Collectors.toList());
     }
 
     private long extractMaxFileSize() {

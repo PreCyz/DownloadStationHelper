@@ -1,6 +1,6 @@
 package pg.factory;
 
-import pg.filter.AgeFilter;
+import pg.filter.AgeInDaysFilter;
 import pg.filter.FileSizeFilter;
 import pg.filter.Filter;
 import pg.filter.HistoryFilter;
@@ -23,7 +23,7 @@ public final class FilterFactory {
         ApplicationPropertiesLoader application = ApplicationPropertiesLoader.getInstance();
         Set<Filter> filters = new HashSet<>();
         if (application.getTorrentAge(DEFAULT_TORRENT_AGE) > 0) {
-            filters.add(getFilter(SettingKeys.TORRENT_AGE));
+            filters.add(getFilter(SettingKeys.TORRENT_AGE_DAYS));
         }
         if (DEFAULT_REPEAT_DOWNLOAD.equalsIgnoreCase(application.getRepeatDownload(DEFAULT_REPEAT_DOWNLOAD))) {
             filters.add(getFilter(SettingKeys.REPEAT_DOWNLOAD));
@@ -31,20 +31,25 @@ public final class FilterFactory {
         if (!DEFAULT_MAX_FILE_SIZE.equals(application.getMaxFileSize(DEFAULT_MAX_FILE_SIZE))) {
             filters.add(getFilter(SettingKeys.MAX_FILE_SIZE));
         }
+        if (!"".equals(application.getTorrentReleaseDate())) {
+            filters.add(getFilter(SettingKeys.TORRENT_RELEASE_DATE));
+        }
         return filters;
     }
 
     private static Filter getFilter(SettingKeys key) {
         ApplicationPropertiesLoader application = ApplicationPropertiesLoader.getInstance();
         switch (key) {
-            case TORRENT_AGE:
+            case TORRENT_AGE_DAYS:
                 int defaultTorrentAge = 0;
-                return new AgeFilter(application.getTorrentAge(defaultTorrentAge));
+                return new AgeInDaysFilter(application.getTorrentAge(defaultTorrentAge));
             case REPEAT_DOWNLOAD:
                 return new HistoryFilter();
             case MAX_FILE_SIZE:
                 String defaultMaxFileSize = "0";
                 return new FileSizeFilter(application.getMaxFileSize(defaultMaxFileSize));
+            case TORRENT_RELEASE_DATE:
+
         }
         return null;
     }
