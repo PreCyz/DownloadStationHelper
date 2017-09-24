@@ -22,8 +22,8 @@ public class TorrentDetail {
     private String episode;
     @JsonProperty("small_screenshot")
     private String smallScreenshot;
-    @JsonProperty("large_screenshot")
-    private String large_screenshot;
+    @JsonProperty("largeScreenshot")
+    private String largeScreenshot;
     private int seeds;
     private int peers;
     @JsonProperty("date_released_unix")
@@ -75,8 +75,8 @@ public class TorrentDetail {
         return smallScreenshot;
     }
 
-    public String getLarge_screenshot() {
-        return large_screenshot;
+    public String getLargeScreenshot() {
+        return largeScreenshot;
     }
 
     public int getSeeds() {

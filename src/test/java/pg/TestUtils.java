@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**Created by Gawa on 12/09/17.*/
-public final class TestPropertyLoader {
+public final class TestUtils {
 
-    private TestPropertyLoader() {}
+    private TestUtils() {}
 
     public static Properties loadTestProperties(String fileName) {
         try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
