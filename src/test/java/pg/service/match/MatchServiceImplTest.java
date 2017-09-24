@@ -19,22 +19,6 @@ import static org.junit.Assert.assertThat;
 
 /**Created by Gawa on 15/08/17.*/
 public class MatchServiceImplTest {
-    @Test
-    public void search() throws Exception {
-    }
-
-    @Test
-    public void filterByDate() throws Exception {
-    }
-
-    @Test
-    public void matchTorrent() throws Exception {
-    }
-
-    @Test
-    public void setMatchPrecision() throws Exception {
-    }
-
     private MatchServiceImpl searchService;
     private TorrentResponse torrentResponse;
 

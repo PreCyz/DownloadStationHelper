@@ -22,7 +22,7 @@ public class TorrentDetail {
     private String episode;
     @JsonProperty("small_screenshot")
     private String smallScreenshot;
-    @JsonProperty("largeScreenshot")
+    @JsonProperty("large_screenshot")
     private String largeScreenshot;
     private int seeds;
     private int peers;

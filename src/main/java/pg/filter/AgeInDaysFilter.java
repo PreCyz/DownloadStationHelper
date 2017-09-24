@@ -24,9 +24,12 @@ public class AgeInDaysFilter implements Filter {
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DAY_OF_MONTH, -torrentAge);
         final long timestamp = yesterday.getTimeInMillis() / 1000;
-        logger.info("Age in days filter applied.");
-        return torrents.stream()
-                .filter(torrent -> torrent.getDateReleased() > timestamp)
-                .collect(Collectors.toList());
+        if (torrentAge == 0) {
+            return torrents;
+        }
+            logger.info("Age in days filter applied.");
+            return torrents.stream()
+                    .filter(torrent -> torrent.getDateReleased() > timestamp)
+                    .collect(Collectors.toList());
     }
 }

@@ -36,6 +36,19 @@ public class AgeInDaysFilterTest {
     }
 
     @Test
+    public void givenTorrentAndAgeInDaysEq0WhenApplyThenReturnThatTorrent() {
+        int torrentAgeIdDays = 0;
+        TorrentDetail torrentDetail = new TorrentDetailBuilder()
+                .withDateReleased(System.currentTimeMillis() / 1000)
+                .mockTorrentDetail();
+        filter = new AgeInDaysFilter(torrentAgeIdDays);
+
+        List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
+
+        assertThat(actual, hasSize(1));
+    }
+
+    @Test
     public void givenTorrentOlderThan1DayWhenApplyThenReturnThatTorrent() {
         int torrentAgeIdDays = 1;
         Calendar yesterday = Calendar.getInstance();

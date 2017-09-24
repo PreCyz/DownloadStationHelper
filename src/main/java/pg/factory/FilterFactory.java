@@ -1,9 +1,6 @@
 package pg.factory;
 
-import pg.filter.AgeInDaysFilter;
-import pg.filter.FileSizeFilter;
-import pg.filter.Filter;
-import pg.filter.HistoryFilter;
+import pg.filter.*;
 import pg.loader.ApplicationPropertiesLoader;
 import pg.web.model.SettingKeys;
 
@@ -49,6 +46,7 @@ public final class FilterFactory {
                 String defaultMaxFileSize = "0";
                 return new FileSizeFilter(application.getMaxFileSize(defaultMaxFileSize));
             case TORRENT_RELEASE_DATE:
+                return new ReleaseDateFilter(application.getTorrentReleaseDate());
 
         }
         return null;
