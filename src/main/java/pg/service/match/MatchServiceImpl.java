@@ -2,8 +2,6 @@ package pg.service.match;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.factory.FilterFactory;
-import pg.filter.Filter;
 import pg.service.FileServiceImpl;
 import pg.util.JsonUtils;
 import pg.web.model.ShowKeys;
@@ -11,7 +9,10 @@ import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**Created by Gawa on 15/08/17*/
 public class MatchServiceImpl extends AbstractMatchService {
@@ -25,55 +26,20 @@ public class MatchServiceImpl extends AbstractMatchService {
         matchPrecision = 0;
     }
 
-    private List<ReducedDetail> matchTorrents(final String baseWord, List<TorrentDetail> torrents) {
-        if (torrents == null || torrents.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<TorrentDetail> filtered = new LinkedList<>(torrents);
-        for (Filter filter : FilterFactory.getFilters()) {
-            filtered = new LinkedList<>(filter.apply(filtered));
-        }
-
-        List<ReducedDetail> matchedTorrents = new LinkedList<>();
-        filtered.forEach(torrentDetail -> {
-            Optional<ReducedDetail> priorityOpt = matchTorrent(baseWord.split(","), torrentDetail);
-            priorityOpt.ifPresent(matchedTorrents::add);
-        });
-
-        return matchedTorrents;
-    }
-
-    protected Optional<ReducedDetail> matchTorrent(String[] words, TorrentDetail torrent) {
-        int match = 0;
-        for (String word : words) {
-            if (torrent.getTitle().contains(word)) {
-                match++;
-            }
-        }
-        if (matchPrecision == 0) {
-            matchPrecision = words.length;
-        }
-        if (match >= matchPrecision) {
-            return Optional.of(ReducedDetailBuilder.newInstance()
-                    .withTitle(torrent.getTitle())
-                    .withMagnetUrl(torrent.getMagnetUrl())
-                    .withDateReleased(JsonUtils.dateFromLong(torrent.getDateReleased() * 1000))
-                    .withMatchPrecision(match)
-                    .withTorrentUrl(torrent.getTorrentUrl())
-                    .withImdbId(torrent.getImdbId())
-                    .withEpisode(torrent.getEpisode())
-                    .withSeason(torrent.getSeason())
-                    .create());
-        }
-        return Optional.empty();
-    }
-
     @Override
     public void filterTorrents(List<TorrentDetail> torrents) {
+        List<TorrentDetail> filtered = applyFilters(torrents);
+        if (filtered.isEmpty()) {
+            return;
+        }
         Map<String, Integer> map = buildPrecisionWordMap();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             matchPrecision = entry.getValue();
-            matchingTorrents.addAll(matchTorrents(entry.getKey(), torrents));
+            String baseWord = entry.getKey();
+            filtered.forEach(torrentDetail -> {
+                Optional<ReducedDetail> priorityOpt = matchTorrent(baseWord, torrentDetail);
+                priorityOpt.ifPresent(matchingTorrents::add);
+            });
         }
         if (hasFoundMatchingTorrents()) {
             logger.info(JsonUtils.convertToString(matchingTorrents));
@@ -99,5 +65,31 @@ public class MatchServiceImpl extends AbstractMatchService {
             throw new IllegalArgumentException("No shows were specified. Add some base words to shows.properties.");
         }
         return map;
+    }
+
+    protected Optional<ReducedDetail> matchTorrent(String baseWords, TorrentDetail torrent) {
+        String[] words = baseWords.split(",");
+        int match = 0;
+        for (String word : words) {
+            if (torrent.getTitle().contains(word)) {
+                match++;
+            }
+        }
+        if (matchPrecision == 0) {
+            matchPrecision = words.length;
+        }
+        if (match >= matchPrecision) {
+            return Optional.of(ReducedDetailBuilder.newInstance()
+                    .withTitle(torrent.getTitle())
+                    .withMagnetUrl(torrent.getMagnetUrl())
+                    .withDateReleased(JsonUtils.dateFromLong(torrent.getDateReleased() * 1000))
+                    .withMatchPrecision(match)
+                    .withTorrentUrl(torrent.getTorrentUrl())
+                    .withImdbId(torrent.getImdbId())
+                    .withEpisode(torrent.getEpisode())
+                    .withSeason(torrent.getSeason())
+                    .create());
+        }
+        return Optional.empty();
     }
 }

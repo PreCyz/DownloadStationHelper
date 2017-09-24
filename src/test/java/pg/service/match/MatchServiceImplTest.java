@@ -50,7 +50,7 @@ public class MatchServiceImplTest {
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->
-            searchService.matchTorrent(word.split(","), torrentDetail).ifPresent(filtered::add)
+            searchService.matchTorrent(word, torrentDetail).ifPresent(filtered::add)
         );
 
         assertThat(filtered, hasSize(1));
@@ -63,7 +63,7 @@ public class MatchServiceImplTest {
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->
-            searchService.matchTorrent(word.split(","), torrentDetail).ifPresent(filtered::add)
+            searchService.matchTorrent(word, torrentDetail).ifPresent(filtered::add)
         );
 
         assertThat(filtered, hasSize(1));
