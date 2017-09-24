@@ -89,8 +89,8 @@ public final class TorrentDetailBuilder {
         return this;
     }
 
-    public TorrentDetailBuilder withSize(String size) {
-        when(torrentDetail.getSize()).thenReturn(size);
+    public TorrentDetailBuilder withSize(long size) {
+        when(torrentDetail.getSize()).thenReturn(String.valueOf(size));
         return this;
     }
 
