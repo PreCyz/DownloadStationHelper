@@ -29,7 +29,7 @@ public abstract class AbstractTorrentService implements TorrentService {
         this.logger = LogManager.getLogger(this.getClass());
     }
 
-    protected List<TorrentResponse> getTorrentsFromResponse(String requestUrl) {
+    protected List<TorrentResponse> executeRequest(String requestUrl) {
         List<TorrentResponse> torrentResponses = new LinkedList<>();
         GetClient client = new GetClient(requestUrl);
         if (client.get().isPresent()) {

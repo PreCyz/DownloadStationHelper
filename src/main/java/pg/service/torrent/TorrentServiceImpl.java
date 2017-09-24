@@ -19,7 +19,7 @@ public class TorrentServiceImpl extends AbstractTorrentService {
         for (int page = defaultPage; page <= application.getPage(defaultPage); page++) {
             String getTorrentUrl = createUrl(page);
             logger.info("Executing request for url {}", getTorrentUrl);
-            torrentResponses.addAll(getTorrentsFromResponse(getTorrentUrl));
+            torrentResponses.addAll(executeRequest(getTorrentUrl));
         }
         logger.info(torrentResponses);
         return torrentResponses.stream()

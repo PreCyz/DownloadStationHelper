@@ -20,7 +20,7 @@ public class TorrentImdbServiceImpl extends AbstractTorrentService implements To
         for (Object keyObj : imdbIds) {
             String getTorrentByImdbUrl = createUrl(shows.getProperty(String.valueOf(keyObj)));
             logger.info("Executing request for url {}", getTorrentByImdbUrl);
-            torrentResponses.addAll(getTorrentsFromResponse(getTorrentByImdbUrl));
+            torrentResponses.addAll(executeRequest(getTorrentByImdbUrl));
         }
         return torrentResponses.stream()
                 .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
