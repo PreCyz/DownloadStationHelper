@@ -6,7 +6,7 @@ import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentDetail;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -29,10 +29,9 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void buildImdbMap(List<TorrentResponse> torrentResponses) {
+    public void buildImdbMap(List<TorrentDetail> torrents) {
         imdbTitleMap = new TreeMap<>(Comparator.comparing(Integer::valueOf));
-        torrentResponses.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+        torrents.stream()
                 .filter(torrent -> !StringUtils.nullOrTrimEmpty(torrent.getImdbId()))
                 .forEach(torrent -> imdbTitleMap.put(torrent.getImdbId(), torrent.getTitle()));
         logger.info("Found [{}] unique imdb ids.", imdbTitleMap.size());

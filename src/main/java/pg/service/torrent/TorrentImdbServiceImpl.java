@@ -1,6 +1,7 @@
 package pg.service.torrent;
 
 import pg.loader.ShowsPropertiesLoader;
+import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
 
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 public class TorrentImdbServiceImpl extends AbstractTorrentService implements TorrentService {
 
     @Override
-    public List<TorrentResponse> findTorrents() {
+    public List<TorrentDetail> findTorrents() {
         Set<Object> keySet = ShowsPropertiesLoader.getInstance().keySet();
         Set<Object> imdbIds = keySet.stream().filter(key -> ((String) key).endsWith("imdbId")).collect(Collectors.toSet());
         List<TorrentResponse> torrentResponses = new LinkedList<>();
@@ -21,7 +22,9 @@ public class TorrentImdbServiceImpl extends AbstractTorrentService implements To
             logger.info("Executing request for url {}", getTorrentByImdbUrl);
             torrentResponses.addAll(getTorrentsFromResponse(getTorrentByImdbUrl));
         }
-        return torrentResponses;
+        return torrentResponses.stream()
+                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+                .collect(Collectors.toList());
     }
 
     protected String createUrl(String imdbId) {

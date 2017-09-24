@@ -5,25 +5,20 @@ import pg.filter.Filter;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**Created by Pawel Gawedzki on 9/21/2017.*/
 public class MatchByImdbService extends AbstractMatchService {
 
     @Override
-    public void filterTorrents(List<TorrentResponse> torrents) {
+    public void filterTorrents(List<TorrentDetail> torrents) {
         if (torrents == null || torrents.isEmpty()) {
             return;
         }
-        List<TorrentDetail> torrentDetails = torrents.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
-                .collect(Collectors.toList());
 
-        List<TorrentDetail> filtered = new LinkedList<>(torrentDetails);
+        List<TorrentDetail> filtered = new LinkedList<>(torrents);
         for (Filter filter : FilterFactory.getFilters()) {
             filtered = new LinkedList<>(filter.apply(filtered));
         }

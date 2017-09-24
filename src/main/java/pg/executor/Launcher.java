@@ -13,7 +13,7 @@ import pg.service.match.MatchService;
 import pg.service.torrent.TorrentService;
 import pg.web.model.DSMethod;
 import pg.web.model.ProgramMode;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentDetail;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class Launcher implements Runnable {
     public void run() {
         TorrentService torrentService = TorrentServiceFactory.getTorrentService(programMode);
         MatchService matchService = MatchServiceFactory.getMatchService(programMode);
-        List<TorrentResponse> torrents = torrentService.findTorrents();
+        List<TorrentDetail> torrents = torrentService.findTorrents();
         FileService fileService = new FileServiceImpl();
         fileService.buildImdbMap(torrents);
         fileService.writeImdbMapToFile();

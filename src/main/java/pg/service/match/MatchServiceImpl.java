@@ -10,10 +10,8 @@ import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.ReducedDetailBuilder;
 import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.TorrentResponse;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**Created by Gawa on 15/08/17*/
 public class MatchServiceImpl extends AbstractMatchService {
@@ -71,14 +69,11 @@ public class MatchServiceImpl extends AbstractMatchService {
     }
 
     @Override
-    public void filterTorrents(List<TorrentResponse> torrents) {
-        List<TorrentDetail> torrentDetails = torrents.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
-                .collect(Collectors.toList());
+    public void filterTorrents(List<TorrentDetail> torrents) {
         Map<String, Integer> map = buildPrecisionWordMap();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             matchPrecision = entry.getValue();
-            matchingTorrents.addAll(matchTorrents(entry.getKey(), torrentDetails));
+            matchingTorrents.addAll(matchTorrents(entry.getKey(), torrents));
         }
         if (hasFoundMatchingTorrents()) {
             logger.info(JsonUtils.convertToString(matchingTorrents));

@@ -1,9 +1,11 @@
 package pg.service.torrent;
 
+import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-15*/
 public class TorrentServiceImpl extends AbstractTorrentService {
@@ -12,7 +14,7 @@ public class TorrentServiceImpl extends AbstractTorrentService {
     private final int defaultPage = 1;
 
     @Override
-    public List<TorrentResponse> findTorrents() {
+    public List<TorrentDetail> findTorrents() {
         List<TorrentResponse> torrentResponses = new LinkedList<>();
         for (int page = defaultPage; page <= application.getPage(defaultPage); page++) {
             String getTorrentUrl = createUrl(page);
@@ -20,7 +22,9 @@ public class TorrentServiceImpl extends AbstractTorrentService {
             torrentResponses.addAll(getTorrentsFromResponse(getTorrentUrl));
         }
         logger.info(torrentResponses);
-        return torrentResponses;
+        return torrentResponses.stream()
+                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+                .collect(Collectors.toList());
     }
 
     protected String createUrl(int currentPage) {
