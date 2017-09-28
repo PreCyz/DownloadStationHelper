@@ -34,10 +34,10 @@ public class Main {
 
     private static ProgramMode extractMode(String[] args) {
         if (Arrays.stream(args).anyMatch(StartParameters.IMDB_MODE.param()::equals)) {
-            logger.info("Running in {} filtering mode.", ProgramMode.IMDB);
+            logger.info("Filtering mode: [{}].", ProgramMode.IMDB);
             return ProgramMode.IMDB;
         }
-        logger.info("Running in {} filtering mode.", ProgramMode.ALL);
+        logger.info("Filtering mode: [{}].", ProgramMode.ALL);
         return ProgramMode.ALL;
     }
 }
