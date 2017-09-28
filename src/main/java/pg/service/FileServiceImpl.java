@@ -44,6 +44,8 @@ public class FileServiceImpl implements FileService {
             Optional<TreeMap> mapOpt = JsonUtils.convertFromFile(filePath, TreeMap.class);
             imdbTitleMap.putAll(mapOpt.orElse(new TreeMap<String,String>()));
             JsonUtils.writeToFile(filePath, imdbTitleMap);
+            logger.info("There are {} unique imdb numbers stored in file {}.",
+                    imdbTitleMap.size(), AppConstants.IMDB_FILE_NAME);
         } else {
             logger.info("No new imdb ids where found.");
         }
