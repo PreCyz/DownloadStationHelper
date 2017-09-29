@@ -43,7 +43,7 @@ public class JsonUtils {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
             mapper.writeValue(filePath.toFile(), object);
-            logger.info("File {} was written. Path {}.", filePath.getFileName(), filePath.toAbsolutePath());
+            logger.info("File {} was written to '{}'.", filePath.getFileName(), filePath.toAbsolutePath());
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
