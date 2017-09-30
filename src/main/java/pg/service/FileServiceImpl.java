@@ -41,7 +41,7 @@ public class FileServiceImpl implements FileService {
     public void writeImdbMapToFile() {
         if (!imdbTitleMap.isEmpty()) {
             Path filePath = AppConstants.fullFilePath(AppConstants.IMDB_FILE_NAME);
-            TreeMap existingImdbMap = JsonUtils.convertFromFile(filePath, TreeMap.class)
+            Map<String,String> existingImdbMap = JsonUtils.convertFromFile(filePath, TreeMap.class)
                     .orElse(new TreeMap<String,String>());
             imdbTitleMap.putAll(existingImdbMap);
             JsonUtils.writeToFile(filePath, imdbTitleMap);
