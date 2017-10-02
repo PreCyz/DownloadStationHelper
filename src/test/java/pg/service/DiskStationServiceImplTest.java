@@ -23,23 +23,4 @@ public class DiskStationServiceImplTest {
         assertThat(actual, is( equalTo("http://some.address.com:5000")));
     }
 
-    @Test
-    public void buildLoginUrl() throws Exception {
-
-    }
-
-    @Test
-    public void buildCreateTaskUrl() throws Exception {
-
-    }
-
-    @Test
-    public void buildTaskListUrl() throws Exception {
-
-    }
-
-    @Test
-    public void buildLogoutUrl() throws Exception {
-
-    }
 }

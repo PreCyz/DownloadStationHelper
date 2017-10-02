@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-15*/
@@ -200,15 +201,16 @@ public class DiskStationServiceImpl implements DiskStationService {
         final TorrentUrlType urlType = TorrentUrlType.valueOf(
                 application.getTorrentUrlType(TorrentUrlType.torrent.name())
         );
+        Function<ReducedDetail, String> extractUrlType = reducedDetail -> {
+            switch (urlType) {
+                case magnet:
+                    return reducedDetail.getMagnetUrl();
+                default:
+                    return reducedDetail.getTorrentUrl();
+            }
+        };
         String uri = String.join(",", foundTorrents.stream()
-                .map(reducedDetail -> {
-                    switch (urlType) {
-                        case magnet:
-                            return reducedDetail.getMagnetUrl();
-                        default:
-                            return reducedDetail.getTorrentUrl();
-                    }
-                })
+                .map(extractUrlType)
                 .collect(Collectors.toList())
         );
 
