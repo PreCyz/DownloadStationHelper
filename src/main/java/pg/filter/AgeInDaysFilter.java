@@ -27,9 +27,9 @@ public class AgeInDaysFilter implements Filter {
         if (torrentAge == 0) {
             return torrents;
         }
-            logger.info("Age in days filter applied.");
-            return torrents.stream()
-                    .filter(torrent -> torrent.getDateReleased() > timestamp)
-                    .collect(Collectors.toList());
+        logger.info("Age in last {} days filter applied.", torrentAge);
+        return torrents.stream()
+                .filter(torrent -> torrent.getDateReleased() > timestamp)
+                .collect(Collectors.toList());
     }
 }
