@@ -11,6 +11,14 @@ import java.nio.file.Paths;
 public final class AppConstants {
     private AppConstants() {}
 
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    public static final String RESOURCE_BUNDLE = "bundle.translation";
+    public static final String BUNDLE_PATH = "bundle.translation";
+    public static final String IMG_RESOURCE_PATH = String.format("img%s", FILE_SEPARATOR);
+    public static final String FXML_RESOURCE_PATH = String.format("fxml%s", FILE_SEPARATOR);
+    public static final String CSS_RESOURCE_PATH = String.format("css%s", FILE_SEPARATOR);
+
     public static final String IMDB_FILE_NAME = "imdbTitleMap.json";
     public static String MATCHING_TORRENTS_FILE = "matchTorrents.json";
     public static final String APPLICATION_PROPERTIES = "application.properties";
