@@ -28,6 +28,6 @@ public class ConfigWindow extends AbstractWindow {
 
     @Override
     public String windowTitleBundle() {
-        return "Basic configuration";
+        return "config.title";
     }
 }

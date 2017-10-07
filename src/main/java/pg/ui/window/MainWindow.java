@@ -28,6 +28,6 @@ public class MainWindow extends AbstractWindow {
 
     @Override
     public String windowTitleBundle() {
-        return "DSH 2.0 (Download Station Helper)";
+        return "main.title";
     }
 }

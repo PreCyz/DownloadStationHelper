@@ -27,7 +27,9 @@ public abstract class AbstractWindow {
     }
 
     private URL url() {
-        return getClass().getClassLoader().getResource(AppConstants.FXML_RESOURCE_PATH + fxmlFileName());
+        return getClass()
+                .getClassLoader()
+                .getResource(AppConstants.FXML_RESOURCE_PATH + fxmlFileName());
     }
 
     public String windowImgFilePath() {

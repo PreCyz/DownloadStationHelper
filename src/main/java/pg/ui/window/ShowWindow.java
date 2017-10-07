@@ -28,6 +28,6 @@ public class ShowWindow extends AbstractWindow {
 
     @Override
     public String windowTitleBundle() {
-        return "Shows configuration";
+        return "show.title";
     }
 }
