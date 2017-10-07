@@ -1,10 +1,20 @@
 package pg.ui.handler;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
+import pg.ui.exception.ProgramException;
+import pg.ui.exception.UIError;
 import pg.ui.window.AbstractWindow;
 
 import java.io.IOException;
@@ -15,6 +25,8 @@ import static pg.util.AppConstants.RESOURCE_BUNDLE;
 
 /**Created by Gawa 2017-10-04*/
 public class WindowHandlerImpl implements WindowHandler {
+
+    private static final Logger logger = LogManager.getLogger(WindowHandlerImpl.class);
 
     private Stage primaryStage;
     private ResourceBundle bundle;
@@ -29,6 +41,7 @@ public class WindowHandlerImpl implements WindowHandler {
     @Override
     public void launchMainWindow() {
         buildScene(primaryStage, WindowFactory.MAIN.createWindow(this, bundle));
+        primaryStage.show();
     }
 
     @Override
@@ -36,6 +49,7 @@ public class WindowHandlerImpl implements WindowHandler {
         Stage configStage = new Stage();
         configStage.initModality(Modality.WINDOW_MODAL);
         buildScene(configStage, WindowFactory.CONFIG.createWindow(this, bundle));
+        configStage.showAndWait();
     }
 
     @Override
@@ -43,16 +57,15 @@ public class WindowHandlerImpl implements WindowHandler {
         Stage showStage = new Stage();
         showStage.initModality(Modality.WINDOW_MODAL);
         buildScene(showStage, WindowFactory.SHOW.createWindow(this, bundle));
+        showStage.showAndWait();
     }
 
     private void buildScene(Stage stage, AbstractWindow window) {
         try {
-            /*Image icon = resourceHelper.readImage(window.windowImgFilePath());
-            stage.getIcons().add(icon);*/
-        } catch (Exception ex) {
-            //logger.log(messageHelper.getErrorMsg(ex.getErrorCode()));
-            //String errorMsg = MessageHelper.getInstance(bundle).getErrorMsg(ex.getErrorCode(), ex.getArgument());
-            //AbstractLogger.addMessage(errorMsg);
+            Image icon = ResourceHelper.readImage(window.windowImgFilePath());
+            stage.getIcons().add(icon);
+        } catch (ProgramException ex) {
+            logger.warn(ex.getMessage());
         }
         try {
             stage.setTitle(bundle.getString(window.windowTitleBundle()));
@@ -60,10 +73,9 @@ public class WindowHandlerImpl implements WindowHandler {
 	        Scene scene = new Scene(window.root());
 	        scene.getStylesheets().add(window.css());
 	        stage.setScene(scene);
-            stage.show();
             //window.refreshWindowSize();
         } catch (IOException ex) {
-            //handleException(new ProgramException(ErrorCode.LAUNCH_PROGRAM, ex));
+            handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex.getLocalizedMessage(), ex));
         }
     }
 
@@ -71,17 +83,15 @@ public class WindowHandlerImpl implements WindowHandler {
         window.setWidth(window.getWidth() - width);
     }
 
-    private void handleException(Exception exception) {
-        /*MessageHelper messageHelper = MessageHelper.getInstance(ResourceBundle.getBundle(
-                RESOURCE_BUNDLE, Locale.getDefault()));
+    private void handleException(ProgramException exception) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(messageHelper.getFullMessage("alert.title", Alert.AlertType.ERROR));
-        alert.setHeaderText(messageHelper.getFullMessage("alert.header.text"));
-        alert.setContentText(messageHelper.getErrorMsg(exception.getErrorCode()));
+        alert.setTitle("Program exception");
+        alert.setHeaderText("Exception occurred");
+        alert.setContentText(exception.getMessage());
         alert.setWidth(1000);
         alert.setWidth(750);
 
-        Label label = new Label(messageHelper.getFullMessage("alert.exceptionDetails.label"));
+        Label label = new Label("Details");
 
         TextArea textArea = new TextArea(exception.getMessage());
         textArea.setEditable(false);
@@ -99,7 +109,6 @@ public class WindowHandlerImpl implements WindowHandler {
 
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
-
-        alert.showAndWait();*/
+        alert.showAndWait();
     }
 }
