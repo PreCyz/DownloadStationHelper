@@ -20,7 +20,7 @@ public class ProgramException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        StringBuilder stringBuilder = new StringBuilder("Error occurred: ");
+        StringBuilder stringBuilder = new StringBuilder();
         arguments.forEach((key, value) -> stringBuilder.append(key).append(" - ").append(value).append(", "));
         return stringBuilder.substring(0, stringBuilder.lastIndexOf(", "));
     }

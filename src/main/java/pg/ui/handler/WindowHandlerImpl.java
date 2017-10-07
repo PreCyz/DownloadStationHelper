@@ -65,7 +65,7 @@ public class WindowHandlerImpl implements WindowHandler {
             Image icon = ResourceHelper.readImage(window.windowImgFilePath());
             stage.getIcons().add(icon);
         } catch (ProgramException ex) {
-            logger.warn(ex.getMessage());
+            logger.warn("Problem with loading window icon: {}.", ex.getMessage());
         }
         try {
             stage.setTitle(bundle.getString(window.windowTitleBundle()));
@@ -84,14 +84,15 @@ public class WindowHandlerImpl implements WindowHandler {
     }
 
     private void handleException(ProgramException exception) {
+        logger.error(exception.getMessage());
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Program exception");
-        alert.setHeaderText("Exception occurred");
+        alert.setTitle(bundle.getString("program.exception"));
+        alert.setHeaderText(bundle.getString("exception.occurred"));
         alert.setContentText(exception.getMessage());
         alert.setWidth(1000);
         alert.setWidth(750);
 
-        Label label = new Label("Details");
+        Label label = new Label(bundle.getString("exception.details"));
 
         TextArea textArea = new TextArea(exception.getMessage());
         textArea.setEditable(false);
