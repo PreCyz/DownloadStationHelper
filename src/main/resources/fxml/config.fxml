@@ -1,7 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            prefHeight="400.0" prefWidth="600.0">
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="480.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TitledPane animated="false" collapsible="false" prefHeight="250.0" prefWidth="310.0" text="%config.server.title">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="%config.server.url.label" />
+                  <Label layoutX="14.0" layoutY="37.0" text="%config.server.port.label" />
+                  <Label layoutX="14.0" layoutY="60.0" text="%config.server.login.label" />
+                  <Label layoutX="15.0" layoutY="84.0" text="%config.server.password.label" />
+                  <TextField fx:id="serverUrl" layoutX="106.0" layoutY="9.0" />
+                  <TextField fx:id="serverLogin" layoutX="106.0" layoutY="55.0" />
+                  <TextField fx:id="serverPassword" layoutX="106.0" layoutY="79.0" />
+                  <ComboBox fx:id="serverPort" layoutX="106.0" layoutY="32.0" prefHeight="25.0" prefWidth="171.0" />
+                  <TextArea fx:id="apiInfo" disable="true" editable="false" layoutX="106.0" layoutY="115.0" prefHeight="88.0" prefWidth="171.0" />
+                  <Label layoutX="15.0" layoutY="118.0" text="%config.server.synology.api.info" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="309.0" prefHeight="113.0" prefWidth="310.0" text="%config.api.title">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="%config.api.url" />
+                  <Label layoutX="14.0" layoutY="37.0" text="%config.query.limit" />
+                  <Label layoutX="14.0" layoutY="60.0" text="%config.query.page" />
+                  <TextField fx:id="apiUrl" layoutX="106.0" layoutY="9.0" />
+                  <TextField fx:id="queryLimit" layoutX="106.0" layoutY="32.0" />
+                  <TextField fx:id="queryPage" layoutX="106.0" layoutY="55.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutX="309.0" layoutY="112.0" prefHeight="138.0" prefWidth="310.0" text="%config.filters.title">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="%config.filters.torrent.age.days" />
+                  <Label layoutX="14.0" layoutY="37.0" text="%config.filters.max.file.size" />
+                  <Label layoutX="14.0" layoutY="60.0" text="%config.filters.torrent.release.date" />
+                  <Label layoutX="15.0" layoutY="84.0" text="%config.filters.download.torrent.again" />
+                  <TextField fx:id="torrentAge" layoutX="167.0" layoutY="9.0" prefHeight="25.0" prefWidth="110.0" />
+                  <TextField fx:id="maxFileSize" layoutX="167.0" layoutY="32.0" prefHeight="25.0" prefWidth="110.0" />
+                  <TextField fx:id="releaseDate" layoutX="167.0" layoutY="55.0" prefHeight="25.0" prefWidth="110.0" />
+                  <CheckBox fx:id="repeatDownload" layoutX="167.0" layoutY="83.0" mnemonicParsing="false" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="249.0" prefHeight="119.0" prefWidth="619.0" text="%config.paths.title">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="617.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="%config.paths.torrent.file.location" />
+                  <Label layoutX="14.0" layoutY="37.0" text="%config.paths.result.path" />
+                  <Button fx:id="torrentLocationChooser" layoutX="130.0" layoutY="9.0" mnemonicParsing="false" text="Chooser" />
+                  <Text fx:id="torrentLocationText" layoutX="209.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="401.0" />
+                  <Text fx:id="resultLocationText" layoutX="209.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="401.0" />
+                  <Button fx:id="resultLocationChooser" layoutX="130.0" layoutY="32.0" mnemonicParsing="false" text="Chooser" />
+                  <Label layoutX="14.0" layoutY="61.0" text="%config.server.download.label" />
+                  <Text fx:id="downloadToText" layoutX="209.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="401.0" />
+                  <Button fx:id="downloadToChooser" layoutX="130.0" layoutY="56.0" mnemonicParsing="false" text="Chooser" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="367.0" prefHeight="113.0" prefWidth="310.0" text="%config.mode.title">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="%config.mode.task.creation.method" />
+                  <Label layoutX="14.0" layoutY="37.0" text="%config.mode.torrent.url.type" />
+                  <ComboBox fx:id="creationMethod" layoutX="166.0" layoutY="9.0" prefHeight="25.0" prefWidth="120.0" />
+                  <ComboBox fx:id="torrentUrlType" layoutX="166.0" layoutY="32.0" prefHeight="25.0" prefWidth="120.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <Button layoutX="504.0" layoutY="424.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="%config.done" />
+   </children>
 </AnchorPane>
