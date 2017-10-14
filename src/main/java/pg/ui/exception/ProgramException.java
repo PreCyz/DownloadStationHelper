@@ -8,6 +8,11 @@ public class ProgramException extends RuntimeException {
     private final UIError uiError;
     private Map<UIError, String> arguments = new HashMap<>();
 
+    public ProgramException(UIError uiError) {
+        super();
+        this.uiError = uiError;
+    }
+
     public ProgramException(UIError uiError, String arguments, Exception exception) {
         super(exception);
         this.uiError = uiError;
