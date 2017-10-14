@@ -18,36 +18,37 @@ public class ApplicationChecker implements Checker {
 
     @Override
     public boolean ready() {
+        final String BASIC_MESSAGE = "Basic configuration incomplete.";
         if (StringUtils.nullOrTrimEmpty(loader.getUsername())) {
-            logger.info("Basic configuration incomplete. Login not found.");
+            logger.info("{} Login not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getPassword())) {
-            logger.info("Basic configuration incomplete. Password not found.");
+            logger.info("{} Password not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getServerUrl())) {
-            logger.info("Basic configuration incomplete. Server url not found.");
+            logger.info("{} Server url not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getCreationMethod(""))) {
-            logger.info("Basic configuration incomplete. Task creation method not found.");
+            logger.info("{} Task creation method not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getTorrentUrlType(""))) {
-            logger.info("Basic configuration incomplete. Torrent url type not found.");
+            logger.info("{} Torrent url type not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getDestination())) {
-            logger.info("Basic configuration incomplete. Synology download folder not found.");
+            logger.info("{} Synology download folder not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getApiInfo())) {
-            logger.info("Basic configuration incomplete. Synology API Info not found.");
+            logger.info("{} Synology API Info not found.", BASIC_MESSAGE);
             return false;
         }
         if (StringUtils.nullOrTrimEmpty(loader.getFilePath(""))) {
-            logger.info("Basic configuration incomplete. Store location for json files not found.");
+            logger.info("{} Store location for json files not found.", BASIC_MESSAGE);
             return false;
         }
         return true;
