@@ -28,14 +28,13 @@ public class WindowHandlerImpl implements WindowHandler {
 
     private static final Logger logger = LogManager.getLogger(WindowHandlerImpl.class);
 
-    private Stage primaryStage;
+    private final Stage primaryStage;
     private ResourceBundle bundle;
     private Window window;
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, Locale.getDefault());
-        window = primaryStage;
     }
 
     @Override
@@ -73,15 +72,21 @@ public class WindowHandlerImpl implements WindowHandler {
 	        Scene scene = new Scene(window.root());
 	        scene.getStylesheets().add(window.css());
 	        stage.setScene(scene);
+            this.window = stage;
             //window.refreshWindowSize();
         } catch (IOException ex) {
             handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex.getLocalizedMessage(), ex));
         }
     }
 
-    public void changeWindowWidth(double width) {
-        window.setWidth(window.getWidth() - width);
+    @Override
+    public Window currentWindow() {
+        return window;
     }
+
+    /*public void changeWindowWidth(double width) {
+        window.setWidth(window.getWidth() - width);
+    }*/
 
     private void handleException(ProgramException exception) {
         logger.error(exception.getMessage());
