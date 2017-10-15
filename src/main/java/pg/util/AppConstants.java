@@ -23,6 +23,7 @@ public final class AppConstants {
     public static String MATCHING_TORRENTS_FILE = "matchTorrents.json";
     public static final String APPLICATION_PROPERTIES = "application.properties";
     public static final String SHOWS_PROPERTIES = "shows.properties";
+    public static final String SETTINGS = "settings";
 
     public static Path fullFilePath(String fileName) {
         String directoryPath = ApplicationPropertiesLoader.getInstance().getFilePath("");
