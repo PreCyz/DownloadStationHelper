@@ -65,31 +65,98 @@ public class ConfigController extends AbstractController {
 
     private void initializeFromAppProperties() {
         serverUrl.setText(loader.getServerUrl());
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("Your Synology device address.");
+        serverUrl.setTooltip(tooltip);
+
         final Integer port = loader.getServerPort(AllowedPorts.HTTPS.port());
         if (port == AllowedPorts.HTTPS.port()) {
             serverPort.setValue(String.format("%d - %s", port, AllowedPorts.HTTPS.name()));
         } else {
             serverPort.setValue(String.format("%d - %s", port, AllowedPorts.HTTP.name()));
         }
+        tooltip = new Tooltip();
+        final String value = String.format("Port used to communication with your Synology device for http is " +
+                "5000 and for https is 5001.%nIf 5000 is given then http protocol is used otherwise https is " +
+                "used. If you do not have valid https certificate%nuse port 5000, otherwise program will not be " +
+                "able to make request to your disk station.");
+        tooltip.setText(value);
+        serverPort.setTooltip(tooltip);
+
         serverLogin.setText(loader.getUsername());
+        tooltip = new Tooltip();
+        tooltip.setText("Login to your Synology.");
+        serverLogin.setTooltip(tooltip);
+
         serverPassword.setText(loader.getPassword());
+        tooltip = new Tooltip();
+        tooltip.setText("Password to your Synology.");
+        serverPassword.setTooltip(tooltip);
+
         downloadTo.setText(loader.getDestination());
+        tooltip = new Tooltip();
+        tooltip.setText("Location where download torrents to, starts from one of the shared folders.");
+        downloadTo.setTooltip(tooltip);
+
         apiInfo.setText(loader.getApiInfo());
+        tooltip = new Tooltip();
+        tooltip.setText("Rest path to get all allowed operation for disk station.");
+        apiInfo.setTooltip(tooltip);
 
         apiUrl.setText(loader.getUrl(""));
-        queryLimit.setText(String.valueOf(loader.getLimit(0)));
-        queryPage.setText(String.valueOf(loader.getPage(0)));
+        tooltip = new Tooltip();
+        tooltip.setText("Request URL to get torrents details.");
+        apiUrl.setTooltip(tooltip);
+
+        queryLimit.setText(String.valueOf(loader.getLimit(100)));
+        tooltip = new Tooltip();
+        tooltip.setText("Max value is 100 it means that GET request to above address will contain 100 torrents.");
+        queryLimit.setTooltip(tooltip);
+
+        queryPage.setText(String.valueOf(loader.getPage(1)));
+        tooltip = new Tooltip();
+        final String val = String.format("Default value is 1. Defines how many times request is executed.%nGreater " +
+                "value means longer program execution time.");
+        tooltip.setText(val);
+        queryPage.setTooltip(tooltip);
 
         torrentAge.setText(String.valueOf(loader.getTorrentAge(0)));
+        tooltip = new Tooltip();
+        tooltip.setText("Age of torrent given in days. If not specified then no filtering by date.");
+        torrentAge.setTooltip(tooltip);
+
         maxFileSize.setText(loader.getMaxFileSize(""));
+        tooltip = new Tooltip();
+        final String text = String.format("Max file size. If not given or 0 than now filtering. Torrents with " +
+                "grater size will be filter out.%nPossible values modifiers K-kilo,M-mega,G-giga. " +
+                "Example [52K = 52000 bytes, 1M = 1000000 bytes,%n# 4G = 4000000000 bytes]");
+        tooltip.setText(text);
+        maxFileSize.setTooltip(tooltip);
+
         releaseDate.setText(loader.getTorrentReleaseDate());
+        tooltip = new Tooltip();
+        final String tip = String.format("Torrent release date specified in format YYYY-MM-DD or YYYYMMDD. Ex.: " +
+                "[2017-06-12,20170612]. All torrents older%nthan this date will be filter out.");
+        tooltip.setText(tip);
+        releaseDate.setTooltip(tooltip);
+
         repeatDownload.setSelected(StringUtils.booleanFromString(loader.getRepeatDownload("")));
+        tooltip = new Tooltip();
+        tooltip.setText("If checked, the same torrent will be downloaded each time, the program is executed.");
+        repeatDownload.setTooltip(tooltip);
 
         torrentLocationText.setText(loader.getTorrentLocation(""));
         resultLocationText.setText(loader.getFilePath(""));
 
         creationMethod.setValue(DSMethod.valueOf(loader.getCreationMethod(DSMethod.REST.name())));
+        tooltip = new Tooltip();
+        tooltip.setText("Method of task creation. If REST then Synology API is used.");
+        creationMethod.setTooltip(tooltip);
+
         torrentUrlType.setValue(TorrentUrlType.valueOf(loader.getTorrentUrlType(TorrentUrlType.torrent.name())));
+        tooltip = new Tooltip();
+        tooltip.setText("What link to use in order to create task. Default value is torrent.");
+        torrentUrlType.setTooltip(tooltip);
     }
 
     private void setupComoBoxes() {
@@ -105,14 +172,20 @@ public class ConfigController extends AbstractController {
     }
 
     private void setupButtons() {
-        setupButton(torrentLocationChooser, torrentLocationAction());
-        setupButton(resultLocationChooser, resultLocationAction());
-        doneButton.setOnAction(doneAction());
-    }
+        torrentLocationChooser.setText(".");
+        torrentLocationChooser.setOnAction(torrentLocationAction());
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("Path where to save files *.torrent. When task creation method is COPY_FILE then path to " +
+                "save torrent is mandatory.");
+        torrentLocationChooser.setTooltip(tooltip);
 
-    private void setupButton(Button button, EventHandler<ActionEvent> actionEventHandler) {
-        button.setText(".");
-        button.setOnAction(actionEventHandler);
+        resultLocationChooser.setText(".");
+        resultLocationChooser.setOnAction(resultLocationAction());
+        tooltip = new Tooltip();
+        tooltip.setText("Path where json with result should be written.");
+        resultLocationChooser.setTooltip(tooltip);
+
+        doneButton.setOnAction(doneAction());
     }
 
     private EventHandler<ActionEvent> torrentLocationAction() {

@@ -2,8 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 <AnchorPane prefHeight="455.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TitledPane animated="false" collapsible="false" prefHeight="250.0" prefWidth="310.0" text="%config.server.title">
@@ -28,6 +27,9 @@
                </children>
             </AnchorPane>
         </content>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </TitledPane>
       <TitledPane animated="false" collapsible="false" layoutX="309.0" prefHeight="113.0" prefWidth="310.0" text="%config.api.title">
          <content>
@@ -42,6 +44,9 @@
                </children>
             </AnchorPane>
          </content>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </TitledPane>
       <TitledPane animated="false" collapsible="false" layoutX="309.0" layoutY="112.0" prefHeight="138.0" prefWidth="310.0" text="%config.filters.title">
          <content>
@@ -58,6 +63,9 @@
                </children>
             </AnchorPane>
          </content>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </TitledPane>
       <TitledPane animated="false" collapsible="false" layoutY="249.0" prefHeight="94.0" prefWidth="619.0" text="%config.paths.title">
          <content>
@@ -72,6 +80,9 @@
                </children>
             </AnchorPane>
          </content>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </TitledPane>
       <TitledPane animated="false" collapsible="false" layoutY="342.0" prefHeight="113.0" prefWidth="310.0" text="%config.mode.title">
          <content>
@@ -84,7 +95,10 @@
                </children>
             </AnchorPane>
          </content>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </TitledPane>
-      <Button fx:id="doneButton" layoutX="503.0" layoutY="399.0" mnemonicParsing="false" onAction="#doneAction" prefHeight="25.0" prefWidth="79.0" text="%config.done" />
+      <Button fx:id="doneButton" layoutX="503.0" layoutY="399.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="%config.done" />
    </children>
 </AnchorPane>

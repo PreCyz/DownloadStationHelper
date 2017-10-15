@@ -23,6 +23,9 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder withServerPort(String serverPort) {
+        if (StringUtils.nullOrTrimEmpty(serverPort)) {
+            return this;
+        }
         String port = String.valueOf(AllowedPorts.HTTPS.port());
         if (serverPort.endsWith(AllowedPorts.HTTP.name())) {
             port = String.valueOf(AllowedPorts.HTTP.port());
@@ -32,46 +35,73 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder withLogin(String login) {
+        if (StringUtils.nullOrTrimEmpty(login)) {
+            return this;
+        }
         config.setProperty(USERNAME.key(), login);
         return this;
     }
 
     public ConfigBuilder withPassword(String password) {
+        if (StringUtils.nullOrTrimEmpty(password)) {
+            return this;
+        }
         config.setProperty(PASSWORD.key(), password);
         return this;
     }
 
     public ConfigBuilder withDownloadTo(String downloadTo) {
+        if (StringUtils.nullOrTrimEmpty(downloadTo)) {
+            return this;
+        }
         config.setProperty(DESTINATION.key(), downloadTo);
         return this;
     }
 
     public ConfigBuilder withApiUrl(String apiUrl) {
+        if (StringUtils.nullOrTrimEmpty(apiUrl)) {
+            return this;
+        }
         config.setProperty(URL.key(), apiUrl);
         return this;
     }
 
     public ConfigBuilder withQueryLimit(String queryLimit) {
+        if (StringUtils.nullOrTrimEmpty(queryLimit)) {
+            return this;
+        }
         config.setProperty(LIMIT.key(), queryLimit);
         return this;
     }
 
     public ConfigBuilder withQueryPage(String queryPage) {
+        if (StringUtils.nullOrTrimEmpty(queryPage)) {
+            return this;
+        }
         config.setProperty(PAGE.key(), queryPage);
         return this;
     }
 
     public ConfigBuilder withTorrentAge(String torrentAge) {
+        if (StringUtils.nullOrTrimEmpty(torrentAge)) {
+            return this;
+        }
         config.setProperty(TORRENT_AGE_DAYS.key(), torrentAge);
         return this;
     }
 
     public ConfigBuilder withMaxFileSize(String maxFileSize) {
+        if (StringUtils.nullOrTrimEmpty(maxFileSize)) {
+            return this;
+        }
         config.setProperty(MAX_FILE_SIZE.key(), maxFileSize);
         return this;
     }
 
     public ConfigBuilder withReleaseDate(String releaseDate) {
+        if (StringUtils.nullOrTrimEmpty(releaseDate)) {
+            return this;
+        }
         config.setProperty(TORRENT_RELEASE_DATE.key(), releaseDate);
         return this;
     }
@@ -82,22 +112,28 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder withTorrentLocation(String torrentLocation) {
+        if (StringUtils.nullOrTrimEmpty(torrentLocation)) {
+            return this;
+        }
         config.setProperty(TORRENT_LOCATION.key(), torrentLocation);
         return this;
     }
 
     public ConfigBuilder withResultLocation(String resultLocation) {
-        config.setProperty(FILE_PATH.key(), resultLocation);
+        if (StringUtils.nullOrTrimEmpty(resultLocation)) {
+            return this;
+        }
+        config.setProperty(RESULT_LOCATION.key(), resultLocation);
         return this;
     }
 
     public ConfigBuilder withCreationMethod(DSMethod creationMethod) {
-        config.setProperty(REPEAT_DOWNLOAD.key(), creationMethod.name());
+        config.setProperty(CREATION_METHOD.key(), creationMethod.name());
         return this;
     }
 
     public ConfigBuilder withTorrentUrlType(TorrentUrlType torrentUrlType) {
-        config.setProperty(REPEAT_DOWNLOAD.key(), torrentUrlType.name());
+        config.setProperty(TORRENT_URL_TYPE.key(), torrentUrlType.name());
         return this;
     }
 

@@ -5,7 +5,7 @@ public enum SettingKeys {
     URL("eztv.restUrl"),
     LIMIT("query.limit"),
     PAGE("query.page"),
-    FILE_PATH("result.filePath"),
+    RESULT_LOCATION("result.filePath"),
     USERNAME("synology.http.username"),
     PASSWORD("synology.http.password"),
     SERVER_URL("synology.server.url"),

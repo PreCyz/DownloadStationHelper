@@ -69,7 +69,7 @@ public final class ApplicationPropertiesHelper {
     }
 
     public String getFilePath(String defaultValue) {
-        return getApplicationProperties().getProperty(SettingKeys.FILE_PATH.key(), defaultValue);
+        return getApplicationProperties().getProperty(SettingKeys.RESULT_LOCATION.key(), defaultValue);
     }
 
     public String getUsername() {
