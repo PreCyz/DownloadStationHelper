@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 import pg.ui.handler.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.model.AllowedPorts;
@@ -44,11 +44,11 @@ public class ConfigController extends AbstractController {
     @FXML private ComboBox<TorrentUrlType> torrentUrlType;
     @FXML private Button doneButton;
 
-    private final ApplicationPropertiesLoader loader;
+    private final ApplicationPropertiesHelper loader;
 
     public ConfigController(WindowHandler windowHandler) {
         super(windowHandler);
-        loader = ApplicationPropertiesLoader.getInstance();
+        loader = ApplicationPropertiesHelper.getInstance();
     }
 
     @Override

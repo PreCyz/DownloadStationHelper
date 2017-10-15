@@ -1,6 +1,6 @@
 package pg.util;
 
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +26,7 @@ public final class AppConstants {
     public static final String SETTINGS = "settings";
 
     public static Path fullFilePath(String fileName) {
-        String directoryPath = ApplicationPropertiesLoader.getInstance().getFilePath("");
+        String directoryPath = ApplicationPropertiesHelper.getInstance().getFilePath("");
         if (Files.notExists(Paths.get(directoryPath))) {
             try {
                 Files.createDirectory(Paths.get(directoryPath));

@@ -2,7 +2,7 @@ package pg.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
@@ -30,7 +30,7 @@ public class DiskStationServiceImpl implements DiskStationService {
     private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
 
     private final int defaultServerPort = 5001;
-    private final ApplicationPropertiesLoader application;
+    private final ApplicationPropertiesHelper application;
     private ApiDetails authInfo;
     private ApiDetails downloadStationTask;
     private List<ReducedDetail> foundTorrents;
@@ -76,7 +76,7 @@ public class DiskStationServiceImpl implements DiskStationService {
     }
 
     public DiskStationServiceImpl(List<ReducedDetail> foundTorrents) {
-        this.application = ApplicationPropertiesLoader.getInstance();
+        this.application = ApplicationPropertiesHelper.getInstance();
         this.foundTorrents = foundTorrents;
     }
 

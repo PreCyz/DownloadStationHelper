@@ -3,7 +3,7 @@ package pg;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.executor.Launcher;
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 import pg.web.model.ProgramMode;
 import pg.web.model.StartParameters;
 
@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         logger.info("Start of application.");
         try {
-            ApplicationPropertiesLoader instance = ApplicationPropertiesLoader.getInstance();
+            ApplicationPropertiesHelper instance = ApplicationPropertiesHelper.getInstance();
             instance.extractUsername(args);
             instance.extractPassword(args);
             ProgramMode programMode = extractMode(args);

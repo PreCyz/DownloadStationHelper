@@ -14,13 +14,13 @@ import static org.junit.Assert.fail;
 /**
  * Created by Pawel Gawedzki on 9/18/2017.
  */
-public class ApplicationPropertiesLoaderTest {
+public class ApplicationPropertiesHelperTest {
 
-    private ApplicationPropertiesLoader application;
+    private ApplicationPropertiesHelper application;
 
     @Before
     public void setUp() throws Exception {
-        application = ApplicationPropertiesLoader.getInstance();
+        application = ApplicationPropertiesHelper.getInstance();
         application.loadApplicationProperties(AppConstants.APPLICATION_PROPERTIES);
     }
 

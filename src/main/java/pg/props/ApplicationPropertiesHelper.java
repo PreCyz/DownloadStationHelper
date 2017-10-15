@@ -13,16 +13,16 @@ import java.util.Optional;
 import java.util.Properties;
 
 /**Created by Gawa on 12/09/17.*/
-public final class ApplicationPropertiesLoader {
+public final class ApplicationPropertiesHelper {
 
-    private static ApplicationPropertiesLoader instance;
+    private static ApplicationPropertiesHelper instance;
     private static Properties application = null;
 
-    private ApplicationPropertiesLoader() {}
+    private ApplicationPropertiesHelper() {}
 
-    public static ApplicationPropertiesLoader getInstance() {
+    public static ApplicationPropertiesHelper getInstance() {
         if (instance == null) {
-            instance = new ApplicationPropertiesLoader();
+            instance = new ApplicationPropertiesHelper();
         }
         return instance;
     }

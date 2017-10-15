@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.MatchServiceFactory;
 import pg.factory.TorrentServiceFactory;
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 import pg.service.DiskStationService;
 import pg.service.DiskStationServiceImpl;
 import pg.service.FileService;
@@ -22,12 +22,12 @@ public class Launcher implements Runnable {
     private static final Logger logger = LogManager.getLogger(Launcher.class);
 
     private final ProgramMode programMode;
-    private final ApplicationPropertiesLoader application;
+    private final ApplicationPropertiesHelper application;
 
 
     public Launcher(ProgramMode programMode) {
         this.programMode = programMode;
-        this.application = ApplicationPropertiesLoader.getInstance();
+        this.application = ApplicationPropertiesHelper.getInstance();
     }
 
     @Override

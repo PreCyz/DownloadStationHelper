@@ -1,7 +1,7 @@
 package pg.factory;
 
 import pg.filter.*;
-import pg.props.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesHelper;
 import pg.web.model.SettingKeys;
 
 import java.util.HashSet;
@@ -17,7 +17,7 @@ public final class FilterFactory {
     private FilterFactory() {}
 
     public static Set<Filter> getFilters() {
-        ApplicationPropertiesLoader application = ApplicationPropertiesLoader.getInstance();
+        ApplicationPropertiesHelper application = ApplicationPropertiesHelper.getInstance();
         Set<Filter> filters = new HashSet<>();
         if (application.getTorrentAge(DEFAULT_TORRENT_AGE) > 0) {
             filters.add(getFilter(SettingKeys.TORRENT_AGE_DAYS));
@@ -35,7 +35,7 @@ public final class FilterFactory {
     }
 
     private static Filter getFilter(SettingKeys key) {
-        ApplicationPropertiesLoader application = ApplicationPropertiesLoader.getInstance();
+        ApplicationPropertiesHelper application = ApplicationPropertiesHelper.getInstance();
         switch (key) {
             case TORRENT_AGE_DAYS:
                 int defaultTorrentAge = 0;
