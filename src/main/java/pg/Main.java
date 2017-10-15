@@ -3,7 +3,7 @@ package pg;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.executor.Launcher;
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 import pg.web.model.ProgramMode;
 import pg.web.model.StartParameters;
 
