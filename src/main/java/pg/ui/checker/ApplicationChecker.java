@@ -2,7 +2,7 @@ package pg.ui.checker;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 import pg.util.StringUtils;
 
 /**Created by Gawa 2017-10-07*/

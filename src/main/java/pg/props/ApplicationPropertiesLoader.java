@@ -1,4 +1,4 @@
-package pg.loader;
+package pg.props;
 
 import pg.util.AppConstants;
 import pg.web.model.SettingKeys;

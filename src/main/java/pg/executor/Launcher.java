@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.MatchServiceFactory;
 import pg.factory.TorrentServiceFactory;
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 import pg.service.DiskStationService;
 import pg.service.DiskStationServiceImpl;
 import pg.service.FileService;

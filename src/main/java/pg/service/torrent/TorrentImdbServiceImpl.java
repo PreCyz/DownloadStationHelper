@@ -1,6 +1,6 @@
 package pg.service.torrent;
 
-import pg.loader.ShowsPropertiesLoader;
+import pg.props.ShowsPropertiesLoader;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
 

@@ -1,6 +1,6 @@
 package pg.util;
 
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 
 import java.io.IOException;
 import java.nio.file.Files;

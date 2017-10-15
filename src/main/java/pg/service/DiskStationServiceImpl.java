@@ -2,7 +2,7 @@ package pg.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;

@@ -2,8 +2,8 @@ package pg.service.torrent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.loader.ApplicationPropertiesLoader;
-import pg.loader.ShowsPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
+import pg.props.ShowsPropertiesLoader;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.response.TorrentResponse;

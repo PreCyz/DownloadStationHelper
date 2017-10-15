@@ -1,7 +1,7 @@
 package pg.factory;
 
 import pg.filter.*;
-import pg.loader.ApplicationPropertiesLoader;
+import pg.props.ApplicationPropertiesLoader;
 import pg.web.model.SettingKeys;
 
 import java.util.HashSet;

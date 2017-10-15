@@ -1,4 +1,4 @@
-package pg.loader;
+package pg.props;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

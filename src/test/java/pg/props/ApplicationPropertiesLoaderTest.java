@@ -1,4 +1,4 @@
-package pg.loader;
+package pg.props;
 
 import org.junit.Before;
 import org.junit.Test;

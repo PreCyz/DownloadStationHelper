@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.FilterFactory;
 import pg.filter.Filter;
-import pg.loader.ShowsPropertiesLoader;
+import pg.props.ShowsPropertiesLoader;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 
