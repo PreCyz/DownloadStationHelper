@@ -4,6 +4,10 @@ import pg.util.AppConstants;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
@@ -163,6 +167,13 @@ public final class ApplicationPropertiesLoader {
             throw new IllegalArgumentException("No password where given. Add password to application.properties " +
                     "or run program with passwd param (passwd=somePass).");
         }
+    }
+
+    public static void store(Properties appProperties) throws IOException {
+        final String filePath = "." + File.separator + AppConstants.SETTINGS + File.separator +
+                AppConstants.APPLICATION_PROPERTIES;
+        Writer writer = new FileWriter(new File(filePath));
+        appProperties.store(writer, "User configuration.");
     }
 
 }
