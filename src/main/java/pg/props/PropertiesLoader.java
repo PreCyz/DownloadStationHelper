@@ -3,6 +3,7 @@ package pg.props;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.Main;
+import pg.util.AppConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ final class PropertiesLoader {
     private PropertiesLoader() {}
 
     static Optional<Properties> loadProperties(String fileName) {
-        String applicationProperties = "." + File.separator + "settings" + File.separator + fileName;
+        String applicationProperties = "." + File.separator + AppConstants.SETTINGS + File.separator + fileName;
         try (FileInputStream fis = new FileInputStream(applicationProperties)) {
             Properties properties = new Properties();
             properties.load(fis);
