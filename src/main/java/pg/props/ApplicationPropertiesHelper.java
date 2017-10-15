@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
@@ -150,7 +152,7 @@ public final class ApplicationPropertiesHelper {
         if (getApplicationProperties().containsKey(SettingKeys.PASSWORD.key())) {
             return;
         }
-        if (args == null || args.length ==0) {
+        if (args == null || args.length == 0) {
             throw new IllegalArgumentException("No password where given. Add password to application.properties " +
                     "or run program with passwd param (passwd=somePass).");
         }
@@ -169,10 +171,15 @@ public final class ApplicationPropertiesHelper {
         }
     }
 
-    public static void store(Properties appProperties) throws IOException {
-        final String filePath = "." + File.separator + AppConstants.SETTINGS + File.separator +
-                AppConstants.APPLICATION_PROPERTIES;
+    public void store(ConfigBuilder configBuilder) throws IOException {
+        final String settingsDirPath = String.format(".%s%s", File.separator, AppConstants.SETTINGS);
+        if (!Files.exists(Paths.get(settingsDirPath))) {
+            Files.createDirectory(Paths.get(settingsDirPath));
+        }
+        final String filePath = String.format("%s%s%s", settingsDirPath, File.separator,
+                AppConstants.APPLICATION_PROPERTIES);
         Writer writer = new FileWriter(new File(filePath));
+        final Properties appProperties = configBuilder.createConfig();
         appProperties.store(writer, "User configuration.");
     }
 

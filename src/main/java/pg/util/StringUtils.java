@@ -13,4 +13,7 @@ public final class StringUtils {
         return "Y".equals(value) || "yes".equals(value) || "true".equals(value) || "T".equals(value);
     }
 
+    public static String stringFromBoolean(boolean value) {
+        return value ? "Y" : "N";
+    }
 }

@@ -13,6 +13,11 @@ public class ProgramException extends RuntimeException {
         this.uiError = uiError;
     }
 
+    public ProgramException(UIError uiError, Exception exception) {
+        super(exception);
+        this.uiError = uiError;
+    }
+
     public ProgramException(UIError uiError, String arguments, Exception exception) {
         super(exception);
         this.uiError = uiError;

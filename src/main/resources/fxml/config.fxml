@@ -85,6 +85,6 @@
             </AnchorPane>
          </content>
       </TitledPane>
-      <Button fx:id="doneButton" layoutX="503.0" layoutY="399.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="%config.done" />
+      <Button fx:id="doneButton" layoutX="503.0" layoutY="399.0" mnemonicParsing="false" onAction="#doneAction" prefHeight="25.0" prefWidth="79.0" text="%config.done" />
    </children>
 </AnchorPane>

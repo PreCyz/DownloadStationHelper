@@ -8,6 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import pg.props.ApplicationPropertiesHelper;
+import pg.props.ConfigBuilder;
+import pg.ui.exception.ProgramException;
+import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.model.AllowedPorts;
@@ -15,6 +18,7 @@ import pg.web.model.DSMethod;
 import pg.web.model.TorrentUrlType;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -103,6 +107,7 @@ public class ConfigController extends AbstractController {
     private void setupButtons() {
         setupButton(torrentLocationChooser, torrentLocationAction());
         setupButton(resultLocationChooser, resultLocationAction());
+        doneButton.setOnAction(doneAction());
     }
 
     private void setupButton(Button button, EventHandler<ActionEvent> actionEventHandler) {
@@ -128,7 +133,31 @@ public class ConfigController extends AbstractController {
 
     private EventHandler<ActionEvent> doneAction() {
         return e -> {
-            //TODO: save application properties
+            ConfigBuilder configBuilder = new ConfigBuilder()
+                    .withServerUrl(serverUrl.getText())
+                    .withServerPort(serverPort.getValue())
+                    .withLogin(serverLogin.getText())
+                    .withPassword(serverPassword.getText())
+                    .withDownloadTo(downloadTo.getText())
+                    .withApiInfo(apiInfo.getText())
+                    .withApiUrl(apiUrl.getText())
+                    .withQueryLimit(queryLimit.getText())
+                    .withQueryPage(queryPage.getText())
+                    .withTorrentAge(torrentAge.getText())
+                    .withMaxFileSize(maxFileSize.getText())
+                    .withReleaseDate(releaseDate.getText())
+                    .withRepeatDownload(repeatDownload.isSelected())
+                    .withTorrentLocation(torrentLocationText.getText())
+                    .withResultLocation(torrentLocationText.getText())
+                    .withCreationMethod(creationMethod.getValue())
+                    .withTorrentUrlType(torrentUrlType.getValue());
+
+            try {
+                loader.store(configBuilder);
+            } catch (IOException ex) {
+                throw new ProgramException(UIError.SAVE_PROPERTIES, ex);
+            }
+            windowHandler.currentWindow().hide();
         };
     }
 }

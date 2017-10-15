@@ -18,12 +18,12 @@ public class FXMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         WindowHandler windowHandler = new WindowHandlerImpl(primaryStage);
-        Checker applicationProperties = new ApplicationChecker();
-        if (!applicationProperties.ready()) {
+        Checker checker = new ApplicationChecker();
+        if (!checker.ready()) {
             windowHandler.launchConfigWindow();
         }
-        Checker showProperties = new ShowChecker();
-        if (!showProperties.ready()) {
+        checker = new ShowChecker();
+        if (!checker.ready()) {
             windowHandler.launchShowWindow();
         }
         windowHandler.launchMainWindow();
