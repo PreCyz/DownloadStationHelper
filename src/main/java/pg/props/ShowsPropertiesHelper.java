@@ -7,16 +7,16 @@ import java.util.Properties;
 import java.util.Set;
 
 /**Created by Gawa on 9/18/2017.*/
-public final class ShowsPropertiesLoader {
+public final class ShowsPropertiesHelper {
 
-    private static ShowsPropertiesLoader instance;
+    private static ShowsPropertiesHelper instance;
     private static Properties shows = null;
 
-    private ShowsPropertiesLoader() {}
+    private ShowsPropertiesHelper() {}
 
-    public static ShowsPropertiesLoader getInstance() {
+    public static ShowsPropertiesHelper getInstance() {
         if (instance == null) {
-            instance = new ShowsPropertiesLoader();
+            instance = new ShowsPropertiesHelper();
         }
         return instance;
     }

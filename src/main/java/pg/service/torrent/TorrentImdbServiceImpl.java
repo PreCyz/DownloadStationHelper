@@ -1,6 +1,6 @@
 package pg.service.torrent;
 
-import pg.props.ShowsPropertiesLoader;
+import pg.props.ShowsPropertiesHelper;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
 
@@ -14,7 +14,7 @@ public class TorrentImdbServiceImpl extends AbstractTorrentService implements To
 
     @Override
     public List<TorrentDetail> findTorrents() {
-        Set<Object> keySet = ShowsPropertiesLoader.getInstance().keySet();
+        Set<Object> keySet = ShowsPropertiesHelper.getInstance().keySet();
         Set<Object> imdbIds = keySet.stream().filter(key -> ((String) key).endsWith("imdbId")).collect(Collectors.toSet());
         List<TorrentResponse> torrentResponses = new LinkedList<>();
         for (Object keyObj : imdbIds) {

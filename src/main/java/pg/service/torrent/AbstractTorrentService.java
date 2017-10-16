@@ -3,7 +3,7 @@ package pg.service.torrent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
-import pg.props.ShowsPropertiesLoader;
+import pg.props.ShowsPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.response.TorrentResponse;
@@ -19,12 +19,12 @@ public abstract class AbstractTorrentService implements TorrentService {
 
     private final String defaultUrl = "https://eztv.ag/api/get-torrents";
     protected final ApplicationPropertiesHelper application;
-    protected final ShowsPropertiesLoader shows;
+    protected final ShowsPropertiesHelper shows;
     protected final String url;
 
     public AbstractTorrentService() {
         this.application = ApplicationPropertiesHelper.getInstance();
-        this.shows = ShowsPropertiesLoader.getInstance();
+        this.shows = ShowsPropertiesHelper.getInstance();
         this.url = application.getUrl(defaultUrl);
         this.logger = LogManager.getLogger(this.getClass());
     }

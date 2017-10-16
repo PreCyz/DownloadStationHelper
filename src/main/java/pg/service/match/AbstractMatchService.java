@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.FilterFactory;
 import pg.filter.Filter;
-import pg.props.ShowsPropertiesLoader;
+import pg.props.ShowsPropertiesHelper;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 
@@ -17,10 +17,10 @@ public abstract class AbstractMatchService implements MatchService {
 
     protected final Logger logger;
     protected final List<ReducedDetail> matchingTorrents;
-    protected final ShowsPropertiesLoader shows;
+    protected final ShowsPropertiesHelper shows;
 
     public AbstractMatchService() {
-        shows = ShowsPropertiesLoader.getInstance();
+        shows = ShowsPropertiesHelper.getInstance();
         matchingTorrents = new LinkedList<>();
         logger = LogManager.getLogger(this.getClass());
     }
