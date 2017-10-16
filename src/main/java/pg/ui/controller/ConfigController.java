@@ -48,11 +48,11 @@ public class ConfigController extends AbstractController {
     @FXML private ComboBox<TorrentUrlType> torrentUrlType;
     @FXML private Button doneButton;
 
-    private final ApplicationPropertiesHelper loader;
+    private final ApplicationPropertiesHelper appHelper;
 
     public ConfigController(WindowHandler windowHandler) {
         super(windowHandler);
-        loader = ApplicationPropertiesHelper.getInstance();
+        appHelper = ApplicationPropertiesHelper.getInstance();
     }
 
     @Override
@@ -64,12 +64,12 @@ public class ConfigController extends AbstractController {
     }
 
     private void initializeFromAppProperties() {
-        serverUrl.setText(loader.getServerUrl());
+        serverUrl.setText(appHelper.getServerUrl());
         Tooltip tooltip = new Tooltip();
         tooltip.setText("Your Synology device address.");
         serverUrl.setTooltip(tooltip);
 
-        final Integer port = loader.getServerPort(AllowedPorts.HTTPS.port());
+        final Integer port = appHelper.getServerPort(AllowedPorts.HTTPS.port());
         if (port == AllowedPorts.HTTPS.port()) {
             serverPort.setValue(String.format("%d - %s", port, AllowedPorts.HTTPS.name()));
         } else {
@@ -83,49 +83,49 @@ public class ConfigController extends AbstractController {
         tooltip.setText(value);
         serverPort.setTooltip(tooltip);
 
-        serverLogin.setText(loader.getUsername());
+        serverLogin.setText(appHelper.getUsername());
         tooltip = new Tooltip();
         tooltip.setText("Login to your Synology.");
         serverLogin.setTooltip(tooltip);
 
-        serverPassword.setText(loader.getPassword());
+        serverPassword.setText(appHelper.getPassword());
         tooltip = new Tooltip();
         tooltip.setText("Password to your Synology.");
         serverPassword.setTooltip(tooltip);
 
-        downloadTo.setText(loader.getDestination());
+        downloadTo.setText(appHelper.getDestination());
         tooltip = new Tooltip();
         tooltip.setText("Location where download torrents to, starts from one of the shared folders.");
         downloadTo.setTooltip(tooltip);
 
-        apiInfo.setText(loader.getApiInfo());
+        apiInfo.setText(appHelper.getApiInfo());
         tooltip = new Tooltip();
         tooltip.setText("Rest path to get all allowed operation for disk station.");
         apiInfo.setTooltip(tooltip);
 
-        apiUrl.setText(loader.getUrl(""));
+        apiUrl.setText(appHelper.getUrl(""));
         tooltip = new Tooltip();
         tooltip.setText("Request URL to get torrents details.");
         apiUrl.setTooltip(tooltip);
 
-        queryLimit.setText(String.valueOf(loader.getLimit(100)));
+        queryLimit.setText(String.valueOf(appHelper.getLimit(100)));
         tooltip = new Tooltip();
         tooltip.setText("Max value is 100 it means that GET request to above address will contain 100 torrents.");
         queryLimit.setTooltip(tooltip);
 
-        queryPage.setText(String.valueOf(loader.getPage(1)));
+        queryPage.setText(String.valueOf(appHelper.getPage(1)));
         tooltip = new Tooltip();
         final String val = String.format("Default value is 1. Defines how many times request is executed.%nGreater " +
                 "value means longer program execution time.");
         tooltip.setText(val);
         queryPage.setTooltip(tooltip);
 
-        torrentAge.setText(String.valueOf(loader.getTorrentAge(0)));
+        torrentAge.setText(String.valueOf(appHelper.getTorrentAge(0)));
         tooltip = new Tooltip();
         tooltip.setText("Age of torrent given in days. If not specified then no filtering by date.");
         torrentAge.setTooltip(tooltip);
 
-        maxFileSize.setText(loader.getMaxFileSize(""));
+        maxFileSize.setText(appHelper.getMaxFileSize(""));
         tooltip = new Tooltip();
         final String text = String.format("Max file size. If not given or 0 than now filtering. Torrents with " +
                 "grater size will be filter out.%nPossible values modifiers K-kilo,M-mega,G-giga. " +
@@ -133,27 +133,27 @@ public class ConfigController extends AbstractController {
         tooltip.setText(text);
         maxFileSize.setTooltip(tooltip);
 
-        releaseDate.setText(loader.getTorrentReleaseDate());
+        releaseDate.setText(appHelper.getTorrentReleaseDate());
         tooltip = new Tooltip();
         final String tip = String.format("Torrent release date specified in format YYYY-MM-DD or YYYYMMDD. Ex.: " +
                 "[2017-06-12,20170612]. All torrents older%nthan this date will be filter out.");
         tooltip.setText(tip);
         releaseDate.setTooltip(tooltip);
 
-        repeatDownload.setSelected(StringUtils.booleanFromString(loader.getRepeatDownload("")));
+        repeatDownload.setSelected(StringUtils.booleanFromString(appHelper.getRepeatDownload("")));
         tooltip = new Tooltip();
         tooltip.setText("If checked, the same torrent will be downloaded each time, the program is executed.");
         repeatDownload.setTooltip(tooltip);
 
-        torrentLocationText.setText(loader.getTorrentLocation(""));
-        resultLocationText.setText(loader.getFilePath(""));
+        torrentLocationText.setText(appHelper.getTorrentLocation(""));
+        resultLocationText.setText(appHelper.getFilePath(""));
 
-        creationMethod.setValue(DSMethod.valueOf(loader.getCreationMethod(DSMethod.REST.name())));
+        creationMethod.setValue(DSMethod.valueOf(appHelper.getCreationMethod(DSMethod.REST.name())));
         tooltip = new Tooltip();
         tooltip.setText("Method of task creation. If REST then Synology API is used.");
         creationMethod.setTooltip(tooltip);
 
-        torrentUrlType.setValue(TorrentUrlType.valueOf(loader.getTorrentUrlType(TorrentUrlType.torrent.name())));
+        torrentUrlType.setValue(TorrentUrlType.valueOf(appHelper.getTorrentUrlType(TorrentUrlType.torrent.name())));
         tooltip = new Tooltip();
         tooltip.setText("What link to use in order to create task. Default value is torrent.");
         torrentUrlType.setTooltip(tooltip);
@@ -226,7 +226,7 @@ public class ConfigController extends AbstractController {
                     .withTorrentUrlType(torrentUrlType.getValue());
 
             try {
-                loader.store(configBuilder);
+                appHelper.store(configBuilder);
             } catch (IOException ex) {
                 throw new ProgramException(UIError.SAVE_PROPERTIES, ex);
             }

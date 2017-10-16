@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="360.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="376.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="showTableView" prefHeight="301.0" prefWidth="600.0">
-        <columns>
-          <TableColumn prefWidth="463.0" text="%show.table.column.basicWords" />
-          <TableColumn minWidth="0.0" prefWidth="78.0" text="%show.table.column.matchPrecision" />
-        </columns>
+         <columns>
+            <TableColumn prefWidth="43.0" text="%show.table.column.id" />
+            <TableColumn prefWidth="471.0" text="%show.table.column.basicWords" />
+            <TableColumn minWidth="0.0" prefWidth="81.0" text="%show.table.column.matchPrecision" />
+         </columns>
       </TableView>
-      <TextField layoutX="12.0" layoutY="313.0" prefHeight="25.0" prefWidth="441.0" />
-      <TextField layoutX="466.0" layoutY="313.0" prefHeight="25.0" prefWidth="55.0" />
-      <Button layoutX="544.0" layoutY="313.0" mnemonicParsing="false" text="%show.button.add" />
+      <TextField fx:id="baseWords" layoutX="12.0" layoutY="313.0" prefHeight="25.0" prefWidth="452.0" />
+      <TextField fx:id="precision" layoutX="479.0" layoutY="313.0" prefHeight="25.0" prefWidth="55.0" />
+      <Button fx:id="addButton" layoutX="544.0" layoutY="313.0" mnemonicParsing="false" text="%show.button.add" />
+      <Button fx:id="doneButton" layoutX="536.0" layoutY="344.0" mnemonicParsing="false" text="%show.button.done" />
+      <Button fx:id="removeButton" layoutX="77.0" layoutY="344.0" mnemonicParsing="false" text="%show.button.remove" />
+      <TextField fx:id="idToRemove" layoutX="12.0" layoutY="344.0" prefHeight="25.0" prefWidth="55.0" />
    </children>
 </AnchorPane>

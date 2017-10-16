@@ -4,12 +4,7 @@ import pg.util.AppConstants;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
@@ -30,9 +25,9 @@ public final class ApplicationPropertiesHelper {
     }
 
     protected Properties loadApplicationProperties(String fileName) {
-        Optional<Properties> applicationOpt = PropertiesLoader.loadProperties(fileName);
+        Optional<Properties> applicationOpt = PropertiesHelper.loadProperties(fileName);
         if (applicationOpt.isPresent()) {
-            Properties defaultApplication = PropertiesLoader.loadDefaultProperties(fileName);
+            Properties defaultApplication = PropertiesHelper.loadDefaultProperties(fileName);
             Properties application = applicationOpt.get();
             if (!application.containsKey(SettingKeys.URL.key())) {
                 application.put(SettingKeys.URL.key(), defaultApplication.getProperty(SettingKeys.URL.key()));
@@ -46,7 +41,7 @@ public final class ApplicationPropertiesHelper {
             }
             return application;
         }
-        return PropertiesLoader.loadDefaultProperties(fileName);
+        return PropertiesHelper.loadDefaultProperties(fileName);
     }
 
     protected Properties getApplicationProperties() {
@@ -172,15 +167,7 @@ public final class ApplicationPropertiesHelper {
     }
 
     public void store(ConfigBuilder configBuilder) throws IOException {
-        final String settingsDirPath = String.format(".%s%s", File.separator, AppConstants.SETTINGS);
-        if (!Files.exists(Paths.get(settingsDirPath))) {
-            Files.createDirectory(Paths.get(settingsDirPath));
-        }
-        final String filePath = String.format("%s%s%s", settingsDirPath, File.separator,
-                AppConstants.APPLICATION_PROPERTIES);
-        Writer writer = new FileWriter(new File(filePath));
-        final Properties appProperties = configBuilder.createConfig();
-        appProperties.store(writer, "User configuration.");
+        PropertiesHelper.storeApplicationProperties(configBuilder.createConfig());
     }
 
 }

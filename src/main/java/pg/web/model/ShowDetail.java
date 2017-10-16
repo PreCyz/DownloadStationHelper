@@ -35,4 +35,17 @@ public class ShowDetail {
     public void setMatchPrecision(int matchPrecision) {
         this.matchPrecision = matchPrecision;
     }
+
+    public int getBaseWordsCount() {
+        return getBaseWords().split(",").length;
+    }
+
+    @Override
+    public String toString() {
+        return "ShowDetail{" +
+                "id=" + id +
+                ", baseWords='" + baseWords + '\'' +
+                ", matchPrecision=" + matchPrecision +
+                '}';
+    }
 }

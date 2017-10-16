@@ -5,19 +5,18 @@ import org.apache.logging.log4j.Logger;
 import pg.Main;
 import pg.util.AppConstants;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 
 /**Created by Gawa on 9/18/2017.*/
-final class PropertiesLoader {
+final class PropertiesHelper {
 
-    private static final Logger logger = LogManager.getLogger(PropertiesLoader.class);
+    private static final Logger logger = LogManager.getLogger(PropertiesHelper.class);
 
-    private PropertiesLoader() {}
+    private PropertiesHelper() {}
 
     static Optional<Properties> loadProperties(String fileName) {
         String applicationProperties = "." + File.separator + AppConstants.SETTINGS + File.separator + fileName;
@@ -42,5 +41,24 @@ final class PropertiesLoader {
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format("No %s file.", fileName));
         }
+    }
+
+    static void storeApplicationProperties(Properties properties) throws IOException {
+        storeProperties(properties, AppConstants.APPLICATION_PROPERTIES);
+    }
+
+    static void storeShowProperties(Properties properties) throws IOException {
+        storeProperties(properties, AppConstants.SHOWS_PROPERTIES);
+    }
+
+    private static void storeProperties(Properties properties, String fileName) throws IOException {
+        final String settingsDirPath = String.format(".%s%s", File.separator, AppConstants.SETTINGS);
+        if (!Files.exists(Paths.get(settingsDirPath))) {
+            Files.createDirectory(Paths.get(settingsDirPath));
+        }
+        final String filePath = String.format("%s%s%s", settingsDirPath, File.separator, fileName);
+        Writer writer = new FileWriter(new File(filePath));
+        String comments = "User configuration changed.";
+        properties.store(writer, comments);
     }
 }

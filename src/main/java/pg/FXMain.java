@@ -19,13 +19,14 @@ public class FXMain extends Application {
     public void start(Stage primaryStage) {
         WindowHandler windowHandler = new WindowHandlerImpl(primaryStage);
         Checker checker = new ApplicationChecker();
-        if (!checker.ready()) {
+        /*if (!checker.ready()) {
             windowHandler.launchConfigWindow();
-        }
+        }*/
         checker = new ShowChecker();
         if (!checker.ready()) {
             windowHandler.launchShowWindow();
         }
-        windowHandler.launchMainWindow();
+        /*windowHandler.launchMainWindow();*/
+        System.exit(0);
     }
 }
