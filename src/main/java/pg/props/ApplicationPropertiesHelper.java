@@ -1,6 +1,7 @@
 package pg.props;
 
 import pg.util.AppConstants;
+import pg.web.model.AllowedProtocol;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 
@@ -79,8 +80,9 @@ public final class ApplicationPropertiesHelper {
         return getApplicationProperties().getProperty(SettingKeys.SERVER_URL.key());
     }
 
-    public Integer getServerPort(int defaultValue) {
-        return Integer.valueOf(getApplicationProperties().getProperty(SettingKeys.SERVER_PORT.key(), String.valueOf(defaultValue)));
+    public AllowedProtocol getServerPort(AllowedProtocol defaultValue) {
+        return AllowedProtocol.valueFor(Integer.valueOf(getApplicationProperties()
+                .getProperty(SettingKeys.SERVER_PORT.key(), String.valueOf(defaultValue.port()))));
     }
 
     public String getApiInfo() {

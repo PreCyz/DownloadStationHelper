@@ -13,7 +13,7 @@ import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
 import pg.util.StringUtils;
-import pg.web.model.AllowedPorts;
+import pg.web.model.AllowedProtocol;
 import pg.web.model.DSMethod;
 import pg.web.model.TorrentUrlType;
 
@@ -69,12 +69,8 @@ public class ConfigController extends AbstractController {
         tooltip.setText("Your Synology device address.");
         serverUrl.setTooltip(tooltip);
 
-        final Integer port = appHelper.getServerPort(AllowedPorts.HTTPS.port());
-        if (port == AllowedPorts.HTTPS.port()) {
-            serverPort.setValue(String.format("%d - %s", port, AllowedPorts.HTTPS.name()));
-        } else {
-            serverPort.setValue(String.format("%d - %s", port, AllowedPorts.HTTP.name()));
-        }
+        final AllowedProtocol protocol = appHelper.getServerPort(AllowedProtocol.https);
+        serverPort.setValue(String.format("%d - %s", protocol.port(), protocol.name()));
         tooltip = new Tooltip();
         final String value = String.format("Port used to communication with your Synology device for http is " +
                 "5000 and for https is 5001.%nIf 5000 is given then http protocol is used otherwise https is " +
@@ -162,7 +158,7 @@ public class ConfigController extends AbstractController {
     private void setupComoBoxes() {
         serverPort.setItems(
                 FXCollections.observableList(
-                        Arrays.stream(AllowedPorts.values())
+                        Arrays.stream(AllowedProtocol.values())
                                 .map(port -> String.format("%d - %s", port.port(), port.name()))
                                 .collect(Collectors.toList())
                 )

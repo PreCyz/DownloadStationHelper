@@ -5,10 +5,7 @@ import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
-import pg.web.model.ApiName;
-import pg.web.model.SettingKeys;
-import pg.web.model.TorrentUrlType;
+import pg.web.model.*;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.GeneralResponse;
 import pg.web.response.LoginResponse;
@@ -29,7 +26,6 @@ public class DiskStationServiceImpl implements DiskStationService {
 
     private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
 
-    private final int defaultServerPort = 5001;
     private final ApplicationPropertiesHelper application;
     private ApiDetails authInfo;
     private ApiDetails downloadStationTask;
@@ -109,9 +105,8 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
         String server = application.getServerUrl();
         if (server != null && !server.isEmpty()) {
-            Integer port = application.getServerPort(defaultServerPort);
-            String protocol = port == defaultServerPort ? "https" : "http";
-            return serverUrl = String.format("%s://%s:%s", protocol, server, port);
+            AllowedProtocol protocol = application.getServerPort(AllowedProtocol.https);
+            return serverUrl = String.format("%s://%s:%s", protocol.name(), server, protocol.port());
         }
         return serverUrl = "";
     }
@@ -170,6 +165,9 @@ public class DiskStationServiceImpl implements DiskStationService {
             if (serverUrl.isEmpty()) {
                 logger.info("Server URL not specified.");
             } else {
+                foundTorrents.stream()
+                        .map(ReducedDetail::getTitle)
+                        .forEach(title -> logger.info("Link to found show {}", title));
                 String requestUrl = buildCreateTaskUrl(serverUrl);
                 logger.info("RestURL: ["+requestUrl+"].");
 
