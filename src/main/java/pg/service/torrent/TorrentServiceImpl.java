@@ -12,6 +12,7 @@ public class TorrentServiceImpl extends AbstractTorrentService {
 
     private final int defaultLimit = 100;
     private final int defaultPage = 1;
+    private int limit = defaultLimit;
 
     @Override
     public List<TorrentDetail> findTorrents() {
@@ -21,15 +22,17 @@ public class TorrentServiceImpl extends AbstractTorrentService {
             logger.info("Executing request for url {}", getTorrentUrl);
             torrentResponses.addAll(executeRequest(getTorrentUrl));
         }
-        logger.info(torrentResponses);
+        int numberOfTorrents = torrentResponses.stream().mapToInt(tr -> tr.getTorrents().size()).sum();
+        logger.info("[{}] torrent details downloaded.", numberOfTorrents);
         return torrentResponses.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+                .flatMap(tr -> tr.getTorrents().stream())
                 .collect(Collectors.toList());
     }
 
     protected String createUrl(int currentPage) {
-        String limit = String.format("limit=%s", application.getLimit(defaultLimit));
+        limit = application.getLimit(defaultLimit);
+        String limitParam = String.format("limit=%d", limit);
         String page = String.format("page=%d", currentPage);
-        return String.format("%s?%s&%s", url, limit, page);
+        return String.format("%s?%s&%s", url, limitParam, page);
     }
 }

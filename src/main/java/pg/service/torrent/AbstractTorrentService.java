@@ -10,7 +10,6 @@ import pg.web.response.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 /**Created by Gawa 2017-09-23*/
 public abstract class AbstractTorrentService implements TorrentService {
@@ -34,8 +33,7 @@ public abstract class AbstractTorrentService implements TorrentService {
         GetClient client = new GetClient(requestUrl);
         if (client.get().isPresent()) {
             String json = client.get().get();
-            Optional<TorrentResponse> response = JsonUtils.convertFromString(json, TorrentResponse.class);
-            response.ifPresent(torrentResponses::add);
+            JsonUtils.convertFromString(json, TorrentResponse.class).ifPresent(torrentResponses::add);
         } else {
             logger.info("No response for url {}", requestUrl);
         }

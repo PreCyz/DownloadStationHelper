@@ -15,16 +15,20 @@ public class TorrentImdbServiceImpl extends AbstractTorrentService implements To
     @Override
     public List<TorrentDetail> findTorrents() {
         Set<Object> keySet = ShowsPropertiesHelper.getInstance().keySet();
-        Set<Object> imdbIds = keySet.stream().filter(key -> ((String) key).endsWith("imdbId")).collect(Collectors.toSet());
+        Set<Object> imdbIds = keySet.stream()
+                .filter(key -> ((String) key).endsWith("imdbId"))
+                .collect(Collectors.toSet());
         List<TorrentResponse> torrentResponses = new LinkedList<>();
         for (Object keyObj : imdbIds) {
-            String getTorrentByImdbUrl = createUrl(shows.getProperty(String.valueOf(keyObj)));
-            logger.info("Executing request for url {}", getTorrentByImdbUrl);
-            torrentResponses.addAll(executeRequest(getTorrentByImdbUrl));
+            String torrentByImdbUrl = createUrl(shows.getProperty(String.valueOf(keyObj)));
+            logger.info("Executing request for url {}", torrentByImdbUrl);
+            torrentResponses.addAll(executeRequest(torrentByImdbUrl));
         }
-        return torrentResponses.stream()
-                .flatMap(torrentResponse -> torrentResponse.getTorrents().stream())
+        List<TorrentDetail> torrentDetails = torrentResponses.stream()
+                .flatMap(tr -> tr.getTorrents().stream())
                 .collect(Collectors.toList());
+        logger.info("[{}] torrent details downloaded.", torrentDetails.size());
+        return torrentDetails;
     }
 
     protected String createUrl(String imdbId) {
