@@ -165,9 +165,6 @@ public class DiskStationServiceImpl implements DiskStationService {
             if (serverUrl.isEmpty()) {
                 logger.info("Server URL not specified.");
             } else {
-                foundTorrents.stream()
-                        .map(ReducedDetail::getTitle)
-                        .forEach(title -> logger.info("Link to found show {}", title));
                 String requestUrl = buildCreateTaskUrl(serverUrl);
                 logger.info("RestURL: ["+requestUrl+"].");
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class MatchByImdbService extends AbstractMatchService {
 
     @Override
-    public void filterTorrents(List<TorrentDetail> torrents) {
+    protected void matchTorrents(List<TorrentDetail> torrents) {
         List<TorrentDetail> filtered = applyFilters(torrents);
         if (filtered == null || filtered.isEmpty()) {
             return;

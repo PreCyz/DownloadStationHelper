@@ -27,7 +27,7 @@ public class MatchServiceImpl extends AbstractMatchService {
     }
 
     @Override
-    public void filterTorrents(List<TorrentDetail> torrents) {
+    protected void matchTorrents(List<TorrentDetail> torrents) {
         List<TorrentDetail> filtered = applyFilters(torrents);
         if (filtered.isEmpty()) {
             return;
@@ -40,9 +40,6 @@ public class MatchServiceImpl extends AbstractMatchService {
                 Optional<ReducedDetail> priorityOpt = matchTorrent(baseWord, torrentDetail);
                 priorityOpt.ifPresent(matchingTorrents::add);
             });
-        }
-        if (hasFoundMatchingTorrents()) {
-            logger.info(JsonUtils.convertToString(matchingTorrents));
         }
     }
 

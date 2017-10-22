@@ -38,7 +38,7 @@ public class Launcher implements Runnable {
         FileService fileService = new FileServiceImpl();
         fileService.buildImdbMap(torrents);
         fileService.writeImdbMapToFile();
-        matchService.filterTorrents(torrents);
+        matchService.match(torrents);
         if (matchService.hasFoundMatchingTorrents()) {
             final String notGiven = "NOT_GIVEN";
             final String filePath = application.getFilePath(notGiven);

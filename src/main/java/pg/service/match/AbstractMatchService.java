@@ -26,6 +26,12 @@ public abstract class AbstractMatchService implements MatchService {
     }
 
     @Override
+    public void match(List<TorrentDetail> torrents) {
+        matchTorrents(torrents);
+        logMatchedTorrents();
+    }
+
+    @Override
     public boolean hasFoundMatchingTorrents() {
         return !matchingTorrents.isEmpty();
     }
@@ -45,4 +51,14 @@ public abstract class AbstractMatchService implements MatchService {
         }
         return filtered;
     }
+
+    protected void logMatchedTorrents() {
+        if (hasFoundMatchingTorrents()) {
+            matchingTorrents.stream()
+                    .map(ReducedDetail::getTitle)
+                    .forEach(title -> logger.info("Link to found show {}", title));
+        }
+    }
+
+    protected abstract void matchTorrents(List<TorrentDetail> torrents);
 }
