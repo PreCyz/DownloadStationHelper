@@ -56,7 +56,7 @@ public abstract class AbstractMatchService implements MatchService {
         if (hasFoundMatchingTorrents()) {
             matchingTorrents.stream()
                     .map(ReducedDetail::getTitle)
-                    .forEach(title -> logger.info("Link to found show {}", title));
+                    .forEach(title -> logger.info("Match torrent {}", title));
         }
     }
 

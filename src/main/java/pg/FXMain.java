@@ -26,7 +26,7 @@ public class FXMain extends Application {
         if (!checker.ready()) {
             windowHandler.launchShowWindow();
         }
-        /*windowHandler.launchMainWindow();*/
+        windowHandler.launchMainWindow();
         System.exit(0);
     }
 }

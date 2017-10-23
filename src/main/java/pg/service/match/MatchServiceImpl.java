@@ -1,8 +1,5 @@
 package pg.service.match;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import pg.service.FileServiceImpl;
 import pg.util.JsonUtils;
 import pg.web.model.ShowKeys;
 import pg.web.model.torrent.ReducedDetail;
@@ -16,8 +13,6 @@ import java.util.Optional;
 
 /**Created by Gawa on 15/08/17*/
 public class MatchServiceImpl extends AbstractMatchService {
-
-    private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
 
     private int matchPrecision;
 

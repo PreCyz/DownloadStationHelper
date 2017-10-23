@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            prefHeight="400.0" prefWidth="600.0">
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar prefHeight="29.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="%main.menu.config">
+            <items>
+              <MenuItem fx:id="applicationMenuItem" mnemonicParsing="false" text="%main.menu.config.application" />
+                  <MenuItem fx:id="showsMenuItem" mnemonicParsing="false" text="%main.menu.config.shows" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="allButton" layoutX="8.0" layoutY="78.0" mnemonicParsing="false" text="%main.all" />
+      <Button fx:id="imdbButton" layoutX="8.0" layoutY="159.0" mnemonicParsing="false" text="%main.imdb" />
+      <CheckBox fx:id="chooseCheckBox" layoutX="8.0" layoutY="39.0" mnemonicParsing="false" text="%main.let.me.choose" />
+      <Separator layoutX="1.0" layoutY="67.0" prefWidth="150.0" />
+      <Separator layoutX="1.0" layoutY="113.0" prefWidth="150.0" />
+      <Text fx:id="infoText" layoutX="152.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="449.0" />
+      <ListView fx:id="torrentListView" layoutX="151.0" layoutY="29.0" prefHeight="330.0" prefWidth="449.0" />
+      <ComboBox fx:id="imdbComboBox" layoutX="8.0" layoutY="124.0" prefHeight="25.0" prefWidth="140.0" />
+   </children>
 </AnchorPane>
