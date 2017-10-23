@@ -5,7 +5,7 @@ import pg.web.model.DownloadStatus;
 /**Created by Gawa on 27/08/17.*/
 public class DSTask {
     private String id;
-    private int size;
+    private long size;
     private DownloadStatus status;
     private String title;
     private String type;
@@ -15,7 +15,7 @@ public class DSTask {
         return id;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
 
