@@ -10,7 +10,6 @@ import pg.web.response.TorrentResponse;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +42,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
             tasks.add(new GetTorrentsTask(createUrl(page), executorService));
         }
 
-        List<TorrentResponse> torrentResponses = new LinkedList<>();
+        List<TorrentResponse> torrentResponses = new ArrayList<>();
         while (!tasks.isEmpty()) {
             for (Iterator<GetTorrentsTask> it = tasks.iterator(); it.hasNext(); ) {
                 GetTorrentsTask task = it.next();
@@ -55,7 +54,10 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                     JsonUtils.convertFromString(response, TorrentResponse.class).ifPresent(torrentsForRequest::add);
                     it.remove();
                     logger.info("[{}] torrents in response.",
-                            torrentsForRequest.stream().flatMap(tr->tr.getTorrents().stream()).collect(Collectors.toList()).size()
+                            torrentsForRequest.stream()
+                                    .flatMap(tr -> tr.getTorrents().stream())
+                                    .collect(Collectors.toList())
+                                    .size()
                     );
                     torrentResponses.addAll(torrentsForRequest);
                 }
@@ -71,7 +73,6 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
         return torrentResponses.stream()
                 .flatMap(tr -> tr.getTorrents().stream())
                 .collect(Collectors.toList());
-
     }
 
     protected String createUrl(int currentPage) {
