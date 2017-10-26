@@ -37,7 +37,7 @@ public class Main {
             logger.info("Program mode: [{}].", ProgramMode.IMDB);
             return ProgramMode.IMDB;
         }
-        logger.info("Program mode: [{}].", ProgramMode.ALL);
-        return ProgramMode.ALL;
+        logger.info("Program mode: [{}].", ProgramMode.ALL_CONCURRENT);
+        return ProgramMode.ALL_CONCURRENT;
     }
 }
