@@ -55,9 +55,8 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                     it.remove();
                     logger.info("[{}] torrents in response.",
                             torrentsForRequest.stream()
-                                    .flatMap(tr -> tr.getTorrents().stream())
-                                    .collect(Collectors.toList())
-                                    .size()
+                                    .mapToInt(tr -> tr.getTorrents().size())
+                                    .sum()
                     );
                     torrentResponses.addAll(torrentsForRequest);
                 }
