@@ -54,7 +54,7 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder withPassword(String password) {
-        logger.info("Server password set [{}].", password.hashCode());
+        logger.info("Server password set [{}].", password);
         if (StringUtils.nullOrTrimEmpty(password)) {
             return this;
         }

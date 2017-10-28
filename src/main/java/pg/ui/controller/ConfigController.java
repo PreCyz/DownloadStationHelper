@@ -217,7 +217,7 @@ public class ConfigController extends AbstractController {
                     .withReleaseDate(releaseDate.getText())
                     .withRepeatDownload(repeatDownload.isSelected())
                     .withTorrentLocation(torrentLocationText.getText())
-                    .withResultLocation(torrentLocationText.getText())
+                    .withResultLocation(resultLocationText.getText())
                     .withCreationMethod(creationMethod.getValue())
                     .withTorrentUrlType(torrentUrlType.getValue());
 
