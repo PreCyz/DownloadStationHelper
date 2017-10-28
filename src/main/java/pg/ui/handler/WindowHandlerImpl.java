@@ -40,7 +40,11 @@ public class WindowHandlerImpl implements WindowHandler {
     @Override
     public void launchMainWindow() {
         buildScene(primaryStage, WindowFactory.MAIN.createWindow(this, bundle));
-        primaryStage.show();
+        try {
+            primaryStage.show();
+        } catch (Exception ex) {
+            logger.error(ex.getLocalizedMessage(), ex);
+        }
     }
 
     @Override
