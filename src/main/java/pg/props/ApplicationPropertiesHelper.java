@@ -170,6 +170,8 @@ public final class ApplicationPropertiesHelper {
 
     public void store(ConfigBuilder configBuilder) throws IOException {
         PropertiesHelper.storeApplicationProperties(configBuilder.createConfig());
+        instance = null;
+        application = null;
     }
 
 }

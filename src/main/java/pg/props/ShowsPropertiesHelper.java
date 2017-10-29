@@ -101,8 +101,10 @@ public final class ShowsPropertiesHelper {
     }
 
     public void prepareAndStore(Set<ShowDetail> showDetails) throws IOException {
-        Properties shows = prepareShowProperties(showDetails);
-        PropertiesHelper.storeShowProperties(shows);
+        Properties showsToSave = prepareShowProperties(showDetails);
+        PropertiesHelper.storeShowProperties(showsToSave);
+        instance = null;
+        shows = null;
     }
 
     private Properties prepareShowProperties(Set<ShowDetail> showDetails) {

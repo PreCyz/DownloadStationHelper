@@ -96,21 +96,6 @@ task copyToLib( type: Copy ) {
     from configurations.runtime
 }
 
-jar {
-    dependsOn copyToLib, copyAppPropertiesTask
-    manifest {
-        attributes 'Implementation-Title': 'DownloadStationHelper',
-                'Implementation-Version': version,
-                'Main-Class': mainClassName,
-                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
-    }
-    doLast {
-        addScriptToRunFile()
-        addScriptToRunImdbFile()
-    }
-    baseName = jarName
-}
-
 //create a FX Jar
 task fxJar(type: Jar) {
     dependsOn copyToLib, copyAppPropertiesTask
@@ -125,4 +110,19 @@ task fxJar(type: Jar) {
     }
     baseName = jarNameFx
     with jar
+}
+
+jar {
+    dependsOn copyToLib, copyAppPropertiesTask
+    manifest {
+        attributes 'Implementation-Title': 'DownloadStationHelper',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName,
+                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+    }
+    doLast {
+        addScriptToRunFile()
+        addScriptToRunImdbFile()
+    }
+    baseName = jarName
 }
