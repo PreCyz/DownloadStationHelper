@@ -24,7 +24,6 @@ public class Launcher implements Runnable {
     private final ProgramMode programMode;
     private final ApplicationPropertiesHelper application;
 
-
     public Launcher(ProgramMode programMode) {
         this.programMode = programMode;
         this.application = ApplicationPropertiesHelper.getInstance();
