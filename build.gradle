@@ -27,8 +27,10 @@ dependencies {
 
 }
 
-def buildVersion = '1.1'
+def buildVersion = '2.0'
 def jarName = "DSHelper-$buildVersion"
+def jarNameFx = "DSHelper-FX-$buildVersion"
+def fxMainClassName = 'pg.FXMain'
 
 def addScriptToRunFile = {
     def runFile = new File("$buildDir/libs/run.sh")
@@ -52,6 +54,18 @@ def addScriptToRunImdbFile = {
     runImdbFile.append('\n\necho \'.............\'')
     runImdbFile.append('\necho \'Program ended\'')
     println("addScriptToRunImdbFile $jarName")
+}
+
+def addScriptToRunFXFile = {
+    def runImdbFile = new File("$buildDir/libs/runFX.sh")
+    runImdbFile.append('echo \'Start program\'')
+    runImdbFile.append('\necho \'.............\'')
+    runImdbFile.append('\n\njava -jar ')
+    runImdbFile.append(jarNameFx)
+    runImdbFile.append('.jar')
+    runImdbFile.append('\n\necho \'.............\'')
+    runImdbFile.append('\necho \'Program ended\'')
+    println("addScriptToRunFXFile $jarNameFx")
 }
 
 def copyApplicationProperties = copySpec {
@@ -95,4 +109,20 @@ jar {
         addScriptToRunImdbFile()
     }
     baseName = jarName
+}
+
+//create a FX Jar
+task fxJar(type: Jar) {
+    dependsOn copyToLib, copyAppPropertiesTask
+    manifest {
+        attributes 'Implementation-Title': 'DownloadStationHelper',
+                'Implementation-Version': version,
+                'Main-Class': fxMainClassName,
+                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+    }
+    doLast {
+        addScriptToRunFXFile()
+    }
+    baseName = jarNameFx
+    with jar
 }
