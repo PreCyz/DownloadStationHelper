@@ -17,8 +17,8 @@ class GetTorrentsTask {
         this.url = url;
         work = new GetTorrents(url);
         task = new FutureTask<>(work);
-        executor.execute(task);
         this.logger = LogManager.getLogger(this.getClass());
+        executor.execute(task);
     }
     String getRequestUrl() {
         return work.getUrl();
