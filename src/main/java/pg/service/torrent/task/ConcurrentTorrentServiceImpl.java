@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.service.torrent.TorrentService;
+import pg.ui.exception.ProgramException;
+import pg.ui.exception.UIError;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
@@ -48,7 +50,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                 GetTorrentsTask task = it.next();
                 if (task.isDone()) {
                     String request = task.getRequestUrl();
-                    logger.info("Request [{}] finished", request);
+                    logger.info("Request [{}] finished.", request);
                     List<TorrentResponse> torrentsForRequest = new ArrayList<>(limit);
                     String response = task.getResponse();
                     JsonUtils.convertFromString(response, TorrentResponse.class).ifPresent(torrentsForRequest::add);
@@ -66,6 +68,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     logger.error("Error when sleep thread.", e);
+                    throw new ProgramException(UIError.CANCELLED_TASK);
                 }
             }
         }
