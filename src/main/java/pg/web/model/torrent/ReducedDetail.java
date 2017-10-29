@@ -17,9 +17,15 @@ public class ReducedDetail {
     private String season;
     private String episode;
 
+    public final static ReducedDetail NOTHING_TO_DISPLAY = new ReducedDetail("Nothing to display");
+
+    private ReducedDetail(String title) {
+        this.title = title;
+    }
+
     ReducedDetail(String title, int matchPrecision, Date dateReleased, String magnetUrl, String torrentUrl,
                          String imdbId, String season, String episode) {
-        this.title = title;
+        this(title);
         this.matchPrecision = matchPrecision;
         this.dateReleased = dateReleased;
         this.magnetUrl = magnetUrl;
@@ -59,5 +65,10 @@ public class ReducedDetail {
 
     public String getEpisode() {
         return episode;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }
