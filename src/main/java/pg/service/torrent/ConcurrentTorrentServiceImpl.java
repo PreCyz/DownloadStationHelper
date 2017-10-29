@@ -1,11 +1,11 @@
-package pg.service.torrent.task;
+package pg.service.torrent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
-import pg.service.torrent.TorrentService;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
+import pg.ui.task.atomic.GetTorrentsTask;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;
@@ -31,8 +31,8 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
     private final String url;
 
     public ConcurrentTorrentServiceImpl() {
-        application = ApplicationPropertiesHelper.getInstance();
-        executorService = Executors.newFixedThreadPool(application.getPage(defaultPage));
+        this.application = ApplicationPropertiesHelper.getInstance();
+        this.executorService = Executors.newFixedThreadPool(application.getPage(defaultPage));
         this.url = application.getUrl(defaultUrl);
     }
 

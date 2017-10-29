@@ -1,37 +1,39 @@
-package pg.service.torrent.task;
+package pg.ui.task.atomic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.ui.task.atomic.call.GetTorrentsCall;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
 /** Created by Gawa 2017-10-25 */
-class GetTorrentsTask {
+public class GetTorrentsTask {
     private final Logger logger;
-    private GetTorrents work;
+    private GetTorrentsCall getTorrentsCall;
     private FutureTask<String> task;
     private String url;
 
-    GetTorrentsTask(String url, Executor executor) {
+    public GetTorrentsTask(String url, Executor executor) {
         this.url = url;
-        work = new GetTorrents(url);
-        task = new FutureTask<>(work);
+        getTorrentsCall = new GetTorrentsCall(url);
+        task = new FutureTask<>(getTorrentsCall);
         this.logger = LogManager.getLogger(this.getClass());
         executor.execute(task);
     }
-    String getRequestUrl() {
-        return work.getUrl();
+    public String getRequestUrl() {
+        return getTorrentsCall.getUrl();
     }
-    boolean isDone() {
+
+    public boolean isDone() {
         return task.isDone();
     }
 
-    String getResponse() {
+    public String getResponse() {
         try {
             return task.get();
         } catch(Exception e) {
-            logger.error("Error when getting response {}", url, e);
+            logger.error("Error when getting response for {}", url, e);
             throw new RuntimeException(e);
         }
     }

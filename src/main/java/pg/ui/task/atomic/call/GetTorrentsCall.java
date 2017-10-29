@@ -1,15 +1,15 @@
-package pg.service.torrent.task;
+package pg.ui.task.atomic.call;
 
 import pg.web.client.GetClient;
 
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-10-25 */
-public class GetTorrents implements Callable<String> {
+public class GetTorrentsCall implements Callable<String> {
 
     private final String url;
 
-    GetTorrents(String url) {
+    public GetTorrentsCall(String url) {
         this.url = url;
     }
 

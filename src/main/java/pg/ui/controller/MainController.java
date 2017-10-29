@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import pg.ui.handler.WindowHandler;
-import pg.ui.task.LaunchTask;
+import pg.ui.task.MainTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -83,12 +83,13 @@ public class MainController extends AbstractController {
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
             cancelTask();
-            futureTask = Executors.newSingleThreadExecutor().submit(new LaunchTask<Void>());
+            futureTask = Executors.newSingleThreadExecutor().submit(new MainTask(torrentListView, infoText));
         };
     }
 
     private void cancelTask() {
         if (futureTask != null && !futureTask.isDone()) {
+            logger.info("Cancelling the task.");
             futureTask.cancel(true);
         }
     }
@@ -96,10 +97,12 @@ public class MainController extends AbstractController {
     private EventHandler<ActionEvent> imdbButtonAction() {
         return e -> {
             if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
+                cancelTask();
                 infoText.setText("Please choose imdb id.");
             } else {
                 cancelTask();
-                futureTask = Executors.newSingleThreadExecutor().submit(new LaunchTask<Void>(imdbComboBox.getValue()));
+                futureTask = Executors.newSingleThreadExecutor()
+                        .submit(new MainTask(imdbComboBox.getValue(), torrentListView, infoText));
             }
         };
     }

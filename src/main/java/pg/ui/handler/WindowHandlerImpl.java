@@ -1,5 +1,7 @@
 package pg.ui.handler;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -10,6 +12,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
@@ -34,7 +37,15 @@ public class WindowHandlerImpl implements WindowHandler {
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setOnCloseRequest(onCloseEventHandler());
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, Locale.getDefault());
+    }
+
+    private EventHandler<WindowEvent> onCloseEventHandler() {
+        return t -> {
+                Platform.exit();
+                System.exit(0);
+            };
     }
 
     @Override
