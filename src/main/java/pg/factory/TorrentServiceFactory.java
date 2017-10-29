@@ -21,4 +21,8 @@ public class TorrentServiceFactory {
             return new TorrentServiceImpl();
         }
     }
+
+    public static TorrentService getTorrentService(String imdbId) {
+        return new TorrentImdbServiceImpl().withImdbId(imdbId);
+    }
 }
