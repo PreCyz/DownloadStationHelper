@@ -131,6 +131,12 @@ public class ConfigBuilder {
         return this;
     }
 
+    public ConfigBuilder withHandleDuplicates(boolean handleDuplicates) {
+        logger.info("Filter repeat download set [{}].", handleDuplicates);
+        config.setProperty(HANDLE_DUPLICATES.key(), StringUtils.stringFromBoolean(handleDuplicates));
+        return this;
+    }
+
     public ConfigBuilder withTorrentLocation(String torrentLocation) {
         logger.info("Torrent location where to save *.torrent files set [{}].", torrentLocation);
         if (StringUtils.nullOrTrimEmpty(torrentLocation)) {

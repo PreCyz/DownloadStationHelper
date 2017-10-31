@@ -40,6 +40,7 @@ public class ConfigController extends AbstractController {
     @FXML private TextField maxFileSize;
     @FXML private TextField releaseDate;
     @FXML private CheckBox repeatDownload;
+    @FXML private CheckBox handleDuplicates;
     @FXML private Button torrentLocationChooser;
     @FXML private Button resultLocationChooser;
     @FXML private Text torrentLocationText;
@@ -141,6 +142,12 @@ public class ConfigController extends AbstractController {
         tooltip.setText("If checked, the same torrent will be downloaded each time, the program is executed.");
         repeatDownload.setTooltip(tooltip);
 
+        handleDuplicates.setSelected(StringUtils.booleanFromString(appHelper.getHandleDuplicates("")));
+        tooltip = new Tooltip();
+        tooltip.setText("If checked, possible duplicates will be filtered out. Duplicates from response " +
+                "and duplicates from history.");
+        handleDuplicates.setTooltip(tooltip);
+
         torrentLocationText.setText(appHelper.getTorrentLocation(""));
         resultLocationText.setText(appHelper.getFilePath(""));
 
@@ -216,6 +223,7 @@ public class ConfigController extends AbstractController {
                     .withMaxFileSize(maxFileSize.getText())
                     .withReleaseDate(releaseDate.getText())
                     .withRepeatDownload(repeatDownload.isSelected())
+                    .withHandleDuplicates(handleDuplicates.isSelected())
                     .withTorrentLocation(torrentLocationText.getText())
                     .withResultLocation(resultLocationText.getText())
                     .withCreationMethod(creationMethod.getValue())

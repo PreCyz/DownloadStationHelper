@@ -1,15 +1,15 @@
 package pg.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.web.model.torrent.ReducedDetail;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**Created by Gawa on 15/08/17.*/
 public class JsonUtils {
@@ -36,6 +36,15 @@ public class JsonUtils {
             logger.error(e.getLocalizedMessage());
         }
         return Optional.empty();
+    }
+
+    public static Map<String, ReducedDetail> convertMatchTorrentsFromFile(Path jsonPath) {
+        try {
+            return new ObjectMapper().readValue(jsonPath.toFile(), new TypeReference<Map<String, ReducedDetail>>() {});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage());
+        }
+        return Collections.emptyMap();
     }
 
     public static void writeToFile(Path filePath, Object object) {

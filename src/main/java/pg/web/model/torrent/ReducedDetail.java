@@ -19,6 +19,8 @@ public class ReducedDetail {
 
     public final static ReducedDetail NOTHING_TO_DISPLAY = new ReducedDetail("Nothing to display");
 
+    public ReducedDetail() {}
+
     private ReducedDetail(String title) {
         this.title = title;
     }

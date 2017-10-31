@@ -113,6 +113,10 @@ public final class ApplicationPropertiesHelper {
         return getApplicationProperties().getProperty(SettingKeys.REPEAT_DOWNLOAD.key(), defaultValue);
     }
 
+    public String getHandleDuplicates(String defaultValue) {
+        return getApplicationProperties().getProperty(SettingKeys.HANDLE_DUPLICATES.key(), defaultValue);
+    }
+
     public String getMaxFileSize(String defaultValue) {
         return getApplicationProperties().getProperty(SettingKeys.MAX_FILE_SIZE.key(), defaultValue).trim().replace(",", ".");
     }

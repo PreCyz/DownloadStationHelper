@@ -12,6 +12,7 @@ public final class FilterFactory {
 
     private static final int DEFAULT_TORRENT_AGE = 0;
     private static final String DEFAULT_REPEAT_DOWNLOAD = "N";
+    private static final String DEFAULT_HANDLE_DUPLICATES = "Y";
     private static final String DEFAULT_MAX_FILE_SIZE = "0";
 
     private FilterFactory() {}
@@ -24,6 +25,9 @@ public final class FilterFactory {
         }
         if (DEFAULT_REPEAT_DOWNLOAD.equalsIgnoreCase(application.getRepeatDownload(DEFAULT_REPEAT_DOWNLOAD))) {
             filters.add(getFilter(SettingKeys.REPEAT_DOWNLOAD));
+        }
+        if (DEFAULT_HANDLE_DUPLICATES.equalsIgnoreCase(application.getHandleDuplicates(DEFAULT_HANDLE_DUPLICATES))) {
+            filters.add(getFilter(SettingKeys.HANDLE_DUPLICATES));
         }
         if (!DEFAULT_MAX_FILE_SIZE.equals(application.getMaxFileSize(DEFAULT_MAX_FILE_SIZE))) {
             filters.add(getFilter(SettingKeys.MAX_FILE_SIZE));
@@ -47,6 +51,8 @@ public final class FilterFactory {
                 return new FileSizeFilter(application.getMaxFileSize(defaultMaxFileSize));
             case TORRENT_RELEASE_DATE:
                 return new ReleaseDateFilter(application.getTorrentReleaseDate());
+            case HANDLE_DUPLICATES:
+                return new DuplicateFilter();
 
         }
         return null;
