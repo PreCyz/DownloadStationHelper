@@ -78,7 +78,13 @@ public class MainTask extends Task<Void> {
             } else {
                 listView.setItems(FXCollections.observableList(matchTorrents.get()));
             }
-            infoText.setText(String.format("There is %d torrents to start.", matchTorrents.get().size()));
+            String message = "No torrents to start.";
+            if (matchTorrents.get().size() == 1) {
+                message = "There is 1 torrents to start.";
+            } else if (matchTorrents.get().size() > 1) {
+                message = String.format("There are %s torrents to start.", matchTorrents.get().size());
+            }
+            infoText.setText(message);
         });
     }
 
