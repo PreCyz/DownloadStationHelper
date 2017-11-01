@@ -101,8 +101,14 @@ public class MainController extends AbstractController {
                 infoText.setText("Please choose imdb id.");
             } else {
                 cancelTask();
+                String imdbId = existingImdbMap.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElse("");
                 futureTask = Executors.newSingleThreadExecutor()
-                        .submit(new MainTask(imdbComboBox.getValue(), torrentListView, infoText));
+                        .submit(new MainTask(imdbId, torrentListView, infoText));
             }
         };
     }
