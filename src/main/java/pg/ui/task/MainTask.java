@@ -5,8 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
-import pg.ui.exception.ProgramException;
-import pg.ui.exception.UIError;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.*;
 import pg.util.StringUtils;
@@ -55,15 +53,17 @@ public class MainTask extends Task<Void> {
             findTorrentsTask = new AppTask<>(new FindTorrentsCall(imdbId), executor);
         }
 
-        waitUntilTaskDone(findTorrentsTask);
         matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
         updateView();
         writeImdbMap = new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
 
-        waitUntilTaskDone(matchTorrents);
         if (!matchTorrents.get().isEmpty()) {
             startMatchingTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
             writeMatchTorrents = new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
+        }
+
+        if (startMatchingTorrents.isDone()) {
+            infoText.setText(String.format("Number of started torrents: %d.", matchTorrents.get().size()));
         }
 
         return null;
@@ -86,16 +86,6 @@ public class MainTask extends Task<Void> {
             }
             infoText.setText(message);
         });
-    }
-
-    private void waitUntilTaskDone(AppTask task) {
-        while (!task.isDone()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new ProgramException(UIError.CANCELLED_TASK);
-            }
-        }
     }
 
     public boolean isFindTorrentsTaskDone() {
