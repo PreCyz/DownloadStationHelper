@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -15,10 +16,18 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="allButton" layoutX="13.0" layoutY="39.0" mnemonicParsing="false" text="%main.all" />
-      <Button fx:id="imdbButton" layoutX="245.0" layoutY="39.0" mnemonicParsing="false" text="%main.imdb" />
       <Text fx:id="infoText" layoutX="11.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="590.0" />
-      <ListView fx:id="torrentListView" layoutX="12.0" layoutY="70.0" prefHeight="289.0" prefWidth="578.0" />
-      <ComboBox fx:id="imdbComboBox" layoutX="95.0" layoutY="39.0" prefHeight="25.0" prefWidth="140.0" />
+      <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="233.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
+      <Pane layoutX="12.0" layoutY="37.0" prefHeight="84.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
+         <children>
+            <ComboBox fx:id="imdbComboBox" layoutX="7.0" layoutY="9.0" prefHeight="25.0" prefWidth="366.0" />
+            <Button fx:id="imdbButton" layoutX="7.0" layoutY="48.0" mnemonicParsing="false" text="%main.imdb" />
+         </children>
+      </Pane>
+      <Pane layoutX="408.0" layoutY="37.0" prefHeight="84.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
+         <children>
+            <Button fx:id="allButton" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" text="%main.all" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
