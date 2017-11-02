@@ -4,7 +4,7 @@ import pg.filter.*;
 import pg.props.ApplicationPropertiesHelper;
 import pg.web.model.SettingKeys;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**Created by Pawel Gawedzki on 9/19/2017.*/
@@ -19,21 +19,21 @@ public final class FilterFactory {
 
     public static Set<Filter> getFilters() {
         ApplicationPropertiesHelper application = ApplicationPropertiesHelper.getInstance();
-        Set<Filter> filters = new HashSet<>();
+        Set<Filter> filters = new LinkedHashSet<>();
         if (application.getTorrentAge(DEFAULT_TORRENT_AGE) > 0) {
             filters.add(getFilter(SettingKeys.TORRENT_AGE_DAYS));
-        }
-        if (DEFAULT_REPEAT_DOWNLOAD.equalsIgnoreCase(application.getRepeatDownload(DEFAULT_REPEAT_DOWNLOAD))) {
-            filters.add(getFilter(SettingKeys.REPEAT_DOWNLOAD));
-        }
-        if (DEFAULT_HANDLE_DUPLICATES.equalsIgnoreCase(application.getHandleDuplicates(DEFAULT_HANDLE_DUPLICATES))) {
-            filters.add(getFilter(SettingKeys.HANDLE_DUPLICATES));
         }
         if (!DEFAULT_MAX_FILE_SIZE.equals(application.getMaxFileSize(DEFAULT_MAX_FILE_SIZE))) {
             filters.add(getFilter(SettingKeys.MAX_FILE_SIZE));
         }
         if (!"".equals(application.getTorrentReleaseDate())) {
             filters.add(getFilter(SettingKeys.TORRENT_RELEASE_DATE));
+        }
+        if (DEFAULT_REPEAT_DOWNLOAD.equalsIgnoreCase(application.getRepeatDownload(DEFAULT_REPEAT_DOWNLOAD))) {
+            filters.add(getFilter(SettingKeys.REPEAT_DOWNLOAD));
+        }
+        if (DEFAULT_HANDLE_DUPLICATES.equalsIgnoreCase(application.getHandleDuplicates(DEFAULT_HANDLE_DUPLICATES))) {
+            filters.add(getFilter(SettingKeys.HANDLE_DUPLICATES));
         }
         return filters;
     }
