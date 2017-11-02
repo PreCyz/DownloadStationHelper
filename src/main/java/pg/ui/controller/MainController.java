@@ -34,6 +34,7 @@ public class MainController extends AbstractController {
     @FXML private ComboBox<String> imdbComboBox;
     @FXML private ListView<ReducedDetail> torrentListView;
     @FXML private Text infoText;
+    @FXML private ProgressIndicator progressIndicator;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -48,6 +49,7 @@ public class MainController extends AbstractController {
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
+        progressIndicator.setVisible(false);
     }
 
     private void setupMenuItems() {
@@ -82,8 +84,11 @@ public class MainController extends AbstractController {
 
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
+            progressIndicator.setVisible(true);
+            progressIndicator.setProgress(0);
             cancelTask();
-            futureTask = Executors.newSingleThreadExecutor().submit(new MainTask(torrentListView, infoText));
+            futureTask = Executors.newSingleThreadExecutor()
+                    .submit(new MainTask(torrentListView, infoText, progressIndicator));
         };
     }
 
@@ -108,7 +113,7 @@ public class MainController extends AbstractController {
                         .findFirst()
                         .orElse("");
                 futureTask = Executors.newSingleThreadExecutor()
-                        .submit(new MainTask(imdbId, torrentListView, infoText));
+                        .submit(new MainTask(imdbId, torrentListView, infoText, progressIndicator));
             }
         };
     }

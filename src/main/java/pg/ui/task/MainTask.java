@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.text.Text;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.*;
@@ -23,23 +24,26 @@ public class MainTask extends Task<Void> {
     private final ProgramMode programMode;
     private final ListView<ReducedDetail> listView;
     private final Text infoText;
+    private final ProgressIndicator progressIndicator;
     private String imdbId;
 
     private AppTask<List<TorrentDetail>> findTorrentsTask;
     private AppTask<List<ReducedDetail>> matchTorrents;
     private AppTask<Void> writeImdbMap;
-    private AppTask startMatchingTorrents;
+    private AppTask startTorrents;
     private AppTask writeMatchTorrents;
 
-    public MainTask(ListView<ReducedDetail> listView, Text infoText) {
+    public MainTask(ListView<ReducedDetail> listView, Text infoText, ProgressIndicator progressIndicator) {
         this.listView = listView;
         this.infoText = infoText;
+        this.progressIndicator = progressIndicator;
         this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
-    public MainTask(String imdbId, ListView<ReducedDetail> listView, Text infoText) {
+    public MainTask(String imdbId, ListView<ReducedDetail> listView, Text infoText, ProgressIndicator progressIndicator) {
         this.listView = listView;
         this.infoText = infoText;
+        this.progressIndicator = progressIndicator;
         this.programMode = ProgramMode.IMDB;
         this.imdbId = imdbId;
     }
@@ -52,24 +56,29 @@ public class MainTask extends Task<Void> {
         } else {
             findTorrentsTask = new AppTask<>(new FindTorrentsCall(imdbId), executor);
         }
-
+        updateProgress(30);
         matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
-        updateView();
+        updateProgress(60);
+        updateViewAfterMatch();
         writeImdbMap = new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
-
+        updateProgress(65);
         if (!matchTorrents.get().isEmpty()) {
-            startMatchingTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
+            startTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
+            updateProgress(95);
             writeMatchTorrents = new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
+            updateProgress(99);
         }
-
-        if (startMatchingTorrents.isDone()) {
-            infoText.setText(String.format("Number of started torrents: %d.", matchTorrents.get().size()));
-        }
+        updateProgress(100);
+        updateViewAfterFinish();
 
         return null;
     }
 
-    private void updateView() {
+    private void updateProgress(final double progress) {
+        Platform.runLater(() -> progressIndicator.setProgress(progress / 100));
+    }
+
+    private void updateViewAfterMatch() {
         Platform.runLater(() -> {
             if (matchTorrents.get().isEmpty()) {
                 listView.setItems(
@@ -88,23 +97,31 @@ public class MainTask extends Task<Void> {
         });
     }
 
+    private void updateViewAfterFinish() {
+        Platform.runLater(() -> {
+            if (isStartTorrentsDone()) {
+                infoText.setText("All done.");
+            }
+        });
+    }
+
     public boolean isFindTorrentsTaskDone() {
-        return findTorrentsTask.isDone();
+        return findTorrentsTask != null && findTorrentsTask.isDone();
     }
 
     public boolean isMatchTorrentsDone() {
-        return matchTorrents.isDone();
+        return matchTorrents != null && matchTorrents.isDone();
     }
 
     public boolean isWriteImdbMapDone() {
-        return writeImdbMap.isDone();
+        return writeImdbMap != null && writeImdbMap.isDone();
     }
 
-    public boolean isStartMatchingTorrentsDone() {
-        return startMatchingTorrents.isDone();
+    public boolean isStartTorrentsDone() {
+        return startTorrents != null && startTorrents.isDone();
     }
 
     public boolean isWriteMatchTorrentsDone() {
-        return writeMatchTorrents.isDone();
+        return writeMatchTorrents != null && writeMatchTorrents.isDone();
     }
 }

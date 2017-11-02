@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="414.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar prefHeight="29.0" prefWidth="600.0">
         <menus>
@@ -38,5 +38,6 @@
                </tooltip></Button>
          </children>
       </Pane>
+      <ProgressIndicator fx:id="progressIndicator" layoutX="555.0" layoutY="369.0" progress="0.0" />
    </children>
 </AnchorPane>
