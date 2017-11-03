@@ -1,11 +1,8 @@
 package pg.ui.task;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.text.Text;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.*;
 import pg.util.StringUtils;
@@ -21,10 +18,7 @@ import java.util.concurrent.Executors;
 /** Created by Gawa 2017-10-29 */
 public class MainTask extends Task<Void> {
 
-    private final ProgramMode programMode;
     private final ListView<ReducedDetail> listView;
-    private final Text infoText;
-    private final ProgressIndicator progressIndicator;
     private String imdbId;
 
     private AppTask<List<TorrentDetail>> findTorrentsTask;
@@ -33,76 +27,66 @@ public class MainTask extends Task<Void> {
     private AppTask startTorrents;
     private AppTask writeMatchTorrents;
 
-    public MainTask(ListView<ReducedDetail> listView, Text infoText, ProgressIndicator progressIndicator) {
+    public MainTask(ListView<ReducedDetail> listView) {
         this.listView = listView;
-        this.infoText = infoText;
-        this.progressIndicator = progressIndicator;
-        this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
-    public MainTask(String imdbId, ListView<ReducedDetail> listView, Text infoText, ProgressIndicator progressIndicator) {
-        this.listView = listView;
-        this.infoText = infoText;
-        this.progressIndicator = progressIndicator;
-        this.programMode = ProgramMode.IMDB;
+    public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
     }
 
     @Override
     protected Void call() throws Exception {
+        updateProgress(0, 100);
         ExecutorService executor = Executors.newFixedThreadPool(2);
+        ProgramMode programMode;
         if (StringUtils.nullOrTrimEmpty(imdbId)) {
+            programMode = ProgramMode.ALL_CONCURRENT;
             findTorrentsTask = new AppTask<>(new FindTorrentsCall(), executor);
         } else {
+            programMode = ProgramMode.IMDB;
             findTorrentsTask = new AppTask<>(new FindTorrentsCall(imdbId), executor);
         }
-        updateProgress(30);
-        matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
-        updateProgress(60);
-        updateViewAfterMatch();
+        updateProgress(30, 100);
+        updateMessage("Found torrents");
+
         writeImdbMap = new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
-        updateProgress(65);
+        updateProgress(35, 100);
+        updateMessage("Imdb map stored");
+
+        matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
+        updateProgress(60, 100);
+        updateMessage(messageAfterMatch());
+
         if (!matchTorrents.get().isEmpty()) {
             startTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
-            updateProgress(95);
+            updateProgress(95, 100);
+            updateMessage("Torrents started");
             writeMatchTorrents = new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
-            updateProgress(99);
+            updateProgress(99, 100);
+            updateMessage("Match torrents stored");
         }
-        updateProgress(100);
-        updateViewAfterFinish();
+        updateProgress(100, 100);
+        updateMessage("Done");
 
         return null;
     }
 
-    private void updateProgress(final double progress) {
-        Platform.runLater(() -> progressIndicator.setProgress(progress / 100));
-    }
-
-    private void updateViewAfterMatch() {
-        Platform.runLater(() -> {
-            if (matchTorrents.get().isEmpty()) {
-                listView.setItems(
-                        FXCollections.observableList(Collections.singletonList(ReducedDetail.NOTHING_TO_DISPLAY))
-                );
-            } else {
-                listView.setItems(FXCollections.observableList(matchTorrents.get()));
-            }
-            String message = "No torrents to start.";
-            if (matchTorrents.get().size() == 1) {
-                message = "There is 1 torrents to start.";
-            } else if (matchTorrents.get().size() > 1) {
-                message = String.format("There are %s torrents to start.", matchTorrents.get().size());
-            }
-            infoText.setText(message);
-        });
-    }
-
-    private void updateViewAfterFinish() {
-        Platform.runLater(() -> {
-            if (isStartTorrentsDone()) {
-                infoText.setText("All done.");
-            }
-        });
+    private String messageAfterMatch() {
+        if (matchTorrents.get().isEmpty()) {
+            listView.setItems(
+                    FXCollections.observableList(Collections.singletonList(ReducedDetail.NOTHING_TO_DISPLAY))
+            );
+        } else {
+            listView.setItems(FXCollections.observableList(matchTorrents.get()));
+        }
+        String message = "No torrents to start.";
+        if (matchTorrents.get().size() == 1) {
+            message = "There is 1 torrents to start.";
+        } else if (matchTorrents.get().size() > 1) {
+            message = String.format("There are %s torrents to start.", matchTorrents.get().size());
+        }
+        return message;
     }
 
     public boolean isFindTorrentsTaskDone() {

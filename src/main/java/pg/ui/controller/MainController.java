@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
 import pg.ui.handler.WindowHandler;
 import pg.ui.task.MainTask;
 import pg.util.AppConstants;
@@ -33,11 +32,12 @@ public class MainController extends AbstractController {
     @FXML private Button imdbButton;
     @FXML private ComboBox<String> imdbComboBox;
     @FXML private ListView<ReducedDetail> torrentListView;
-    @FXML private Text infoText;
+    @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
+    private MainTask mainTask;
 
     public MainController(WindowHandler windowHandler) {
         super(windowHandler);
@@ -50,6 +50,8 @@ public class MainController extends AbstractController {
         initializeImdbComboBox();
         setupButtons();
         progressIndicator.setVisible(false);
+        mainTask = new MainTask(torrentListView);
+        //mainTask.messageProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
     }
 
     private void setupMenuItems() {
@@ -84,12 +86,18 @@ public class MainController extends AbstractController {
 
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
-            progressIndicator.setVisible(true);
-            progressIndicator.setProgress(0);
+            resetProperties();
             cancelTask();
-            futureTask = Executors.newSingleThreadExecutor()
-                    .submit(new MainTask(torrentListView, infoText, progressIndicator));
+            futureTask = Executors.newSingleThreadExecutor().submit(mainTask);
         };
+    }
+
+    private void resetProperties() {
+        progressIndicator.setVisible(true);
+        progressIndicator.progressProperty().unbind();
+        progressIndicator.progressProperty().bind(mainTask.progressProperty());
+        infoLabel.textProperty().unbind();
+        infoLabel.textProperty().bind(mainTask.messageProperty());
     }
 
     private void cancelTask() {
@@ -103,17 +111,18 @@ public class MainController extends AbstractController {
         return e -> {
             if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
                 cancelTask();
-                infoText.setText("Please choose imdb id.");
+                infoLabel.setText("Please choose imdb id.");
             } else {
                 cancelTask();
+                resetProperties();
                 String imdbId = existingImdbMap.entrySet()
                         .stream()
                         .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
                         .map(Map.Entry::getKey)
                         .findFirst()
                         .orElse("");
-                futureTask = Executors.newSingleThreadExecutor()
-                        .submit(new MainTask(imdbId, torrentListView, infoText, progressIndicator));
+                mainTask.setImdbId(imdbId);
+                futureTask = Executors.newSingleThreadExecutor().submit(mainTask);
             }
         };
     }
