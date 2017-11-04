@@ -59,15 +59,15 @@ public class MainTask extends Task<Void> {
         updateMessage(messageAfterMatch());
 
         if (!matchTorrents.get().isEmpty()) {
-            startTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
-            updateProgress(95, 100);
-            updateMessage("Torrents started");
             writeMatchTorrents = new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
-            updateProgress(99, 100);
+            updateProgress(65, 100);
             updateMessage("Match torrents stored");
+            startTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
+            updateMessage("Torrents started");
+        } else {
+            updateMessage("No torrents to start");
         }
         updateProgress(100, 100);
-        updateMessage("Done");
 
         return null;
     }
