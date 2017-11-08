@@ -18,7 +18,7 @@ public final class ApplicationPropertiesHelper {
 
     private ApplicationPropertiesHelper() {}
 
-    public static ApplicationPropertiesHelper getInstance() {
+    public synchronized static ApplicationPropertiesHelper getInstance() {
         if (instance == null) {
             instance = new ApplicationPropertiesHelper();
         }
@@ -45,7 +45,7 @@ public final class ApplicationPropertiesHelper {
         return PropertiesHelper.loadDefaultProperties(fileName);
     }
 
-    protected Properties getApplicationProperties() {
+    protected synchronized Properties getApplicationProperties() {
         if (application == null) {
             application = loadApplicationProperties(AppConstants.APPLICATION_PROPERTIES);
         }

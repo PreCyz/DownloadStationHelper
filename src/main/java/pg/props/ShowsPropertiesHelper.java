@@ -14,14 +14,14 @@ public final class ShowsPropertiesHelper {
 
     private ShowsPropertiesHelper() {}
 
-    public static ShowsPropertiesHelper getInstance() {
+    public static synchronized ShowsPropertiesHelper getInstance() {
         if (instance == null) {
             instance = new ShowsPropertiesHelper();
         }
         return instance;
     }
 
-    private Properties getShowsProperties() {
+    private synchronized Properties getShowsProperties() {
         if (shows == null) {
             shows = loadShowsProperties();
         }
