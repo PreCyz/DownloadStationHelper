@@ -28,7 +28,7 @@ public class DuplicateFilter implements Filter {
                     //check for duplicates only when different episodes and seasons
                     if (isDuplicate(torrent, torrentFromList)) {
                         duplicate = true;
-                        if (Integer.valueOf(torrentFromList.getSize()) < Integer.valueOf(torrent.getSize())) {
+                        if (Long.valueOf(torrentFromList.getSize()) < Long.valueOf(torrent.getSize())) {
                             filteredOut.remove(torrentFromList);
                             filteredOut.add(torrent);
                         }
