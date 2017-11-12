@@ -7,7 +7,10 @@ import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.FindTorrentsCall;
 import pg.ui.task.atomic.call.MatchTorrentsCall;
 import pg.ui.task.atomic.call.UpdateImdbMapCall;
+import pg.ui.task.atomic.call.WriteMatchTorrentsCall;
+import pg.ui.task.atomic.call.ds.CreateDSTaskCall;
 import pg.util.StringUtils;
+import pg.web.model.ApiDetails;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
@@ -15,20 +18,26 @@ import pg.web.model.torrent.TorrentDetail;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /** Created by Gawa 2017-10-29 */
-public class FindTask extends Task<List<ReducedDetail>> {
+public class FindTask extends Task<Void> {
 
     private final ListView<ReducedDetail> listView;
+    private final ExecutorService executor;
+    private final String sid;
+    private final ApiDetails downloadStationTask;
     private String imdbId;
+
 
     private AppTask<List<TorrentDetail>> findTorrentsTask;
     private AppTask<List<ReducedDetail>> matchTorrents;
-    private AppTask<Void> writeImdbMap;
 
-    public FindTask(ListView<ReducedDetail> listView) {
+    public FindTask(ListView<ReducedDetail> listView, String sid, ApiDetails downloadStationTask,
+                    ExecutorService executor) {
         this.listView = listView;
+        this.sid = sid;
+        this.downloadStationTask = downloadStationTask;
+        this.executor = executor;
     }
 
     public void setImdbId(String imdbId) {
@@ -36,9 +45,8 @@ public class FindTask extends Task<List<ReducedDetail>> {
     }
 
     @Override
-    protected List<ReducedDetail> call() throws Exception {
+    protected Void call() throws Exception {
         updateProgress(0, 100);
-        ExecutorService executor = Executors.newFixedThreadPool(2);
         ProgramMode programMode;
         if (StringUtils.nullOrTrimEmpty(imdbId)) {
             programMode = ProgramMode.ALL_CONCURRENT;
@@ -50,7 +58,7 @@ public class FindTask extends Task<List<ReducedDetail>> {
         updateProgress(30, 100);
         updateMessage("Found torrents");
 
-        writeImdbMap = new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
+        new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
         updateProgress(35, 100);
         updateMessage("Imdb map stored");
 
@@ -58,7 +66,20 @@ public class FindTask extends Task<List<ReducedDetail>> {
         updateProgress(60, 100);
         updateMessage(messageAfterMatch());
 
-        return matchTorrents.get();
+        if (matchTorrents.get().isEmpty()) {
+            updateMessage("No torrents to start");
+            updateProgress(0, 100);
+            return null;
+        }
+
+        new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
+        updateProgress(65, 100);
+        updateMessage("Match torrents stored");
+        new AppTask<>(new CreateDSTaskCall(sid, matchTorrents.get(), downloadStationTask), executor);
+        updateMessage("Torrents started");
+        updateProgress(100, 100);
+
+        return null;
     }
 
     private String messageAfterMatch() {
@@ -78,15 +99,11 @@ public class FindTask extends Task<List<ReducedDetail>> {
         return message;
     }
 
-    public boolean isFindTorrentsTaskDone() {
-        return findTorrentsTask != null && findTorrentsTask.isDone();
+    public List<ReducedDetail> getMatchTorrents() {
+        return matchTorrents.get();
     }
 
     public boolean isMatchTorrentsDone() {
         return matchTorrents != null && matchTorrents.isDone();
-    }
-
-    public boolean isWriteImdbMapDone() {
-        return writeImdbMap != null && writeImdbMap.isDone();
     }
 }

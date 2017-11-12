@@ -1,11 +1,13 @@
 package pg.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.web.model.torrent.ReducedDetail;
+import pg.web.response.DeleteResponse;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -56,6 +58,20 @@ public class JsonUtils {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
+    }
+
+    public static List<DeleteResponse> convertDeleteResponseFromString(String json) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
+            mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+            mapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
+            return mapper.readValue(json, new TypeReference<List<DeleteResponse>>(){});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage());
+        }
+        return Collections.emptyList();
     }
 
     public static Date dateFromLong(long timestamp) {

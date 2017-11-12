@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
+import pg.ui.task.LoginToDSTask;
+import pg.ui.task.atomic.call.ds.LogoutDSCall;
 import pg.ui.window.AbstractWindow;
 
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class WindowHandlerImpl implements WindowHandler {
     private final Stage primaryStage;
     private ResourceBundle bundle;
     private Window window;
+    private LoginToDSTask loggedInToDs;
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -41,11 +44,19 @@ public class WindowHandlerImpl implements WindowHandler {
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, Locale.getDefault());
     }
 
+    @Override
+    public void setLoggedInToDs(LoginToDSTask loggedInToDs) {
+        this.loggedInToDs = loggedInToDs;
+    }
+
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
-                Platform.exit();
-                System.exit(0);
-            };
+            if (loggedInToDs.isDone()) {
+                new LogoutDSCall(loggedInToDs.getDsApiDetail().getAuthInfo()).call();
+            }
+            Platform.exit();
+            System.exit(0);
+        };
     }
 
     @Override
@@ -99,7 +110,8 @@ public class WindowHandlerImpl implements WindowHandler {
         window.setWidth(window.getWidth() - width);
     }*/
 
-    private void handleException(ProgramException exception) {
+    @Override
+    public void handleException(ProgramException exception) {
         logger.error(exception.getMessage());
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(bundle.getString("program.exception"));

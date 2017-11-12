@@ -1,12 +1,21 @@
 package pg.ui.controller;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import pg.ui.exception.ProgramException;
+import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
+import pg.ui.task.DeleteTask;
 import pg.ui.task.FindTask;
+import pg.ui.task.LoginToDSTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -14,10 +23,8 @@ import pg.web.model.torrent.ReducedDetail;
 
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -37,21 +44,35 @@ public class MainController extends AbstractController {
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
+    private List<ReducedDetail> torrentsToDelete;
+
+    private ExecutorService executor;
     private FindTask findTask;
+    private LoginToDSTask loginToDSTask;
+    private DeleteTask deleteTask;
+
 
     public MainController(WindowHandler windowHandler) {
         super(windowHandler);
+        executor = Executors.newFixedThreadPool(3);
+        loginToDSTask = new LoginToDSTask(executor);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        loginToDiskStation();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
+        setupListView();
         progressIndicator.setVisible(false);
-        findTask = new FindTask(torrentListView);
         //mainTask.messageProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
+    }
+
+    private void loginToDiskStation() {
+        executor.submit(loginToDSTask);
+        windowHandler.setLoggedInToDs(loginToDSTask);
     }
 
     private void setupMenuItems() {
@@ -86,9 +107,19 @@ public class MainController extends AbstractController {
 
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
-            resetProperties();
-            cancelTask();
-            futureTask = Executors.newSingleThreadExecutor().submit(findTask);
+            try {
+                findTask = new FindTask(torrentListView, loginToDSTask.getSid(),
+                        loginToDSTask.getDsApiDetail().getDownloadStationTask(), executor);
+                resetProperties();
+                cancelTask();
+                futureTask = executor.submit(findTask);
+            } catch (Exception ex) {
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex));
+                }
+            }
         };
     }
 
@@ -109,21 +140,61 @@ public class MainController extends AbstractController {
 
     private EventHandler<ActionEvent> imdbButtonAction() {
         return e -> {
-            if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
-                cancelTask();
-                infoLabel.setText("Please choose imdb id.");
-            } else {
-                cancelTask();
-                resetProperties();
-                String imdbId = existingImdbMap.entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
-                        .map(Map.Entry::getKey)
-                        .findFirst()
-                        .orElse("");
-                findTask.setImdbId(imdbId);
-                futureTask = Executors.newSingleThreadExecutor().submit(findTask);
+            try {
+                if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
+                    cancelTask();
+                    infoLabel.setText("Please choose imdb id.");
+                } else {
+                    cancelTask();
+                    resetProperties();
+                    String imdbId = existingImdbMap.entrySet()
+                            .stream()
+                            .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
+                            .map(Map.Entry::getKey)
+                            .findFirst()
+                            .orElse("");
+                    findTask.setImdbId(imdbId);
+                    futureTask = executor.submit(findTask);
+                }
+            } catch (Exception ex) {
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex));
+                }
             }
+        };
+    }
+
+    private void setupListView() {
+        //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
+        torrentListView.setOnKeyTyped(listViewKeyTypedEventHandler());
+        torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
+    }
+
+    private EventHandler<KeyEvent> listViewKeyTypedEventHandler() {
+        return event -> {
+            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())
+                    && !torrentsToDelete.isEmpty()) {
+                deleteTask = new DeleteTask(torrentListView, loginToDSTask.getSid(),
+                        loginToDSTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
+                futureTask = executor.submit(deleteTask);
+            }
+        };
+    }
+
+    private EventHandler<MouseEvent> listViewDoubleClickEvent() {
+        return mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2) {
+                System.out.println("Double clicked");
+            }
+        };
+    }
+
+    private ChangeListener<ReducedDetail> listViewChangeListener() {
+        return (observable, oldValue, newValue) -> {
+            torrentsToDelete = torrentListView.getSelectionModel().getSelectedItems();
         };
     }
 }

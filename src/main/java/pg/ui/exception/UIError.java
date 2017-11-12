@@ -18,5 +18,6 @@ public enum UIError {
     LOGIN_DS,
     CREATE_TASK,
     LIST_OF_TASK,
+    DELETE_TASK,
     ;
 }
