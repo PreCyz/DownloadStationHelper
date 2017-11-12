@@ -1,4 +1,4 @@
-package pg.service;
+package pg.service.ds;
 
 /**Created by Gawa 2017-09-15*/
 public interface DiskStationService {

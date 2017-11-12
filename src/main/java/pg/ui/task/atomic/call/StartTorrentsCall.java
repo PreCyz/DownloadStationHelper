@@ -1,8 +1,8 @@
 package pg.ui.task.atomic.call;
 
 import pg.props.ApplicationPropertiesHelper;
-import pg.service.DiskStationService;
-import pg.service.DiskStationServiceImpl;
+import pg.service.ds.DiskStationService;
+import pg.service.ds.DiskStationServiceImpl;
 import pg.web.model.DSMethod;
 import pg.web.model.torrent.ReducedDetail;
 

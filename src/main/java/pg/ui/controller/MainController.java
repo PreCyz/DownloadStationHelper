@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import pg.ui.handler.WindowHandler;
-import pg.ui.task.MainTask;
+import pg.ui.task.FindTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -37,7 +37,7 @@ public class MainController extends AbstractController {
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
-    private MainTask mainTask;
+    private FindTask findTask;
 
     public MainController(WindowHandler windowHandler) {
         super(windowHandler);
@@ -50,7 +50,7 @@ public class MainController extends AbstractController {
         initializeImdbComboBox();
         setupButtons();
         progressIndicator.setVisible(false);
-        mainTask = new MainTask(torrentListView);
+        findTask = new FindTask(torrentListView);
         //mainTask.messageProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
     }
 
@@ -88,16 +88,16 @@ public class MainController extends AbstractController {
         return e -> {
             resetProperties();
             cancelTask();
-            futureTask = Executors.newSingleThreadExecutor().submit(mainTask);
+            futureTask = Executors.newSingleThreadExecutor().submit(findTask);
         };
     }
 
     private void resetProperties() {
         progressIndicator.setVisible(true);
         progressIndicator.progressProperty().unbind();
-        progressIndicator.progressProperty().bind(mainTask.progressProperty());
+        progressIndicator.progressProperty().bind(findTask.progressProperty());
         infoLabel.textProperty().unbind();
-        infoLabel.textProperty().bind(mainTask.messageProperty());
+        infoLabel.textProperty().bind(findTask.messageProperty());
     }
 
     private void cancelTask() {
@@ -121,8 +121,8 @@ public class MainController extends AbstractController {
                         .map(Map.Entry::getKey)
                         .findFirst()
                         .orElse("");
-                mainTask.setImdbId(imdbId);
-                futureTask = Executors.newSingleThreadExecutor().submit(mainTask);
+                findTask.setImdbId(imdbId);
+                futureTask = Executors.newSingleThreadExecutor().submit(findTask);
             }
         };
     }

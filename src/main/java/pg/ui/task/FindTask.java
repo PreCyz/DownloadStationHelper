@@ -4,7 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.*;
+import pg.ui.task.atomic.call.FindTorrentsCall;
+import pg.ui.task.atomic.call.MatchTorrentsCall;
+import pg.ui.task.atomic.call.UpdateImdbMapCall;
 import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
@@ -16,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Created by Gawa 2017-10-29 */
-public class MainTask extends Task<Void> {
+public class FindTask extends Task<List<ReducedDetail>> {
 
     private final ListView<ReducedDetail> listView;
     private String imdbId;
@@ -24,10 +26,8 @@ public class MainTask extends Task<Void> {
     private AppTask<List<TorrentDetail>> findTorrentsTask;
     private AppTask<List<ReducedDetail>> matchTorrents;
     private AppTask<Void> writeImdbMap;
-    private AppTask startTorrents;
-    private AppTask writeMatchTorrents;
 
-    public MainTask(ListView<ReducedDetail> listView) {
+    public FindTask(ListView<ReducedDetail> listView) {
         this.listView = listView;
     }
 
@@ -36,7 +36,7 @@ public class MainTask extends Task<Void> {
     }
 
     @Override
-    protected Void call() throws Exception {
+    protected List<ReducedDetail> call() throws Exception {
         updateProgress(0, 100);
         ExecutorService executor = Executors.newFixedThreadPool(2);
         ProgramMode programMode;
@@ -58,18 +58,7 @@ public class MainTask extends Task<Void> {
         updateProgress(60, 100);
         updateMessage(messageAfterMatch());
 
-        if (!matchTorrents.get().isEmpty()) {
-            writeMatchTorrents = new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
-            updateProgress(65, 100);
-            updateMessage("Match torrents stored");
-            startTorrents = new AppTask<>(new StartTorrentsCall(matchTorrents.get()), executor);
-            updateMessage("Torrents started");
-        } else {
-            updateMessage("No torrents to start");
-        }
-        updateProgress(100, 100);
-
-        return null;
+        return matchTorrents.get();
     }
 
     private String messageAfterMatch() {
@@ -99,13 +88,5 @@ public class MainTask extends Task<Void> {
 
     public boolean isWriteImdbMapDone() {
         return writeImdbMap != null && writeImdbMap.isDone();
-    }
-
-    public boolean isStartTorrentsDone() {
-        return startTorrents != null && startTorrents.isDone();
-    }
-
-    public boolean isWriteMatchTorrentsDone() {
-        return writeMatchTorrents != null && writeMatchTorrents.isDone();
     }
 }

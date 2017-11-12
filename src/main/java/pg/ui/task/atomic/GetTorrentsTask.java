@@ -2,6 +2,8 @@ package pg.ui.task.atomic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.ui.exception.ProgramException;
+import pg.ui.exception.UIError;
 import pg.ui.task.atomic.call.GetTorrentsCall;
 
 import java.util.concurrent.Executor;
@@ -32,9 +34,9 @@ public class GetTorrentsTask {
     public String getResponse() {
         try {
             return task.get();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("Error when getting response for {}", url, e);
-            throw new RuntimeException(e);
+            throw new ProgramException(UIError.GET_TORRENTS, e);
         }
     }
 }
