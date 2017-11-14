@@ -125,6 +125,10 @@ public final class ApplicationPropertiesHelper {
         return getApplicationProperties().getProperty(SettingKeys.TORRENT_RELEASE_DATE.key(), "");
     }
 
+    public Integer getApiVersion() {
+        return Integer.valueOf(getApplicationProperties().getProperty(SettingKeys.API_VERSION.key(), "0"));
+    }
+
     public void extractUsername(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.USERNAME.key())) {
             return;
@@ -173,9 +177,17 @@ public final class ApplicationPropertiesHelper {
     }
 
     public void store(ConfigBuilder configBuilder) throws IOException {
-        PropertiesHelper.storeApplicationProperties(configBuilder.createConfig());
+        storeApplicationProperties(configBuilder.createConfig());
+    }
+
+    private void storeApplicationProperties(Properties config) throws IOException {
+        PropertiesHelper.storeApplicationProperties(config);
         instance = null;
         application = null;
     }
 
+    public void storeApiVersion(String apiVersion) throws IOException {
+        application.setProperty(SettingKeys.API_VERSION.key(), apiVersion);
+        storeApplicationProperties(application);
+    }
 }

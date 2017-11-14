@@ -11,6 +11,7 @@ public enum SettingKeys {
     SERVER_URL("synology.server.url"),
     SERVER_PORT("synology.server.port"),
     API_INFO("synology.api.info"),
+    API_VERSION("synology.api.version"),
     DESTINATION("synology.download.folder"),
     TORRENT_URL_TYPE("torrent.url.type"),
     CREATION_METHOD("task.creation.method"),
