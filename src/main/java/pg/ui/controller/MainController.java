@@ -13,9 +13,9 @@ import javafx.scene.input.MouseEvent;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
+import pg.ui.task.AvailableOperationTask;
 import pg.ui.task.DeleteTask;
 import pg.ui.task.FindTask;
-import pg.ui.task.LoginToDSTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -48,20 +48,19 @@ public class MainController extends AbstractController {
 
     private ExecutorService executor;
     private FindTask findTask;
-    private LoginToDSTask loginToDSTask;
+    private AvailableOperationTask availableOperationTask;
     private DeleteTask deleteTask;
-
 
     public MainController(WindowHandler windowHandler) {
         super(windowHandler);
         executor = Executors.newFixedThreadPool(3);
-        loginToDSTask = new LoginToDSTask(executor);
+        availableOperationTask = new AvailableOperationTask(executor);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        loginToDiskStation();
+        getAvailableOperation();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
@@ -70,9 +69,9 @@ public class MainController extends AbstractController {
         //mainTask.messageProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
     }
 
-    private void loginToDiskStation() {
-        executor.submit(loginToDSTask);
-        windowHandler.setLoggedInToDs(loginToDSTask);
+    private void getAvailableOperation() {
+        executor.submit(availableOperationTask);
+        windowHandler.setAvailableOperationTask(availableOperationTask);
     }
 
     private void setupMenuItems() {
@@ -108,8 +107,7 @@ public class MainController extends AbstractController {
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
             try {
-                findTask = new FindTask(torrentListView, loginToDSTask.getSid(),
-                        loginToDSTask.getDsApiDetail().getDownloadStationTask(), executor);
+                findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
                 resetProperties();
                 cancelTask();
                 futureTask = executor.submit(findTask);
@@ -180,8 +178,8 @@ public class MainController extends AbstractController {
                 return;
             }
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
-                deleteTask = new DeleteTask(torrentListView, loginToDSTask.getSid(),
-                        loginToDSTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
+                deleteTask = new DeleteTask(torrentListView, findTask.getLoginSid(),
+                        availableOperationTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
                 futureTask = executor.submit(deleteTask);
             }
         };

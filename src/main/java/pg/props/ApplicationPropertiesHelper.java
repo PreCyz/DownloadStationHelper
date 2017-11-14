@@ -180,7 +180,7 @@ public final class ApplicationPropertiesHelper {
         storeApplicationProperties(configBuilder.createConfig());
     }
 
-    private void storeApplicationProperties(Properties config) throws IOException {
+    private synchronized void storeApplicationProperties(Properties config) throws IOException {
         PropertiesHelper.storeApplicationProperties(config);
         instance = null;
         application = null;

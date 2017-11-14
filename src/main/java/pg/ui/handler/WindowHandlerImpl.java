@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
+import pg.ui.task.AvailableOperationTask;
 import pg.ui.task.LoginToDSTask;
 import pg.ui.task.atomic.call.ds.LogoutDSCall;
 import pg.ui.window.AbstractWindow;
@@ -37,6 +38,7 @@ public class WindowHandlerImpl implements WindowHandler {
     private ResourceBundle bundle;
     private Window window;
     private LoginToDSTask loggedInToDs;
+    private AvailableOperationTask availableOperationTask;
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -47,6 +49,11 @@ public class WindowHandlerImpl implements WindowHandler {
     @Override
     public void setLoggedInToDs(LoginToDSTask loggedInToDs) {
         this.loggedInToDs = loggedInToDs;
+    }
+
+    @Override
+    public void setAvailableOperationTask(AvailableOperationTask availableOperationTask) {
+        this.availableOperationTask = availableOperationTask;
     }
 
     private EventHandler<WindowEvent> onCloseEventHandler() {

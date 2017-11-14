@@ -9,9 +9,10 @@ import pg.ui.task.atomic.call.MatchTorrentsCall;
 import pg.ui.task.atomic.call.UpdateImdbMapCall;
 import pg.ui.task.atomic.call.WriteMatchTorrentsCall;
 import pg.ui.task.atomic.call.ds.CreateDSTaskCall;
+import pg.ui.task.atomic.call.ds.DsApiDetail;
 import pg.ui.task.atomic.call.ds.ListOfDSTaskCall;
+import pg.ui.task.atomic.call.ds.LoginDSCall;
 import pg.util.StringUtils;
-import pg.web.model.ApiDetails;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
@@ -27,47 +28,33 @@ public class FindTask extends Task<Void> {
 
     private final ListView<DSTask> listView;
     private final ExecutorService executor;
-    private final String sid;
-    private final ApiDetails downloadStationTask;
+    private final DsApiDetail dsApiDetail;
+    private ProgramMode programMode;
     private String imdbId;
 
     private AppTask<List<ReducedDetail>> matchTorrents;
     private AppTask<TaskListDetail> listOfTasks;
+    private AppTask<String> loginToDsTask;
 
-    public FindTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask,
-                    ExecutorService executor) {
+    public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, ExecutorService executor) {
         this.listView = listView;
-        this.sid = sid;
-        this.downloadStationTask = downloadStationTask;
+        this.dsApiDetail = dsApiDetail;
         this.executor = executor;
+        this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
+        this.programMode = ProgramMode.IMDB;
     }
 
     @Override
     protected Void call() throws Exception {
         updateProgress(0, 100);
-        ProgramMode programMode;
-        AppTask<List<TorrentDetail>> findTorrentsTask;
-        if (StringUtils.nullOrTrimEmpty(imdbId)) {
-            programMode = ProgramMode.ALL_CONCURRENT;
-            findTorrentsTask = new AppTask<>(new FindTorrentsCall(), executor);
-        } else {
-            programMode = ProgramMode.IMDB;
-            findTorrentsTask = new AppTask<>(new FindTorrentsCall(imdbId), executor);
-        }
-        updateProgress(30, 100);
-        updateMessage("Found torrents");
 
-        new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
-        updateProgress(35, 100);
-        updateMessage("Imdb map stored");
-
-        matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
-        updateProgress(60, 100);
-        updateMessage(messageAfterMatch());
+        AppTask<List<TorrentDetail>> findTorrentsTask = findTorrents();
+        updateImdbMap(findTorrentsTask);
+        matchTorrents(findTorrentsTask);
 
         if (matchTorrents.get().isEmpty()) {
             updateMessage("No torrents to start");
@@ -78,25 +65,71 @@ public class FindTask extends Task<Void> {
             return null;
         }
 
+        writeMatchTorrents();
+        loginToDiskStation();
+        createTasks();
+        getListOfTasks();
+
+        updateMessage("Torrents started. Pick torrents and press DEL to delete.");
+        updateProgress(100, 100);
+        return null;
+    }
+
+    private AppTask<List<TorrentDetail>> findTorrents() {
+        AppTask<List<TorrentDetail>> findTorrentsTask;
+        if (StringUtils.nullOrTrimEmpty(imdbId)) {
+            findTorrentsTask = new AppTask<>(new FindTorrentsCall(), executor);
+        } else {
+            findTorrentsTask = new AppTask<>(new FindTorrentsCall(imdbId), executor);
+        }
+        updateProgress(30, 100);
+        updateMessage("Found torrents");
+        return findTorrentsTask;
+    }
+
+    private void updateImdbMap(AppTask<List<TorrentDetail>> findTorrentsTask) {
+        new AppTask<>(new UpdateImdbMapCall(findTorrentsTask.get()), executor);
+        updateProgress(35, 100);
+        updateMessage("Imdb map stored");
+    }
+
+    private void matchTorrents(AppTask<List<TorrentDetail>> findTorrentsTask) {
+        matchTorrents = new AppTask<>(new MatchTorrentsCall(programMode, findTorrentsTask.get()), executor);
+        updateProgress(60, 100);
+        updateMessage(messageAfterMatch());
+    }
+
+    private void writeMatchTorrents() {
         new AppTask<>(new WriteMatchTorrentsCall(matchTorrents.get()), executor);
         updateProgress(65, 100);
         updateMessage("Match torrents stored");
+    }
+
+    private void loginToDiskStation() {
+        loginToDsTask = new AppTask<>(new LoginDSCall(dsApiDetail.getAuthInfo()), executor);
+        updateProgress(70, 100);
+        updateMessage("Login to DS done.");
+    }
+
+    private void createTasks() throws InterruptedException {
         AppTask<Void> createTasks = new AppTask<>(
-                new CreateDSTaskCall(sid, matchTorrents.get(), downloadStationTask), executor);
+                new CreateDSTaskCall(loginToDsTask.get(), matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
+                executor
+        );
         updateMessage("Torrents started");
         updateProgress(99, 99);
 
         while (!createTasks.isDone()) {
             Thread.sleep(100);
         }
+    }
 
-        listOfTasks = new AppTask<>(new ListOfDSTaskCall(sid, downloadStationTask), executor);
+    private void getListOfTasks() {
+        listOfTasks = new AppTask<>(
+                new ListOfDSTaskCall(loginToDsTask.get(), dsApiDetail.getDownloadStationTask()),
+                executor
+        );
         listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks()));
-
-        updateMessage("Torrents started. Pick torrents and press DEL to delete.");
-        updateProgress(100, 100);
-
-        return null;
     }
 
     private String messageAfterMatch() {
@@ -115,6 +148,10 @@ public class FindTask extends Task<Void> {
 
     public TaskListDetail getTaskListDetail() {
         return listOfTasks.get();
+    }
+
+    public String getLoginSid() {
+        return loginToDsTask.get();
     }
 
     public boolean isMatchTorrentsDone() {

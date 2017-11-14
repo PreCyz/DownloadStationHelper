@@ -59,6 +59,8 @@ final class PropertiesHelper {
         final String filePath = String.format("%s%s%s", settingsDirPath, File.separator, fileName);
         Writer writer = new FileWriter(new File(filePath));
         String comments = "User configuration changed.";
-        properties.store(writer, comments);
+        synchronized (PropertiesHelper.class) {
+            properties.store(writer, comments);
+        }
     }
 }
