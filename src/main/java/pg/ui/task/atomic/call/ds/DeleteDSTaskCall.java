@@ -7,17 +7,20 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.response.DeleteItem;
 import pg.web.response.DeleteResponse;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class DeleteDSTaskCall extends DSBasic implements Callable<Void> {
+public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> {
 
     private final String sid;
     private final List<DSTask> tasksToDelete;
@@ -31,38 +34,38 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<Void> {
     }
 
     @Override
-    public Void call() {
-        createDownloadStationTasks();
-        return null;
+    public List<String> call() {
+        return createDownloadStationTasks();
     }
 
-    private void createDownloadStationTasks() {
+    private List<String> createDownloadStationTasks() {
         String requestUrl = buildCreateTaskUrl();
         logger.info("RestURL: '{}'.", requestUrl);
 
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            List<DeleteResponse> deleteResponse = JsonUtils.convertDeleteResponseFromString(response.get());
-            if (!deleteResponse.isEmpty()) {
-                for(DeleteResponse detail : deleteResponse) {
-                    Optional<DSTask> dsTask = tasksToDelete.stream()
-                            .filter(task -> task.getId().equals(detail.getId()))
-                            .findFirst();
-                    if (detail.getError() == 0) {
-                        dsTask.ifPresent(task->logger.info("Task '{}' deleted.", task.getTitle()));
+            Optional<DeleteResponse> deleteResponse = JsonUtils.convertFromString(response.get(), DeleteResponse.class);
+            if (deleteResponse.isPresent() && deleteResponse.get().isSuccess()) {
+                List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getData).get();
+                List<String> result = new ArrayList<>();
+                for (DeleteItem item : deleteItems) {
+                    if (item.getError() == 0) {
+                        logger.info("Task '{}' deleted.", item.getId());
+                        result.add(item.getId());
                     } else {
-                        final String logMsg = String.format("Task '{}' deleted with error %d - %s.",
-                                detail.getError(),
-                                DSError.getTaskError(detail.getError()));
-                        dsTask.ifPresent(task->logger.info(logMsg, task.getTitle()));
+                        final String logMsg = String.format("Task '%s' not deleted. Error %d - %s.", item.getId(),
+                                item.getError(), DSError.getTaskError(item.getError()));
+                        logger.info(logMsg);
                     }
                 }
+                return result;
             } else {
                 throw new ProgramException(UIError.DELETE_TASK,
-                        new IllegalArgumentException("Task creation with error. No details."));
+                        new RuntimeException("Task creation with error. No details."));
             }
         }
+        return Collections.emptyList();
     }
 
     private String buildCreateTaskUrl() {
@@ -73,8 +76,8 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<Void> {
                 "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
                 "version=" + downloadStationTask.getMaxVersion() + "&" +
                 "method=" + DSTaskMethod.DELETE.method() + "&" +
-                "id=" + id +
-                "_sid=" + sid + "&" +
-                "force_complete=true";
+                "id=" + id + "&" +
+                "force_complete=true&" +
+                "_sid=" + sid;
     }
 }

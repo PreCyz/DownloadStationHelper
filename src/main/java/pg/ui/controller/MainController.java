@@ -19,7 +19,7 @@ import pg.ui.task.LoginToDSTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
-import pg.web.model.torrent.ReducedDetail;
+import pg.web.response.detail.DSTask;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -38,13 +38,13 @@ public class MainController extends AbstractController {
     @FXML private Button allButton;
     @FXML private Button imdbButton;
     @FXML private ComboBox<String> imdbComboBox;
-    @FXML private ListView<ReducedDetail> torrentListView;
+    @FXML private ListView<DSTask> torrentListView;
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
-    private List<ReducedDetail> torrentsToDelete;
+    private List<DSTask> torrentsToDelete;
 
     private ExecutorService executor;
     private FindTask findTask;
@@ -168,15 +168,18 @@ public class MainController extends AbstractController {
 
     private void setupListView() {
         //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
-        torrentListView.setOnKeyTyped(listViewKeyTypedEventHandler());
+        //torrentListView.setOnKeyTyped(listViewKeyReleasedEventHandler());
+        torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
         torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
     }
 
-    private EventHandler<KeyEvent> listViewKeyTypedEventHandler() {
+    private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
         return event -> {
-            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())
-                    && !torrentsToDelete.isEmpty()) {
+            if (torrentsToDelete.isEmpty()) {
+                return;
+            }
+            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
                 deleteTask = new DeleteTask(torrentListView, loginToDSTask.getSid(),
                         loginToDSTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
                 futureTask = executor.submit(deleteTask);
@@ -192,7 +195,7 @@ public class MainController extends AbstractController {
         };
     }
 
-    private ChangeListener<ReducedDetail> listViewChangeListener() {
+    private ChangeListener<DSTask> listViewChangeListener() {
         return (observable, oldValue, newValue) -> {
             torrentsToDelete = torrentListView.getSelectionModel().getSelectedItems();
         };

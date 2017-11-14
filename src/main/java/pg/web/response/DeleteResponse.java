@@ -1,23 +1,17 @@
 package pg.web.response;
 
+import java.util.List;
+
 /** Created by Gawa 2017-11-12 */
 public class DeleteResponse {
-    private int error;
-    private String id;
+    private List<DeleteItem> data;
+    private boolean success;
 
-    public int getError() {
-        return error;
+    public List<DeleteItem> getData() {
+        return data;
     }
 
-    public void setError(int error) {
-        this.error = error;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public boolean isSuccess() {
+        return success;
     }
 }

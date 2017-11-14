@@ -11,6 +11,14 @@ public class DSTask {
     private String type;
     private String username;
 
+    public final static DSTask NOTHING_TO_DISPLAY = new DSTask("Nothing to display");
+
+    public DSTask() {}
+
+    private DSTask(String title) {
+        this.title = title;
+    }
+
     public String getId() {
         return id;
     }
@@ -33,5 +41,10 @@ public class DSTask {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }
