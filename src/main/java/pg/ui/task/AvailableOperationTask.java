@@ -1,6 +1,8 @@
 package pg.ui.task;
 
 import javafx.concurrent.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.ds.AvailableOperationDSCall;
@@ -11,11 +13,13 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class AvailableOperationTask extends Task<Void> {
 
+    private final ExecutorService executor;
+    private final Logger logger;
     private AppTask<DsApiDetail> availableOperation;
-    private ExecutorService executor;
 
     public AvailableOperationTask(ExecutorService executor) {
         this.executor = executor;
+        this.logger = LogManager.getLogger(getClass());
     }
 
     @Override
@@ -26,6 +30,7 @@ public class AvailableOperationTask extends Task<Void> {
         if (application.getApiVersion() == 0) {
             int maxVersion = dsApiDetail.getAuthInfo().getMaxVersion();
             application.storeApiVersion(String.valueOf(maxVersion));
+            logger.info("Current Disk Station API version '{}' stored in application.properties", maxVersion);
         }
         return null;
     }
@@ -33,6 +38,4 @@ public class AvailableOperationTask extends Task<Void> {
     public DsApiDetail getDsApiDetail() {
         return availableOperation == null ? null : availableOperation.get();
     }
-
-
 }
