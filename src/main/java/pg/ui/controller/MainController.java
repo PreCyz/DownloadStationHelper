@@ -2,6 +2,7 @@ package pg.ui.controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -107,9 +108,9 @@ public class MainController extends AbstractController {
     private EventHandler<ActionEvent> allButtonAction() {
         return e -> {
             try {
-                findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
-                resetProperties();
                 cancelTask();
+                findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
+                resetProperties(findTask);
                 futureTask = executor.submit(findTask);
             } catch (Exception ex) {
                 if (ex instanceof ProgramException) {
@@ -121,12 +122,12 @@ public class MainController extends AbstractController {
         };
     }
 
-    private void resetProperties() {
+    private void resetProperties(Task task) {
         progressIndicator.setVisible(true);
         progressIndicator.progressProperty().unbind();
-        progressIndicator.progressProperty().bind(findTask.progressProperty());
+        progressIndicator.progressProperty().bind(task.progressProperty());
         infoLabel.textProperty().unbind();
-        infoLabel.textProperty().bind(findTask.messageProperty());
+        infoLabel.textProperty().bind(task.messageProperty());
     }
 
     private void cancelTask() {
@@ -144,7 +145,7 @@ public class MainController extends AbstractController {
                     infoLabel.setText("Please choose imdb id.");
                 } else {
                     cancelTask();
-                    resetProperties();
+                    resetProperties(findTask);
                     String imdbId = existingImdbMap.entrySet()
                             .stream()
                             .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
@@ -180,6 +181,7 @@ public class MainController extends AbstractController {
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
                 deleteTask = new DeleteTask(torrentListView, findTask.getLoginSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
+                resetProperties(deleteTask);
                 futureTask = executor.submit(deleteTask);
             }
         };
