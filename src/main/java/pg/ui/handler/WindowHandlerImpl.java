@@ -58,7 +58,7 @@ public class WindowHandlerImpl implements WindowHandler {
 
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
-            if (loggedInToDs.isDone()) {
+            if (loggedInToDs != null && loggedInToDs.isDone()) {
                 new LogoutDSCall(loggedInToDs.getDsApiDetail().getAuthInfo()).call();
             }
             Platform.exit();
