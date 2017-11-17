@@ -36,7 +36,8 @@
                </tooltip></Button>
          </children>
       </Pane>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="554.0" layoutY="367.0" progress="0.0" />
-      <Label fx:id="infoLabel" layoutX="12.0" layoutY="369.0" prefHeight="29.0" prefWidth="503.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="496.0" layoutY="367.0" progress="0.0" />
+      <Label fx:id="infoLabel" layoutX="12.0" layoutY="369.0" prefHeight="29.0" prefWidth="455.0" />
+      <Pane fx:id="connectionPane" layoutX="547.0" layoutY="365.0" prefHeight="43.0" prefWidth="43.0" />
    </children>
 </AnchorPane>

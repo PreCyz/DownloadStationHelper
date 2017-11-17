@@ -7,10 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import pg.props.ApplicationPropertiesHelper;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
@@ -22,6 +25,7 @@ import pg.util.JsonUtils;
 import pg.util.StringUtils;
 import pg.web.response.detail.DSTask;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -42,6 +46,7 @@ public class MainController extends AbstractController {
     @FXML private ListView<DSTask> torrentListView;
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
+    @FXML private Pane connectionPane;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -51,26 +56,47 @@ public class MainController extends AbstractController {
     private FindTask findTask;
     private AvailableOperationTask availableOperationTask;
     private DeleteTask deleteTask;
+    private ApplicationPropertiesHelper application;
 
     public MainController(WindowHandler windowHandler) {
         super(windowHandler);
         executor = Executors.newFixedThreadPool(3);
-        availableOperationTask = new AvailableOperationTask(executor);
+        application = ApplicationPropertiesHelper.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        setupConnectingPane();
         getAvailableOperation();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
         setupListView();
         progressIndicator.setVisible(false);
-        //mainTask.messageProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
+    }
+
+    private void setupConnectingPane() {
+        String connectingGif = String.format("%sconnecting.gif", AppConstants.IMG_RESOURCE_PATH);
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(connectingGif);
+        Image image = new Image(resourceAsStream);
+        Background background = new Background(
+                new BackgroundImage(
+                        image,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT
+                )
+        );
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText(String.format("Connecting to %s ...", application.getServerUrl()));
+        connectionPane.setBackground(background);
     }
 
     private void getAvailableOperation() {
+        availableOperationTask = new AvailableOperationTask(executor, connectionPane);
+        resetProperties(availableOperationTask);
         executor.submit(availableOperationTask);
         windowHandler.setAvailableOperationTask(availableOperationTask);
     }
