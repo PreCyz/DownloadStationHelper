@@ -67,18 +67,17 @@ public class MainController extends AbstractController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        progressIndicator.setVisible(false);
         setupConnectingPane();
-        getAvailableOperation();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
         setupListView();
-        progressIndicator.setVisible(false);
+        getAvailableOperation();
     }
 
     private void setupConnectingPane() {
-        String connectingGif = String.format("%sconnecting.gif", AppConstants.IMG_RESOURCE_PATH);
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(connectingGif);
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTING_GIF);
         Image image = new Image(resourceAsStream);
         Background background = new Background(
                 new BackgroundImage(

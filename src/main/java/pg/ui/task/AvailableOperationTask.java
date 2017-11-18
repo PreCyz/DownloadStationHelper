@@ -40,7 +40,6 @@ public class AvailableOperationTask extends Task<Void> {
         setConnectedImg();
         updateMessage("Connected");
         logger.info("Connected.");
-        //Platform.runLater(this::setConnectedImg);
         return null;
     }
 
@@ -59,15 +58,22 @@ public class AvailableOperationTask extends Task<Void> {
     }
 
     private void setConnectedImg() {
-        String connectingGif = String.format("%sconnected.gif", AppConstants.IMG_RESOURCE_PATH);
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(connectingGif);
-        BackgroundSize backgroundSize = new BackgroundSize(43, 43, false, false, false, false);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTED_GIF);
+        BackgroundSize backgroundSize = new BackgroundSize(
+                connectionPane.getWidth(),
+                connectionPane.getHeight(),
+                false,
+                false,
+                false,
+                false
+        );
         BackgroundImage backgroundImage = new BackgroundImage(
                 new Image(inputStream),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                backgroundSize);
+                backgroundSize
+        );
         Background background = new Background(backgroundImage);
         Tooltip tooltip = new Tooltip();
         tooltip.setText(String.format("Connection with %s established.", application.getServerUrl()));
