@@ -1,17 +1,16 @@
 package pg.web.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** Created by Gawa 2017-11-12 */
-public class DeleteResponse {
-    private List<DeleteItem> data;
-    private boolean success;
+public class DeleteResponse extends GeneralResponse {
 
-    public List<DeleteItem> getData() {
-        return data;
-    }
+    @JsonProperty("data")
+    private List<DeleteItem> deletedItems;
 
-    public boolean isSuccess() {
-        return success;
+    public List<DeleteItem> getDeletedItems() {
+        return deletedItems;
     }
 }

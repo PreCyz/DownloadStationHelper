@@ -5,6 +5,7 @@ import pg.web.response.detail.TaskListDetail;
 
 /**Created by Gawa on 27/08/17.*/
 public class TaskListResponse extends GeneralResponse {
+
     @JsonProperty("data")
     private TaskListDetail taskListDetail;
 

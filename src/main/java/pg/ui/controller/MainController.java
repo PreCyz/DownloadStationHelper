@@ -67,13 +67,13 @@ public class MainController extends AbstractController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        progressIndicator.setVisible(false);
         setupConnectingPane();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
         setupListView();
         getAvailableOperation();
+        progressIndicator.setVisible(false);
     }
 
     private void setupConnectingPane() {
@@ -96,7 +96,7 @@ public class MainController extends AbstractController {
     private void getAvailableOperation() {
         availableOperationTask = new AvailableOperationTask(executor, connectionPane);
         resetProperties(availableOperationTask);
-        executor.submit(availableOperationTask);
+        futureTask = executor.submit(availableOperationTask);
         windowHandler.setAvailableOperationTask(availableOperationTask);
     }
 
@@ -204,9 +204,14 @@ public class MainController extends AbstractController {
                 return;
             }
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
-                deleteTask = new DeleteTask(torrentListView, findTask.getLoginSid(),
-                        availableOperationTask.getDsApiDetail().getDownloadStationTask(), torrentsToDelete, executor);
+                deleteTask = new DeleteTask(
+                        findTask.getLoginSid(),
+                        availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                        torrentsToDelete,
+                        executor
+                );
                 resetProperties(deleteTask);
+                torrentListView.itemsProperty().bind(deleteTask.dsTaskList());
                 futureTask = executor.submit(deleteTask);
             }
         };

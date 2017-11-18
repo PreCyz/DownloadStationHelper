@@ -47,7 +47,7 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> 
         if (response.isPresent()) {
             Optional<DeleteResponse> deleteResponse = JsonUtils.convertFromString(response.get(), DeleteResponse.class);
             if (deleteResponse.isPresent() && deleteResponse.get().isSuccess()) {
-                List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getData).get();
+                List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getDeletedItems).get();
                 List<String> result = new ArrayList<>();
                 for (DeleteItem item : deleteItems) {
                     if (item.getError() == 0) {
@@ -77,7 +77,7 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> 
                 "version=" + downloadStationTask.getMaxVersion() + "&" +
                 "method=" + DSTaskMethod.DELETE.method() + "&" +
                 "id=" + id + "&" +
-                "force_complete=true&" +
+                //"force_complete=true&" +
                 "_sid=" + sid;
     }
 }

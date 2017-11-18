@@ -1,8 +1,10 @@
 package pg.ui.task;
 
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.ListView;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.ds.DeleteDSTaskCall;
 import pg.ui.task.atomic.call.ds.ListOfDSTaskCall;
@@ -18,15 +20,14 @@ import java.util.concurrent.ExecutorService;
  */
 public class DeleteTask extends Task<Void> {
 
-    private final ListView<DSTask> listView;
     private final ExecutorService executor;
     private final String sid;
     private final ApiDetails downloadStationTask;
     private final List<DSTask> torrentsToDelete;
+    private ObservableList<DSTask> dsTasks;
 
-    public DeleteTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask,
-                      List<DSTask> torrentsToDelete, ExecutorService executor) {
-        this.listView = listView;
+    public DeleteTask(String sid, ApiDetails downloadStationTask, List<DSTask> torrentsToDelete,
+                      ExecutorService executor) {
         this.torrentsToDelete = torrentsToDelete;
         this.executor = executor;
         this.sid = sid;
@@ -38,8 +39,12 @@ public class DeleteTask extends Task<Void> {
         new AppTask<>(new DeleteDSTaskCall(sid, torrentsToDelete, downloadStationTask), executor);
 
         AppTask<TaskListDetail> listOfTasks = new AppTask<>(new ListOfDSTaskCall(sid, downloadStationTask), executor);
-        listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks()));
+        dsTasks = FXCollections.observableList(listOfTasks.get().getTasks());
 
         return null;
+    }
+
+    public ObservableValue<ObservableList<DSTask>> dsTaskList() {
+        return new SimpleListProperty<>(dsTasks);
     }
 }
