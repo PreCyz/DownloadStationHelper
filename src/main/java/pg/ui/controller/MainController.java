@@ -170,14 +170,15 @@ public class MainController extends AbstractController {
                     infoLabel.setText("Please choose imdb id.");
                 } else {
                     cancelTask();
-                    resetProperties(findTask);
                     String imdbId = existingImdbMap.entrySet()
                             .stream()
                             .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
                             .map(Map.Entry::getKey)
                             .findFirst()
                             .orElse("");
+                    findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
                     findTask.setImdbId(imdbId);
+                    resetProperties(findTask);
                     futureTask = executor.submit(findTask);
                 }
             } catch (Exception ex) {
@@ -205,13 +206,13 @@ public class MainController extends AbstractController {
             }
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
                 deleteTask = new DeleteTask(
+                        torrentListView,
                         findTask.getLoginSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                         torrentsToDelete,
                         executor
                 );
                 resetProperties(deleteTask);
-                torrentListView.itemsProperty().bind(deleteTask.dsTaskList());
                 futureTask = executor.submit(deleteTask);
             }
         };
@@ -227,7 +228,8 @@ public class MainController extends AbstractController {
 
     private ChangeListener<DSTask> listViewChangeListener() {
         return (observable, oldValue, newValue) -> {
-            torrentsToDelete = torrentListView.getSelectionModel().getSelectedItems();
+            torrentsToDelete = new ArrayList<>();
+            torrentsToDelete.addAll(torrentListView.getSelectionModel().getSelectedItems());
         };
     }
 }

@@ -12,7 +12,6 @@ import pg.web.response.DeleteResponse;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> {
+public class DeleteDSTaskCall extends DSBasic implements Callable<List<DeleteItem>> {
 
     private final String sid;
     private final List<DSTask> tasksToDelete;
@@ -34,11 +33,11 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> 
     }
 
     @Override
-    public List<String> call() {
-        return createDownloadStationTasks();
+    public List<DeleteItem> call() {
+        return deleteDownloadStationTasks();
     }
 
-    private List<String> createDownloadStationTasks() {
+    private List<DeleteItem> deleteDownloadStationTasks() {
         String requestUrl = buildCreateTaskUrl();
         logger.info("RestURL: '{}'.", requestUrl);
 
@@ -48,19 +47,18 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> 
             Optional<DeleteResponse> deleteResponse = JsonUtils.convertFromString(response.get(), DeleteResponse.class);
             if (deleteResponse.isPresent() && deleteResponse.get().isSuccess()) {
                 List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getDeletedItems).get();
-                List<String> result = new ArrayList<>();
                 for (DeleteItem item : deleteItems) {
                     if (item.getError() == 0) {
                         logger.info("Task '{}' deleted.", item.getId());
-                        result.add(item.getId());
                     } else {
                         final String logMsg = String.format("Task '%s' not deleted. Error %d - %s.", item.getId(),
                                 item.getError(), DSError.getTaskError(item.getError()));
                         logger.info(logMsg);
                     }
                 }
-                return result;
+                return deleteItems;
             } else {
+                logger.error(DSError.getTaskError(deleteResponse.get().getError().getCode()));
                 throw new ProgramException(UIError.DELETE_TASK,
                         new RuntimeException("Task creation with error. No details."));
             }
@@ -77,7 +75,7 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<String>> 
                 "version=" + downloadStationTask.getMaxVersion() + "&" +
                 "method=" + DSTaskMethod.DELETE.method() + "&" +
                 "id=" + id + "&" +
-                //"force_complete=true&" +
+                "force_complete=false&" +
                 "_sid=" + sid;
     }
 }

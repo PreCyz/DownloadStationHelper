@@ -1,5 +1,6 @@
 package pg.ui.task;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
@@ -59,9 +60,13 @@ public class FindTask extends Task<Void> {
         if (matchTorrents.get().isEmpty()) {
             updateMessage("No torrents to start");
             updateProgress(100, 100);
-            listView.setItems(
-                    FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY))
-            );
+            if (Platform.isFxApplicationThread()) {
+                listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)));
+            } else {
+                Platform.runLater(() ->
+                        listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)))
+                );
+            }
             return null;
         }
 
