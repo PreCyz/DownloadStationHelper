@@ -27,7 +27,7 @@ dependencies {
 
 }
 
-def buildVersion = '2.0'
+def buildVersion = '2.1'
 def jarName = "DSHelper-$buildVersion"
 def jarNameFx = "DSHelper-FX-$buildVersion"
 def fxMainClassName = 'pg.FXMain'
