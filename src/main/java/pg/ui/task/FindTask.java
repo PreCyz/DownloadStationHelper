@@ -36,6 +36,7 @@ public class FindTask extends Task<Void> {
     private AppTask<List<ReducedDetail>> matchTorrents;
     private AppTask<TaskListDetail> listOfTasks;
     private AppTask<String> loginToDsTask;
+    private String sid;
 
     public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, ExecutorService executor) {
         this.listView = listView;
@@ -117,8 +118,9 @@ public class FindTask extends Task<Void> {
     }
 
     private void createTasks() throws InterruptedException {
+        sid = loginToDsTask.get();
         AppTask<Void> createTasks = new AppTask<>(
-                new CreateDSTaskCall(loginToDsTask.get(), matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
+                new CreateDSTaskCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
                 executor
         );
         updateMessage("Torrents started");
@@ -147,19 +149,7 @@ public class FindTask extends Task<Void> {
         return message;
     }
 
-    public List<ReducedDetail> getMatchTorrents() {
-        return matchTorrents.get();
-    }
-
-    public TaskListDetail getTaskListDetail() {
-        return listOfTasks.get();
-    }
-
     public String getLoginSid() {
-        return loginToDsTask.get();
-    }
-
-    public boolean isMatchTorrentsDone() {
-        return matchTorrents != null && matchTorrents.isDone();
+        return sid;
     }
 }

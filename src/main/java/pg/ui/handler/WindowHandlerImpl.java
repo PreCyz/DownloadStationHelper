@@ -18,8 +18,7 @@ import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
-import pg.ui.task.AvailableOperationTask;
-import pg.ui.task.LoginToDSTask;
+import pg.ui.task.atomic.call.ds.DsApiDetail;
 import pg.ui.task.atomic.call.ds.LogoutDSCall;
 import pg.ui.window.AbstractWindow;
 
@@ -37,8 +36,7 @@ public class WindowHandlerImpl implements WindowHandler {
     private final Stage primaryStage;
     private ResourceBundle bundle;
     private Window window;
-    private LoginToDSTask loggedInToDs;
-    private AvailableOperationTask availableOperationTask;
+    private DsApiDetail dsApiDetail;
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -47,19 +45,14 @@ public class WindowHandlerImpl implements WindowHandler {
     }
 
     @Override
-    public void setLoggedInToDs(LoginToDSTask loggedInToDs) {
-        this.loggedInToDs = loggedInToDs;
-    }
-
-    @Override
-    public void setAvailableOperationTask(AvailableOperationTask availableOperationTask) {
-        this.availableOperationTask = availableOperationTask;
+    public void setDsApiDetail(DsApiDetail dsApiDetail) {
+        this.dsApiDetail = dsApiDetail;
     }
 
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
-            if (loggedInToDs != null && loggedInToDs.isDone()) {
-                new LogoutDSCall(loggedInToDs.getDsApiDetail().getAuthInfo()).call();
+            if (dsApiDetail != null) {
+                new LogoutDSCall(dsApiDetail.getAuthInfo()).call();
             }
             Platform.exit();
             System.exit(0);

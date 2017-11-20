@@ -97,7 +97,6 @@ public class MainController extends AbstractController {
         availableOperationTask = new AvailableOperationTask(executor, connectionPane);
         resetProperties(availableOperationTask);
         futureTask = executor.submit(availableOperationTask);
-        windowHandler.setAvailableOperationTask(availableOperationTask);
     }
 
     private void setupMenuItems() {
@@ -137,6 +136,7 @@ public class MainController extends AbstractController {
                 findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
+                windowHandler.setDsApiDetail(availableOperationTask.getDsApiDetail());
             } catch (Exception ex) {
                 if (ex instanceof ProgramException) {
                     windowHandler.handleException((ProgramException) ex);
@@ -180,6 +180,7 @@ public class MainController extends AbstractController {
                     findTask.setImdbId(imdbId);
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
+                    windowHandler.setDsApiDetail(availableOperationTask.getDsApiDetail());
                 }
             } catch (Exception ex) {
                 if (ex instanceof ProgramException) {
@@ -193,7 +194,6 @@ public class MainController extends AbstractController {
 
     private void setupListView() {
         //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
-        //torrentListView.setOnKeyTyped(listViewKeyReleasedEventHandler());
         torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
         torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
