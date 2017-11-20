@@ -37,6 +37,7 @@ public class WindowHandlerImpl implements WindowHandler {
     private ResourceBundle bundle;
     private Window window;
     private DsApiDetail dsApiDetail;
+    private boolean isLoggedIn;
 
     public WindowHandlerImpl(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -51,8 +52,10 @@ public class WindowHandlerImpl implements WindowHandler {
 
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
-            if (dsApiDetail != null) {
+            if (isLoggedIn) {
                 new LogoutDSCall(dsApiDetail.getAuthInfo()).call();
+            } else {
+                logger.info("Logout from disk station is not needed.");
             }
             Platform.exit();
             System.exit(0);
@@ -139,5 +142,10 @@ public class WindowHandlerImpl implements WindowHandler {
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
         alert.showAndWait();
+    }
+
+    @Override
+    public void logoutOnExit() {
+        isLoggedIn = true;
     }
 }

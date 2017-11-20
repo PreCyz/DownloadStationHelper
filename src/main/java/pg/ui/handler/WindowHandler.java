@@ -12,4 +12,6 @@ public interface WindowHandler {
     void launchShowWindow();
     Window currentWindow();
     void handleException(ProgramException exception);
+
+    void logoutOnExit();
 }

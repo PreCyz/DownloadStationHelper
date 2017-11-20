@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
+import pg.ui.handler.WindowHandler;
 import pg.ui.task.atomic.AppTask;
 import pg.ui.task.atomic.call.FindTorrentsCall;
 import pg.ui.task.atomic.call.MatchTorrentsCall;
@@ -30,18 +31,19 @@ public class FindTask extends Task<Void> {
     private final ListView<DSTask> listView;
     private final ExecutorService executor;
     private final DsApiDetail dsApiDetail;
+    private final WindowHandler windowHandler;
     private ProgramMode programMode;
     private String imdbId;
 
     private AppTask<List<ReducedDetail>> matchTorrents;
-    private AppTask<TaskListDetail> listOfTasks;
     private AppTask<String> loginToDsTask;
     private String sid;
 
-    public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, ExecutorService executor) {
+    public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, WindowHandler windowHandler, ExecutorService executor) {
         this.listView = listView;
         this.dsApiDetail = dsApiDetail;
         this.executor = executor;
+        this.windowHandler = windowHandler;
         this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
@@ -115,6 +117,8 @@ public class FindTask extends Task<Void> {
         loginToDsTask = new AppTask<>(new LoginDSCall(dsApiDetail.getAuthInfo()), executor);
         updateProgress(70, 100);
         updateMessage("Login to DS done.");
+        windowHandler.logoutOnExit();
+        windowHandler.setDsApiDetail(dsApiDetail);
     }
 
     private void createTasks() throws InterruptedException {
@@ -132,11 +136,16 @@ public class FindTask extends Task<Void> {
     }
 
     private void getListOfTasks() {
-        listOfTasks = new AppTask<>(
+        AppTask<TaskListDetail> listOfTasks = new AppTask<>(
                 new ListOfDSTaskCall(loginToDsTask.get(), dsApiDetail.getDownloadStationTask()),
                 executor
         );
-        listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks()));
+        if (Platform.isFxApplicationThread()) {
+            listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks()));
+        } else {
+            Platform.runLater(() -> listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks())));
+        }
+
     }
 
     private String messageAfterMatch() {

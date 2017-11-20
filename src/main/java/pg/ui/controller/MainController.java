@@ -133,10 +133,14 @@ public class MainController extends AbstractController {
         return e -> {
             try {
                 cancelTask();
-                findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
+                findTask = new FindTask(
+                        torrentListView,
+                        availableOperationTask.getDsApiDetail(),
+                        windowHandler,
+                        executor
+                );
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
-                windowHandler.setDsApiDetail(availableOperationTask.getDsApiDetail());
             } catch (Exception ex) {
                 if (ex instanceof ProgramException) {
                     windowHandler.handleException((ProgramException) ex);
@@ -176,11 +180,14 @@ public class MainController extends AbstractController {
                             .map(Map.Entry::getKey)
                             .findFirst()
                             .orElse("");
-                    findTask = new FindTask(torrentListView, availableOperationTask.getDsApiDetail(), executor);
+                    findTask = new FindTask(
+                            torrentListView,
+                            availableOperationTask.getDsApiDetail(),
+                            windowHandler, executor
+                    );
                     findTask.setImdbId(imdbId);
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
-                    windowHandler.setDsApiDetail(availableOperationTask.getDsApiDetail());
                 }
             } catch (Exception ex) {
                 if (ex instanceof ProgramException) {
