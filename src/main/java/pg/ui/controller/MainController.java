@@ -17,10 +17,7 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
-import pg.ui.task.AvailableOperationTask;
-import pg.ui.task.CleanTask;
-import pg.ui.task.DeleteTask;
-import pg.ui.task.FindTask;
+import pg.ui.task.*;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -57,6 +54,7 @@ public class MainController extends AbstractController {
     private FindTask findTask;
     private AvailableOperationTask availableOperationTask;
     private DeleteTask deleteTask;
+    private ListTask listTask;
     private ApplicationPropertiesHelper application;
 
     public MainController(WindowHandler windowHandler) {
@@ -140,6 +138,7 @@ public class MainController extends AbstractController {
                         windowHandler,
                         executor
                 );
+                findTask.setSid(extractSid());
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
             } catch (Exception ex) {
@@ -187,6 +186,7 @@ public class MainController extends AbstractController {
                             windowHandler, executor
                     );
                     findTask.setImdbId(imdbId);
+                    findTask.setSid(extractSid());
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
                 }
@@ -209,13 +209,24 @@ public class MainController extends AbstractController {
 
     private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
         return event -> {
-            if (torrentsToDelete.isEmpty()) {
+            if (KeyCode.L == event.getCode()) {
+                listTask = new ListTask(
+                        torrentListView,
+                        availableOperationTask.getDsApiDetail(),
+                        windowHandler,
+                        executor
+                );
+                listTask.setSid(extractSid());
+                resetProperties(listTask);
+                futureTask = executor.submit(listTask);
+            }
+            if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
                 return;
             }
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
                 deleteTask = new DeleteTask(
                         torrentListView,
-                        findTask.getLoginSid(),
+                        extractSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                         torrentsToDelete,
                         executor
@@ -225,15 +236,39 @@ public class MainController extends AbstractController {
             } else if (KeyCode.C == event.getCode()) {
                 deleteTask = new CleanTask(
                         torrentListView,
-                        findTask.getLoginSid(),
+                        extractSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                         torrentsToDelete,
                         executor
                 );
                 resetProperties(deleteTask);
                 futureTask = executor.submit(deleteTask);
+            } else if (KeyCode.L == event.getCode()) {
+                listTask = new ListTask(
+                        torrentListView,
+                        availableOperationTask.getDsApiDetail(),
+                        windowHandler,
+                        executor
+                );
+                listTask.setSid(extractSid());
+                resetProperties(listTask);
+                futureTask = executor.submit(listTask);
             }
         };
+    }
+
+    private String extractSid() {
+        String sid = null;
+        if (findTask != null) {
+            sid = findTask.getLoginSid();
+        }
+        if (sid != null) {
+            return sid;
+        }
+        if (listTask != null) {
+            sid = listTask.getLoginSid();
+        }
+        return sid;
     }
 
     private EventHandler<MouseEvent> listViewDoubleClickEvent() {

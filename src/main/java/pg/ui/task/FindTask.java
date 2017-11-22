@@ -2,7 +2,6 @@ package pg.ui.task;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import pg.ui.handler.WindowHandler;
 import pg.ui.task.atomic.AppTask;
@@ -12,38 +11,26 @@ import pg.ui.task.atomic.call.UpdateImdbMapCall;
 import pg.ui.task.atomic.call.WriteMatchTorrentsCall;
 import pg.ui.task.atomic.call.ds.CreateDSTaskCall;
 import pg.ui.task.atomic.call.ds.DsApiDetail;
-import pg.ui.task.atomic.call.ds.ListOfDSTaskCall;
-import pg.ui.task.atomic.call.ds.LoginDSCall;
 import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.detail.DSTask;
-import pg.web.response.detail.TaskListDetail;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /** Created by Gawa 2017-10-29 */
-public class FindTask extends Task<Void> {
+public class FindTask extends ListTask {
 
-    private final ListView<DSTask> listView;
-    private final ExecutorService executor;
-    private final DsApiDetail dsApiDetail;
-    private final WindowHandler windowHandler;
     private ProgramMode programMode;
     private String imdbId;
 
     private AppTask<List<ReducedDetail>> matchTorrents;
-    private AppTask<String> loginToDsTask;
-    private String sid;
 
     public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, WindowHandler windowHandler, ExecutorService executor) {
-        this.listView = listView;
-        this.dsApiDetail = dsApiDetail;
-        this.executor = executor;
-        this.windowHandler = windowHandler;
+        super(listView, dsApiDetail, windowHandler, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
@@ -74,11 +61,13 @@ public class FindTask extends Task<Void> {
         }
 
         writeMatchTorrents();
-        loginToDiskStation();
+        if (sid == null) {
+            loginToDiskStation();
+        }
         createTasks();
         getListOfTasks();
 
-        updateMessage("Torrents started. Pick torrents and press DEL to delete.");
+        updateMessage("Torrents started.");
         updateProgress(100, 100);
         return null;
     }
@@ -113,16 +102,7 @@ public class FindTask extends Task<Void> {
         updateMessage("Match torrents stored");
     }
 
-    private void loginToDiskStation() {
-        loginToDsTask = new AppTask<>(new LoginDSCall(dsApiDetail.getAuthInfo()), executor);
-        updateProgress(70, 100);
-        updateMessage("Login to DS done.");
-        windowHandler.logoutOnExit();
-        windowHandler.setDsApiDetail(dsApiDetail);
-    }
-
     private void createTasks() throws InterruptedException {
-        sid = loginToDsTask.get();
         AppTask<Void> createTasks = new AppTask<>(
                 new CreateDSTaskCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
                 executor
@@ -135,19 +115,6 @@ public class FindTask extends Task<Void> {
         }
     }
 
-    private void getListOfTasks() {
-        AppTask<TaskListDetail> listOfTasks = new AppTask<>(
-                new ListOfDSTaskCall(loginToDsTask.get(), dsApiDetail.getDownloadStationTask()),
-                executor
-        );
-        if (Platform.isFxApplicationThread()) {
-            listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks()));
-        } else {
-            Platform.runLater(() -> listView.setItems(FXCollections.observableList(listOfTasks.get().getTasks())));
-        }
-
-    }
-
     private String messageAfterMatch() {
         String message = "No torrents to start.";
         if (matchTorrents.get().size() == 1) {
@@ -156,9 +123,5 @@ public class FindTask extends Task<Void> {
             message = String.format("There are %s torrents to start.", matchTorrents.get().size());
         }
         return message;
-    }
-
-    public String getLoginSid() {
-        return sid;
     }
 }
