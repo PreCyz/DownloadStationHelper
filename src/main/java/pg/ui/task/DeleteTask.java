@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 /** Created by Gawa 2017-10-29 */
 public class DeleteTask extends Task<Void> {
 
-    private final ExecutorService executor;
-    private final String sid;
-    private final ApiDetails downloadStationTask;
-    private final List<DSTask> torrentsToDelete;
-    private final Logger logger;
+    protected final ExecutorService executor;
+    protected final String sid;
+    protected final ApiDetails downloadStationTask;
+    protected final List<DSTask> torrentsToDelete;
+    protected final Logger logger;
     private final ListView<DSTask> listView;
 
     public DeleteTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask,
@@ -44,7 +44,7 @@ public class DeleteTask extends Task<Void> {
     protected Void call() throws Exception {
         updateProgress(0, 5);
 
-        AppTask<List<DeleteItem>> deleteTask = deleteTasks();
+        AppTask<List<DeleteItem>> deleteTask = executeDSTasks();
 
         ObservableList<DSTask> dsTasks = getListOfTasks();
         updateListView(dsTasks);
@@ -64,7 +64,7 @@ public class DeleteTask extends Task<Void> {
         return null;
     }
 
-    private AppTask<List<DeleteItem>> deleteTasks() throws InterruptedException {
+    protected AppTask<List<DeleteItem>> executeDSTasks() throws InterruptedException {
         AppTask<List<DeleteItem>> deleteTask = new AppTask<>(
                 new DeleteDSTaskCall(sid, torrentsToDelete, downloadStationTask),
                 executor

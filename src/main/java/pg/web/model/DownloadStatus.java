@@ -11,5 +11,5 @@ public enum DownloadStatus {
     seeding,
     filehosting_waiting,
     extracting,
-    error;
+    error
 }

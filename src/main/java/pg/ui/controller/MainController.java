@@ -18,6 +18,7 @@ import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.handler.WindowHandler;
 import pg.ui.task.AvailableOperationTask;
+import pg.ui.task.CleanTask;
 import pg.ui.task.DeleteTask;
 import pg.ui.task.FindTask;
 import pg.util.AppConstants;
@@ -213,6 +214,16 @@ public class MainController extends AbstractController {
             }
             if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
                 deleteTask = new DeleteTask(
+                        torrentListView,
+                        findTask.getLoginSid(),
+                        availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                        torrentsToDelete,
+                        executor
+                );
+                resetProperties(deleteTask);
+                futureTask = executor.submit(deleteTask);
+            } else if (KeyCode.C == event.getCode()) {
+                deleteTask = new CleanTask(
                         torrentListView,
                         findTask.getLoginSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(),

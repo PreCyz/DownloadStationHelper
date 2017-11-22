@@ -45,6 +45,9 @@ public class DSTask {
 
     @Override
     public String toString() {
+        if (status != null) {
+            return String.format("%s [%s]", title, status);
+        }
         return title;
     }
 }

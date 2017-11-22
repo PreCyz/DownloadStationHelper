@@ -21,15 +21,17 @@ import java.util.stream.Collectors;
 /** Created by Gawa 2017-11-11 */
 public class DeleteDSTaskCall extends DSBasic implements Callable<List<DeleteItem>> {
 
-    private final String sid;
-    private final List<DSTask> tasksToDelete;
-    private final ApiDetails downloadStationTask;
+    protected final String sid;
+    protected final List<DSTask> tasksToDelete;
+    protected final ApiDetails downloadStationTask;
+    protected String operation;
 
     public DeleteDSTaskCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.tasksToDelete = tasksToDelete;
         this.downloadStationTask = downloadStationTask;
+        this.operation = "deleted";
     }
 
     @Override
@@ -49,9 +51,9 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<DeleteIte
                 List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getDeletedItems).get();
                 for (DeleteItem item : deleteItems) {
                     if (item.getError() == 0) {
-                        logger.info("Task '{}' deleted.", item.getId());
+                        logger.info("Task '{}' {}.", item.getId(), operation);
                     } else {
-                        final String logMsg = String.format("Task '%s' not deleted. Error %d - %s.", item.getId(),
+                        final String logMsg = String.format("Task '%s' not %s. Error %d - %s.", item.getId(), operation,
                                 item.getError(), DSError.getTaskError(item.getError()));
                         logger.info(logMsg);
                     }
@@ -60,13 +62,13 @@ public class DeleteDSTaskCall extends DSBasic implements Callable<List<DeleteIte
             } else {
                 logger.error(DSError.getTaskError(deleteResponse.get().getError().getCode()));
                 throw new ProgramException(UIError.DELETE_TASK,
-                        new RuntimeException("Task creation with error. No details."));
+                        new RuntimeException(String.format("Task [%s] with error. No details.", operation)));
             }
         }
         return Collections.emptyList();
     }
 
-    private String buildCreateTaskUrl() {
+    protected String buildCreateTaskUrl() {
         String id = String.join(",", tasksToDelete.stream().map(DSTask::getId).collect(Collectors.toList()));
 
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
