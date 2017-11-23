@@ -90,8 +90,12 @@ public class DeleteTask extends Task<Void> {
     private void updateListView(ObservableList<DSTask> dsTasks) {
         if (Platform.isFxApplicationThread()) {
             listView.setItems(dsTasks);
+            listView.requestFocus();
         } else {
-            Platform.runLater(() -> listView.setItems(dsTasks));
+            Platform.runLater(() -> {
+                listView.setItems(dsTasks);
+                listView.requestFocus();
+            });
         }
         updateProgress(3, 5);
     }

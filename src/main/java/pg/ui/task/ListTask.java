@@ -73,10 +73,13 @@ public class ListTask extends Task<Void> {
         }
         if (Platform.isFxApplicationThread()) {
             listView.setItems(FXCollections.observableList(tasks));
+            listView.requestFocus();
         } else {
-            Platform.runLater(() -> listView.setItems(FXCollections.observableList(tasks)));
+            Platform.runLater(() -> {
+                listView.setItems(FXCollections.observableList(tasks));
+                listView.requestFocus();
+            });
         }
-
     }
 
     public String getLoginSid() {

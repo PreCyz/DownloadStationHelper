@@ -52,10 +52,12 @@ public class FindTask extends ListTask {
             updateProgress(100, 100);
             if (Platform.isFxApplicationThread()) {
                 listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)));
+                listView.requestFocus();
             } else {
-                Platform.runLater(() ->
-                        listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)))
-                );
+                Platform.runLater(() -> {
+                    listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)));
+                    listView.requestFocus();
+                });
             }
             return null;
         }

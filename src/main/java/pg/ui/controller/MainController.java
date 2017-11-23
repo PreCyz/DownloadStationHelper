@@ -204,6 +204,7 @@ public class MainController extends AbstractController {
         torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
         torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
+        torrentListView.requestFocus();
     }
 
     private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
