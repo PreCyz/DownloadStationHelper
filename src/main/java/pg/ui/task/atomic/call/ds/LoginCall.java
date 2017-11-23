@@ -14,12 +14,12 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class LoginDSCall extends DSBasic implements Callable<String> {
+public class LoginCall extends BasicCall implements Callable<String> {
 
     private final ApiDetails authInfo;
     private String sid;
 
-    public LoginDSCall(ApiDetails authInfo) {
+    public LoginCall(ApiDetails authInfo) {
         super();
         this.authInfo = authInfo;
     }

@@ -2,9 +2,9 @@ package pg.ui.task;
 
 import javafx.concurrent.Task;
 import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.AvailableOperationDSCall;
-import pg.ui.task.atomic.call.ds.DsApiDetail;
-import pg.ui.task.atomic.call.ds.LoginDSCall;
+import pg.ui.task.atomic.call.ds.AvailableOperationCall;
+import pg.ui.task.atomic.call.ds.LoginCall;
+import pg.web.response.detail.DsApiDetail;
 
 import java.util.concurrent.ExecutorService;
 
@@ -21,8 +21,8 @@ public class LoginToDSTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        availableOperation = new AppTask<>(new AvailableOperationDSCall(), executor);
-        loginToDs = new AppTask<>(new LoginDSCall(availableOperation.get().getAuthInfo()), executor);
+        availableOperation = new AppTask<>(new AvailableOperationCall(), executor);
+        loginToDs = new AppTask<>(new LoginCall(availableOperation.get().getAuthInfo()), executor);
         loginToDs.get();
         return null;
     }

@@ -6,18 +6,18 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.web.model.AllowedProtocol;
 
 /** Created by Gawa 2017-11-11 */
-public class DSBasic {
+public class BasicCall {
 
     protected final Logger logger;
     protected final ApplicationPropertiesHelper application;
     private static String serverUrl;
 
-    public DSBasic() {
+    public BasicCall() {
         this.logger = LogManager.getLogger(this.getClass());
         this.application = ApplicationPropertiesHelper.getInstance();
     }
 
-    String prepareServerUrl() {
+    protected String prepareServerUrl() {
         if (serverUrl != null) {
             return serverUrl;
         }

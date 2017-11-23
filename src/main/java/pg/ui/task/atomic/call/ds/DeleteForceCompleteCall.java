@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class CleanDSTaskCall extends DeleteDSTaskCall {
+public class DeleteForceCompleteCall extends DeleteCall {
 
-    public CleanDSTaskCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
+    public DeleteForceCompleteCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
         super(sid, tasksToDelete, downloadStationTask);
         this.operation = "cleaned";
     }

@@ -2,7 +2,7 @@ package pg.ui.task;
 
 import javafx.scene.control.ListView;
 import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.CleanDSTaskCall;
+import pg.ui.task.atomic.call.ds.DeleteForceCompleteCall;
 import pg.web.model.ApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
@@ -25,7 +25,7 @@ public class CleanTask extends DeleteTask {
     @Override
     protected AppTask<List<DeleteItem>> executeDSTasks() throws InterruptedException {
         AppTask<List<DeleteItem>> deleteTask = new AppTask<>(
-                new CleanDSTaskCall(sid, torrentsToDelete, downloadStationTask),
+                new DeleteForceCompleteCall(sid, torrentsToDelete, downloadStationTask),
                 executor
         );
         updateProgress(1, 5);

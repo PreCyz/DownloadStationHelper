@@ -8,9 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.AvailableOperationDSCall;
-import pg.ui.task.atomic.call.ds.DsApiDetail;
+import pg.ui.task.atomic.call.ds.AvailableOperationCall;
 import pg.util.AppConstants;
+import pg.web.response.detail.DsApiDetail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +44,7 @@ public class AvailableOperationTask extends Task<Void> {
     }
 
     private DsApiDetail getAvailableOperations() {
-        availableOperation = new AppTask<>(new AvailableOperationDSCall(), executor);
+        availableOperation = new AppTask<>(new AvailableOperationCall(), executor);
         return availableOperation.get();
     }
 

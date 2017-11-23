@@ -19,14 +19,14 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class DeleteDSTaskCall extends DSBasic implements Callable<List<DeleteItem>> {
+public class DeleteCall extends BasicCall implements Callable<List<DeleteItem>> {
 
     protected final String sid;
     protected final List<DSTask> tasksToDelete;
     protected final ApiDetails downloadStationTask;
     protected String operation;
 
-    public DeleteDSTaskCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
+    public DeleteCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.tasksToDelete = tasksToDelete;

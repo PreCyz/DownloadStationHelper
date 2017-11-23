@@ -8,8 +8,8 @@ import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.DeleteDSTaskCall;
-import pg.ui.task.atomic.call.ds.ListOfDSTaskCall;
+import pg.ui.task.atomic.call.ds.DeleteCall;
+import pg.ui.task.atomic.call.ds.ListOfTaskCall;
 import pg.web.model.ApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
@@ -66,7 +66,7 @@ public class DeleteTask extends Task<Void> {
 
     protected AppTask<List<DeleteItem>> executeDSTasks() throws InterruptedException {
         AppTask<List<DeleteItem>> deleteTask = new AppTask<>(
-                new DeleteDSTaskCall(sid, torrentsToDelete, downloadStationTask),
+                new DeleteCall(sid, torrentsToDelete, downloadStationTask),
                 executor
         );
         updateProgress(1, 5);
@@ -79,7 +79,7 @@ public class DeleteTask extends Task<Void> {
     }
 
     private ObservableList<DSTask> getListOfTasks() {
-        AppTask<TaskListDetail> listOfTasks = new AppTask<>(new ListOfDSTaskCall(sid, downloadStationTask), executor);
+        AppTask<TaskListDetail> listOfTasks = new AppTask<>(new ListOfTaskCall(sid, downloadStationTask), executor);
         ObservableList<DSTask> dsTasks = FXCollections.observableList(listOfTasks.get().getTasks());
         if (dsTasks.isEmpty()) {
             dsTasks.add(DSTask.NOTHING_TO_DISPLAY);

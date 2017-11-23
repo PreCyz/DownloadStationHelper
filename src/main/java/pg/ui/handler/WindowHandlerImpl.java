@@ -18,9 +18,9 @@ import org.apache.logging.log4j.Logger;
 import pg.factory.WindowFactory;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
-import pg.ui.task.atomic.call.ds.DsApiDetail;
-import pg.ui.task.atomic.call.ds.LogoutDSCall;
+import pg.ui.task.atomic.call.ds.LogoutCall;
 import pg.ui.window.AbstractWindow;
+import pg.web.response.detail.DsApiDetail;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -53,7 +53,7 @@ public class WindowHandlerImpl implements WindowHandler {
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
             if (isLoggedIn) {
-                new LogoutDSCall(dsApiDetail.getAuthInfo()).call();
+                new LogoutCall(dsApiDetail.getAuthInfo()).call();
             } else {
                 logger.info("Logout from disk station is not needed.");
             }

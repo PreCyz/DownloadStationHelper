@@ -223,7 +223,7 @@ public class MainController extends AbstractController {
             if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
                 return;
             }
-            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
+            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
                 deleteTask = new DeleteTask(
                         torrentListView,
                         extractSid(),

@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class LogoutDSCall extends DSBasic implements Callable<Void> {
+public class LogoutCall extends BasicCall implements Callable<Void> {
 
     private ApiDetails authInfo;
 
-    public LogoutDSCall(ApiDetails authInfo) {
+    public LogoutCall(ApiDetails authInfo) {
         super();
         this.authInfo = authInfo;
     }

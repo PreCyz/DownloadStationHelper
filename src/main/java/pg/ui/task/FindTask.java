@@ -9,13 +9,13 @@ import pg.ui.task.atomic.call.FindTorrentsCall;
 import pg.ui.task.atomic.call.MatchTorrentsCall;
 import pg.ui.task.atomic.call.UpdateImdbMapCall;
 import pg.ui.task.atomic.call.WriteMatchTorrentsCall;
-import pg.ui.task.atomic.call.ds.CreateDSTaskCall;
-import pg.ui.task.atomic.call.ds.DsApiDetail;
+import pg.ui.task.atomic.call.ds.CreateCall;
 import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.detail.DSTask;
+import pg.web.response.detail.DsApiDetail;
 
 import java.util.Collections;
 import java.util.List;
@@ -104,7 +104,7 @@ public class FindTask extends ListTask {
 
     private void createTasks() throws InterruptedException {
         AppTask<Void> createTasks = new AppTask<>(
-                new CreateDSTaskCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
+                new CreateCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
                 executor
         );
         updateMessage("Torrents started");

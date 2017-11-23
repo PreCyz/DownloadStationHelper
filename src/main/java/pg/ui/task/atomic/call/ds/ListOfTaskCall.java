@@ -14,12 +14,12 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class ListOfDSTaskCall extends DSBasic implements Callable<TaskListDetail> {
+public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail> {
 
     private final String sid;
     private final ApiDetails downloadStationTask;
 
-    public ListOfDSTaskCall(String sid, ApiDetails downloadStationTask) {
+    public ListOfTaskCall(String sid, ApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.downloadStationTask = downloadStationTask;

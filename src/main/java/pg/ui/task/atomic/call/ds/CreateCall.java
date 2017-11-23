@@ -19,13 +19,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class CreateDSTaskCall extends DSBasic implements Callable<Void> {
+public class CreateCall extends BasicCall implements Callable<Void> {
 
     private final String sid;
     private final List<ReducedDetail> matchTorrents;
     private final ApiDetails downloadStationTask;
 
-    public CreateDSTaskCall(String sid, List<ReducedDetail> matchTorrents, ApiDetails downloadStationTask) {
+    public CreateCall(String sid, List<ReducedDetail> matchTorrents, ApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.matchTorrents = matchTorrents;

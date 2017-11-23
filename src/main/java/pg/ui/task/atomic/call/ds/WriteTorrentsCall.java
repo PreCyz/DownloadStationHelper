@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class WriteTorrentsOnDSCall extends DSBasic implements Callable<Void> {
+public class WriteTorrentsCall extends BasicCall implements Callable<Void> {
 
     private final List<ReducedDetail> matchTorrents;
 
-    public WriteTorrentsOnDSCall(List<ReducedDetail> matchTorrents) {
+    public WriteTorrentsCall(List<ReducedDetail> matchTorrents) {
         super();
         this.matchTorrents = matchTorrents;
     }

@@ -3,16 +3,17 @@ package pg.ui.task.atomic.call.ds;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.response.SynologyResponse;
+import pg.web.response.detail.DsApiDetail;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class AvailableOperationDSCall extends DSBasic implements Callable<DsApiDetail> {
+public class AvailableOperationCall extends BasicCall implements Callable<DsApiDetail> {
 
     private DsApiDetail dsApiDetail;
 
-    public AvailableOperationDSCall() {
+    public AvailableOperationCall() {
         super();
         this.dsApiDetail = new DsApiDetail();
     }

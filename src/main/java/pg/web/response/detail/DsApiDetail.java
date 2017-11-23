@@ -1,4 +1,4 @@
-package pg.ui.task.atomic.call.ds;
+package pg.web.response.detail;
 
 import pg.web.model.ApiDetails;
 
