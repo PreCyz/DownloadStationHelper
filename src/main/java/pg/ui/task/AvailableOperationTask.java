@@ -1,7 +1,6 @@
 package pg.ui.task;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
@@ -75,8 +74,6 @@ public class AvailableOperationTask extends Task<Void> {
                 backgroundSize
         );
         Background background = new Background(backgroundImage);
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText(String.format("Connection with %s established.", application.getServerUrl()));
         connectionPane.setBackground(background);
     }
 

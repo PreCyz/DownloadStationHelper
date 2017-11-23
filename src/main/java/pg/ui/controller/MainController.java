@@ -76,19 +76,18 @@ public class MainController extends AbstractController {
     }
 
     private void setupConnectingPane() {
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTING_GIF);
-        Image image = new Image(resourceAsStream);
-        Background background = new Background(
-                new BackgroundImage(
-                        image,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundPosition.CENTER,
-                        BackgroundSize.DEFAULT
-                )
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTING_GIF);
+        double width = 4 * connectionPane.getWidth();
+        double height = 4 * connectionPane.getHeight();
+        BackgroundSize backgroundSize = new BackgroundSize(width, height, false, false, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage(
+                new Image(inputStream),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                backgroundSize
         );
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText(String.format("Connecting to %s ...", application.getServerUrl()));
+        Background background = new Background(backgroundImage);
         connectionPane.setBackground(background);
     }
 

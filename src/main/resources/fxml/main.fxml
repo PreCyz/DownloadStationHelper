@@ -36,12 +36,12 @@
                </tooltip></Button>
          </children>
       </Pane>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="496.0" layoutY="367.0" progress="0.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="502.0" layoutY="367.0" progress="0.0" />
       <Label fx:id="infoLabel" layoutX="12.0" layoutY="369.0" prefHeight="37.0" prefWidth="455.0" wrapText="true" />
-      <Pane fx:id="connectionPane" layoutX="547.0" layoutY="365.0" prefHeight="43.0" prefWidth="43.0" />
-      <Label layoutX="88.0" layoutY="108.0" prefHeight="15.0" prefWidth="57.0" style="-fx-text-fill: navy;" text="%config.shortcut.clean" />
-      <Label layoutX="155.0" layoutY="108.0" prefHeight="15.0" prefWidth="97.0" style="-fx-text-fill: navy;" text="%config.shortcut.delete" />
-      <Label layoutX="262.0" layoutY="108.0" prefHeight="15.0" prefWidth="97.0" style="-fx-text-fill: navy;" text="%config.shortcut.list" />
+      <Pane fx:id="connectionPane" layoutX="554.0" layoutY="369.0" prefHeight="35.0" prefWidth="35.0" />
+      <Label layoutX="88.0" layoutY="108.0" prefHeight="15.0" prefWidth="136.0" style="-fx-text-fill: navy;" text="%config.shortcut.clean" />
+      <Label layoutX="233.0" layoutY="108.0" prefHeight="15.0" prefWidth="145.0" style="-fx-text-fill: navy;" text="%config.shortcut.delete" />
+      <Label layoutX="387.0" layoutY="108.0" prefHeight="15.0" prefWidth="97.0" style="-fx-text-fill: navy;" text="%config.shortcut.list" />
       <Label layoutX="12.0" layoutY="108.0" prefHeight="15.0" prefWidth="67.0" style="-fx-text-fill: navy;" text="%config.shortcut" />
    </children>
 </AnchorPane>
