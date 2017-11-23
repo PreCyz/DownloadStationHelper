@@ -233,8 +233,8 @@ public class MainController extends AbstractController {
                 );
                 resetProperties(deleteTask);
                 futureTask = executor.submit(deleteTask);
-            } else if (KeyCode.C == event.getCode()) {
-                deleteTask = new CleanTask(
+            } else if (KeyCode.F == event.getCode()) {
+                deleteTask = new DeleteForceCompleteTask(
                         torrentListView,
                         extractSid(),
                         availableOperationTask.getDsApiDetail().getDownloadStationTask(),

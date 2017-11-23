@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /** Created by Gawa 2017-10-29 */
-public class CleanTask extends DeleteTask {
+public class DeleteForceCompleteTask extends DeleteTask {
 
-    public CleanTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
+    public DeleteForceCompleteTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
         super(listView, sid, downloadStationTask, torrentsToDelete, executor);
     }
 
@@ -28,12 +28,12 @@ public class CleanTask extends DeleteTask {
                 new DeleteForceCompleteCall(sid, torrentsToDelete, downloadStationTask),
                 executor
         );
-        updateProgress(1, 5);
+        updateProgress(2, 5);
 
         while (!deleteTask.isDone()) {
             Thread.sleep(100);
         }
-        updateProgress(2, 5);
+        updateProgress(5, 5);
         return deleteTask;
     }
 }
