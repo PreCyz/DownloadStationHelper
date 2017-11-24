@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -115,13 +116,10 @@ public class WindowHandlerImpl implements WindowHandler {
 
     @Override
     public void handleException(ProgramException exception) {
-        logger.error(exception.getMessage());
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.CLOSE);
         alert.setTitle(bundle.getString("program.exception"));
         alert.setHeaderText(bundle.getString("exception.occurred"));
-        alert.setContentText(exception.getMessage());
-        alert.setWidth(1000);
-        alert.setWidth(750);
+        alert.setContentText(exception.getUiError().msg());
 
         Label label = new Label(bundle.getString("exception.details"));
 
