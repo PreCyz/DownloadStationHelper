@@ -21,14 +21,12 @@ public class AvailableOperationTask extends Task<Void> {
     private final ExecutorService executor;
     private final Logger logger;
     private final Pane connectionPane;
-    private final ApplicationPropertiesHelper application;
     private AppTask<DsApiDetail> availableOperation;
 
     public AvailableOperationTask(ExecutorService executor, Pane connectionPane) {
         this.executor = executor;
         this.connectionPane = connectionPane;
         this.logger = LogManager.getLogger(getClass());
-        this.application = ApplicationPropertiesHelper.getInstance();
     }
 
     @Override

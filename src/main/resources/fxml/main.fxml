@@ -15,7 +15,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="233.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
+      <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="225.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
       <Pane layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
          <children>
             <ComboBox fx:id="imdbComboBox" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="366.0">
@@ -36,9 +36,9 @@
                </tooltip></Button>
          </children>
       </Pane>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="502.0" layoutY="367.0" progress="0.0" />
-      <Label fx:id="infoLabel" layoutX="12.0" layoutY="369.0" prefHeight="37.0" prefWidth="455.0" wrapText="true" />
-      <Pane fx:id="connectionPane" layoutX="554.0" layoutY="369.0" prefHeight="35.0" prefWidth="35.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="499.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" progress="0.0" />
+      <Label fx:id="infoLabel" layoutX="12.0" layoutY="361.0" prefHeight="40.0" prefWidth="455.0" wrapText="true" />
+      <Pane fx:id="connectionPane" layoutX="549.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" />
       <Label layoutX="88.0" layoutY="108.0" prefHeight="15.0" prefWidth="136.0" style="-fx-text-fill: navy;" text="%config.shortcut.clean" />
       <Label layoutX="233.0" layoutY="108.0" prefHeight="15.0" prefWidth="145.0" style="-fx-text-fill: navy;" text="%config.shortcut.delete" />
       <Label layoutX="387.0" layoutY="108.0" prefHeight="15.0" prefWidth="97.0" style="-fx-text-fill: navy;" text="%config.shortcut.list" />

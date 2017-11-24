@@ -68,7 +68,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     logger.error("Error when sleep thread.", e);
-                    throw new ProgramException(UIError.CANCELLED_TASK);
+                    throw new ProgramException(UIError.GET_TORRENTS);
                 }
             }
         }

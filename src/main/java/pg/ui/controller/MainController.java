@@ -76,10 +76,10 @@ public class MainController extends AbstractController {
     }
 
     private void setupConnectingPane() {
+        int width = 4;
+        int height = 4;
+        BackgroundSize backgroundSize = new BackgroundSize(width, height, true, true, false, false);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTING_GIF);
-        double width = 4 * connectionPane.getWidth();
-        double height = 4 * connectionPane.getHeight();
-        BackgroundSize backgroundSize = new BackgroundSize(width, height, false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(
                 new Image(inputStream),
                 BackgroundRepeat.NO_REPEAT,
@@ -141,10 +141,11 @@ public class MainController extends AbstractController {
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
             } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
                 if (ex instanceof ProgramException) {
                     windowHandler.handleException((ProgramException) ex);
                 } else {
-                    windowHandler.handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex));
+                    windowHandler.handleException(new ProgramException(UIError.FAVOURITES, ex));
                 }
             }
         };
@@ -170,6 +171,7 @@ public class MainController extends AbstractController {
             try {
                 if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
                     cancelTask();
+                    //infoLabel.textProperty().unbind();
                     infoLabel.setText("Please choose imdb id.");
                 } else {
                     cancelTask();
@@ -190,10 +192,11 @@ public class MainController extends AbstractController {
                     futureTask = executor.submit(findTask);
                 }
             } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
                 if (ex instanceof ProgramException) {
                     windowHandler.handleException((ProgramException) ex);
                 } else {
-                    windowHandler.handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex));
+                    windowHandler.handleException(new ProgramException(UIError.IMDB, ex));
                 }
             }
         };
@@ -209,50 +212,59 @@ public class MainController extends AbstractController {
 
     private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
         return event -> {
-            if (KeyCode.L == event.getCode()) {
-                listTask = new ListTask(
-                        torrentListView,
-                        availableOperationTask.getDsApiDetail(),
-                        windowHandler,
-                        executor
-                );
-                listTask.setSid(extractSid());
-                resetProperties(listTask);
-                futureTask = executor.submit(listTask);
-            }
-            if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
-                return;
-            }
-            if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
-                deleteTask = new DeleteTask(
-                        torrentListView,
-                        extractSid(),
-                        availableOperationTask.getDsApiDetail().getDownloadStationTask(),
-                        torrentsToDelete,
-                        executor
-                );
-                resetProperties(deleteTask);
-                futureTask = executor.submit(deleteTask);
-            } else if (KeyCode.F == event.getCode()) {
-                deleteTask = new DeleteForceCompleteTask(
-                        torrentListView,
-                        extractSid(),
-                        availableOperationTask.getDsApiDetail().getDownloadStationTask(),
-                        torrentsToDelete,
-                        executor
-                );
-                resetProperties(deleteTask);
-                futureTask = executor.submit(deleteTask);
-            } else if (KeyCode.L == event.getCode()) {
-                listTask = new ListTask(
-                        torrentListView,
-                        availableOperationTask.getDsApiDetail(),
-                        windowHandler,
-                        executor
-                );
-                listTask.setSid(extractSid());
-                resetProperties(listTask);
-                futureTask = executor.submit(listTask);
+            try {
+                if (KeyCode.L == event.getCode()) {
+                    listTask = new ListTask(
+                            torrentListView,
+                            availableOperationTask.getDsApiDetail(),
+                            windowHandler,
+                            executor
+                    );
+                    listTask.setSid(extractSid());
+                    resetProperties(listTask);
+                    futureTask = executor.submit(listTask);
+                }
+                if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
+                    return;
+                }
+                if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
+                    deleteTask = new DeleteTask(
+                            torrentListView,
+                            extractSid(),
+                            availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                            torrentsToDelete,
+                            executor
+                    );
+                    resetProperties(deleteTask);
+                    futureTask = executor.submit(deleteTask);
+                } else if (KeyCode.F == event.getCode()) {
+                    deleteTask = new DeleteForceCompleteTask(
+                            torrentListView,
+                            extractSid(),
+                            availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                            torrentsToDelete,
+                            executor
+                    );
+                    resetProperties(deleteTask);
+                    futureTask = executor.submit(deleteTask);
+                } else if (KeyCode.L == event.getCode()) {
+                    listTask = new ListTask(
+                            torrentListView,
+                            availableOperationTask.getDsApiDetail(),
+                            windowHandler,
+                            executor
+                    );
+                    listTask.setSid(extractSid());
+                    resetProperties(listTask);
+                    futureTask = executor.submit(listTask);
+                }
+            } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.SHORTCUT, ex));
+                }
             }
         };
     }

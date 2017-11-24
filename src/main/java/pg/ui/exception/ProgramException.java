@@ -30,8 +30,15 @@ public class ProgramException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        StringBuilder stringBuilder = new StringBuilder();
-        arguments.forEach((key, value) -> stringBuilder.append(key).append(" - ").append(value).append(", "));
-        return stringBuilder.substring(0, stringBuilder.lastIndexOf(", "));
+
+        if (!arguments.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(UIError error : arguments.keySet()) {
+                stringBuilder.append(error).append(" - ").append(arguments.get(error)).append(", ");
+            }
+            String arg = stringBuilder.substring(0, stringBuilder.lastIndexOf(", "));
+            return String.format("%s %s %s", uiError.msg(), arg, super.getMessage());
+        }
+        return String.format("%s %s", uiError.msg(), super.getMessage());
     }
 }
