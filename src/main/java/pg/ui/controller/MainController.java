@@ -45,6 +45,8 @@ public class MainController extends AbstractController {
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Pane connectionPane;
+    @FXML private Pane imdbPane;
+    @FXML private Pane favouritePane;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -93,6 +95,8 @@ public class MainController extends AbstractController {
 
     private void getAvailableOperation() {
         availableOperationTask = new AvailableOperationTask(executor, connectionPane);
+        availableOperationTask.setFavouritePane(favouritePane);
+        availableOperationTask.setImdbPane(imdbPane);
         resetProperties(availableOperationTask);
         futureTask = executor.submit(availableOperationTask);
     }
@@ -110,7 +114,8 @@ public class MainController extends AbstractController {
         return e -> windowHandler.launchShowWindow();
     }
 
-    public void initializeImdbComboBox() {
+    @SuppressWarnings("unchecked")
+    private void initializeImdbComboBox() {
         Path filePath = AppConstants.fullFilePath(AppConstants.IMDB_FILE_NAME);
         existingImdbMap = JsonUtils.convertFromFile(filePath, TreeMap.class)
                 .orElse(new TreeMap<String, String>());

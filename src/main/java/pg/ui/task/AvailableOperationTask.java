@@ -1,5 +1,6 @@
 package pg.ui.task;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -21,12 +22,22 @@ public class AvailableOperationTask extends Task<Void> {
     private final ExecutorService executor;
     private final Logger logger;
     private final Pane connectionPane;
+    private Pane favouritePane;
+    private Pane imdbPane;
     private AppTask<DsApiDetail> availableOperation;
 
     public AvailableOperationTask(ExecutorService executor, Pane connectionPane) {
         this.executor = executor;
         this.connectionPane = connectionPane;
         this.logger = LogManager.getLogger(getClass());
+    }
+
+    public void setFavouritePane(Pane favouritePane) {
+        this.favouritePane = favouritePane;
+    }
+
+    public void setImdbPane(Pane imdbPane) {
+        this.imdbPane = imdbPane;
     }
 
     @Override
@@ -42,7 +53,29 @@ public class AvailableOperationTask extends Task<Void> {
 
     private DsApiDetail getAvailableOperations() {
         availableOperation = new AppTask<>(new AvailableOperationCall(), executor);
-        return availableOperation.get();
+        DsApiDetail dsApiDetail = availableOperation.get();
+        enablePanes();
+        return dsApiDetail;
+    }
+
+    private void enablePanes() {
+        if (Platform.isFxApplicationThread()) {
+            if (imdbPane != null) {
+                imdbPane.setDisable(false);
+            }
+            if (favouritePane != null) {
+                favouritePane.setDisable(false);
+            }
+        } else {
+            Platform.runLater(() -> {
+                if (imdbPane != null) {
+                    imdbPane.setDisable(false);
+                }
+                if (favouritePane != null) {
+                    favouritePane.setDisable(false);
+                }
+            });
+        }
     }
 
     private void saveVersion(DsApiDetail dsApiDetail) throws IOException {

@@ -16,7 +16,7 @@
         </menus>
       </MenuBar>
       <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="225.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
-      <Pane layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
+      <Pane fx:id="imdbPane" disable="true" layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
          <children>
             <ComboBox fx:id="imdbComboBox" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="366.0">
                <tooltip>
@@ -28,7 +28,7 @@
                </tooltip></Button>
          </children>
       </Pane>
-      <Pane layoutX="408.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
+      <Pane fx:id="favouritePane" disable="true" layoutX="408.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
          <children>
             <Button fx:id="allButton" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" text="%main.all">
                <tooltip>
