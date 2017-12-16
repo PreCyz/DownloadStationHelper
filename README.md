@@ -1,12 +1,14 @@
 # DownloadStationHelper introduction
 
-Application is useful for people who are lazy like me and do not want to manually create torrent tasks.
+Application is useful for people who are lazy like me and do not want to create torrent tasks manually.
 
 Application does two separate things:
 1) Scan for new torrents,
 2) Prepare or create task for DownloadStation on Synology device:
     - creates new torrent tasks via DownloadStation API,
-    - saves torrent files in directory. Directory is pointed out to automatic scan by application DownloadStation.
+    - saves torrent files in directory. Directory is pointed out for automatic scan by application DownloadStation.
+
+### User Interface
 
 ### How to setup application
 
