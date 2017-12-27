@@ -2,8 +2,8 @@ package pg.ui.task.atomic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.ui.exception.ProgramException;
-import pg.ui.exception.UIError;
+import pg.exception.ProgramException;
+import pg.exception.UIError;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;

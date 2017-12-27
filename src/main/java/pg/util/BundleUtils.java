@@ -1,7 +1,7 @@
 package pg.util;
 
-import pg.ui.exception.ProgramException;
-import pg.ui.exception.UIError;
+import pg.exception.ProgramException;
+import pg.exception.UIError;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

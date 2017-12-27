@@ -1,7 +1,7 @@
 package pg.ui.handler;
 
 import javafx.stage.Window;
-import pg.ui.exception.ProgramException;
+import pg.exception.ProgramException;
 import pg.web.response.detail.DsApiDetail;
 
 /**Created by Gawa 2017-10-04*/
