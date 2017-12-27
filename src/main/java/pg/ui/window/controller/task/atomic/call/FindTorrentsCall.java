@@ -1,4 +1,4 @@
-package pg.ui.task.atomic.call;
+package pg.ui.window.controller.task.atomic.call;
 
 import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;

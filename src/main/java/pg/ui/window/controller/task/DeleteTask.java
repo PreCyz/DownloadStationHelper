@@ -1,4 +1,4 @@
-package pg.ui.task;
+package pg.ui.window.controller.task;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -7,9 +7,9 @@ import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.DeleteCall;
-import pg.ui.task.atomic.call.ds.ListOfTaskCall;
+import pg.ui.window.controller.task.atomic.AppTask;
+import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
+import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.web.model.ApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;

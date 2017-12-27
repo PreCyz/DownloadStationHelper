@@ -2,10 +2,10 @@ package pg.service.torrent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.props.ApplicationPropertiesHelper;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
-import pg.ui.task.atomic.GetTorrentsTask;
+import pg.props.ApplicationPropertiesHelper;
+import pg.ui.window.controller.task.atomic.GetTorrentsTask;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.TorrentDetail;
 import pg.web.response.TorrentResponse;

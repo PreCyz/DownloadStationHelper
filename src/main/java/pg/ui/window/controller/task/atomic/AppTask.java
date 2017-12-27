@@ -1,4 +1,4 @@
-package pg.ui.task.atomic;
+package pg.ui.window.controller.task.atomic;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

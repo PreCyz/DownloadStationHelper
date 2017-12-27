@@ -1,4 +1,4 @@
-package pg.ui.task;
+package pg.ui.window.controller.task;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -7,8 +7,8 @@ import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
-import pg.ui.task.atomic.AppTask;
-import pg.ui.task.atomic.call.ds.AvailableOperationCall;
+import pg.ui.window.controller.task.atomic.AppTask;
+import pg.ui.window.controller.task.atomic.call.ds.AvailableOperationCall;
 import pg.util.AppConstants;
 import pg.web.response.detail.DsApiDetail;
 

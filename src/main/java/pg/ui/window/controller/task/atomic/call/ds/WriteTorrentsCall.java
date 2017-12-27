@@ -1,4 +1,4 @@
-package pg.ui.task.atomic.call.ds;
+package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.client.GetClient;
 import pg.web.model.SettingKeys;

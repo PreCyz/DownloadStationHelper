@@ -1,8 +1,8 @@
-package pg.ui.task.atomic.call.ds;
+package pg.ui.window.controller.task.atomic.call.ds;
 
-import pg.service.ds.DSError;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;

@@ -1,4 +1,4 @@
-package pg.ui.task.atomic.call.ds;
+package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
