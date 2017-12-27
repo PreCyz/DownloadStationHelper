@@ -1,4 +1,4 @@
-package pg.filter;
+package pg.service.match.filter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

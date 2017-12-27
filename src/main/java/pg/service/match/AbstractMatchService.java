@@ -2,9 +2,9 @@ package pg.service.match;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.filter.Filter;
-import pg.filter.FilterFactory;
 import pg.props.ShowsPropertiesHelper;
+import pg.service.match.filter.Filter;
+import pg.service.match.filter.FilterFactory;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
 

@@ -1,4 +1,4 @@
-package pg.filter;
+package pg.service.match.filter;
 
 import org.junit.After;
 import org.junit.Test;

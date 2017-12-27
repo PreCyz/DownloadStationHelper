@@ -1,4 +1,4 @@
-package pg.filter;
+package pg.service.match.filter;
 
 import pg.web.model.torrent.TorrentDetail;
 
