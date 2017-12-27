@@ -3,7 +3,7 @@ package pg.ui.window.controller;
 import javafx.fxml.Initializable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.ui.handler.WindowHandler;
+import pg.ui.window.WindowHandler;
 
 import java.net.URL;
 import java.util.ResourceBundle;

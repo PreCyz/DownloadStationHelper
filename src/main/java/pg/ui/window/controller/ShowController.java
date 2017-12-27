@@ -14,7 +14,7 @@ import javafx.util.StringConverter;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.props.ShowsPropertiesHelper;
-import pg.ui.handler.WindowHandler;
+import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.model.ShowDetail;
 

@@ -11,7 +11,7 @@ import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.props.ApplicationPropertiesHelper;
 import pg.props.ConfigBuilder;
-import pg.ui.handler.WindowHandler;
+import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.model.AllowedProtocol;
 import pg.web.model.DSMethod;

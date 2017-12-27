@@ -16,7 +16,7 @@ import javafx.scene.layout.*;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.props.ApplicationPropertiesHelper;
-import pg.ui.handler.WindowHandler;
+import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.*;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;

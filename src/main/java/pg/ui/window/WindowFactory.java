@@ -1,6 +1,5 @@
 package pg.ui.window;
 
-import pg.ui.handler.WindowHandler;
 import pg.ui.window.controller.ConfigController;
 import pg.ui.window.controller.MainController;
 import pg.ui.window.controller.ShowController;

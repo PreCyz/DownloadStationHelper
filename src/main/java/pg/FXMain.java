@@ -5,8 +5,8 @@ import javafx.stage.Stage;
 import pg.ui.checker.ApplicationChecker;
 import pg.ui.checker.Checker;
 import pg.ui.checker.ShowChecker;
-import pg.ui.handler.WindowHandler;
-import pg.ui.handler.WindowHandlerImpl;
+import pg.ui.window.WindowHandler;
+import pg.ui.window.WindowHandlerImpl;
 
 /** Created by Gawa 2017-10-04*/
 public class FXMain extends Application {

@@ -1,4 +1,4 @@
-package pg.ui.handler;
+package pg.ui.window;
 
 import javafx.stage.Window;
 import pg.exception.ProgramException;

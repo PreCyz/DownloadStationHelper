@@ -3,7 +3,7 @@ package pg.ui.window.controller.task;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
-import pg.ui.handler.WindowHandler;
+import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.FindTorrentsCall;
 import pg.ui.window.controller.task.atomic.call.MatchTorrentsCall;

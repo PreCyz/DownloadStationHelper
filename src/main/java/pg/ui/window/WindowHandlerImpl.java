@@ -1,4 +1,4 @@
-package pg.ui.handler;
+package pg.ui.window;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -19,8 +19,6 @@ import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.ui.ResourceHelper;
-import pg.ui.window.AbstractWindow;
-import pg.ui.window.WindowFactory;
 import pg.ui.window.controller.task.atomic.call.ds.LogoutCall;
 import pg.web.response.detail.DsApiDetail;
 
