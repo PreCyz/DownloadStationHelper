@@ -1,6 +1,6 @@
 package pg.ui.window;
 
-import pg.ui.controller.AbstractController;
+import pg.ui.window.controller.AbstractController;
 
 import java.util.ResourceBundle;
 

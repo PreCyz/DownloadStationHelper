@@ -1,9 +1,9 @@
 package pg.ui.window;
 
-import pg.ui.controller.ConfigController;
-import pg.ui.controller.MainController;
-import pg.ui.controller.ShowController;
 import pg.ui.handler.WindowHandler;
+import pg.ui.window.controller.ConfigController;
+import pg.ui.window.controller.MainController;
+import pg.ui.window.controller.ShowController;
 
 import java.util.ResourceBundle;
 

@@ -2,7 +2,7 @@ package pg.ui.window;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import pg.ui.controller.AbstractController;
+import pg.ui.window.controller.AbstractController;
 import pg.util.AppConstants;
 
 import java.io.IOException;
