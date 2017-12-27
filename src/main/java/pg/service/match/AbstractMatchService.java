@@ -2,8 +2,8 @@ package pg.service.match;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.factory.FilterFactory;
 import pg.filter.Filter;
+import pg.filter.FilterFactory;
 import pg.props.ShowsPropertiesHelper;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**Created by Gawa 2017-09-23*/
-public abstract class AbstractMatchService implements MatchService {
+abstract class AbstractMatchService implements MatchService {
 
     protected final Logger logger;
     protected final List<ReducedDetail> matchingTorrents;

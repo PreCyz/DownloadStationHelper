@@ -1,13 +1,9 @@
-package pg.factory;
+package pg.ui.window;
 
 import pg.ui.controller.ConfigController;
 import pg.ui.controller.MainController;
 import pg.ui.controller.ShowController;
 import pg.ui.handler.WindowHandler;
-import pg.ui.window.AbstractWindow;
-import pg.ui.window.ConfigWindow;
-import pg.ui.window.MainWindow;
-import pg.ui.window.ShowWindow;
 
 import java.util.ResourceBundle;
 

@@ -16,11 +16,11 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.factory.WindowFactory;
 import pg.ui.exception.ProgramException;
 import pg.ui.exception.UIError;
 import pg.ui.task.atomic.call.ds.LogoutCall;
 import pg.ui.window.AbstractWindow;
+import pg.ui.window.WindowFactory;
 import pg.web.response.detail.DsApiDetail;
 
 import java.io.IOException;

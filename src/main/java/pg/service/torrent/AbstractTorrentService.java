@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**Created by Gawa 2017-09-23*/
-public abstract class AbstractTorrentService implements TorrentService {
+abstract class AbstractTorrentService implements TorrentService {
 
     protected final Logger logger;
 

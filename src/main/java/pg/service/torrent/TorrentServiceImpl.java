@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-15*/
-public class TorrentServiceImpl extends AbstractTorrentService {
+class TorrentServiceImpl extends AbstractTorrentService {
 
     private final int defaultLimit = 100;
     private final int defaultPage = 1;

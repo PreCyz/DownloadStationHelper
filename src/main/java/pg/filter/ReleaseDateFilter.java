@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-24*/
-public class ReleaseDateFilter implements Filter {
+class ReleaseDateFilter implements Filter {
 
     private static final Logger logger = LogManager.getLogger(ReleaseDateFilter.class);
 

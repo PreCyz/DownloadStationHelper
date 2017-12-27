@@ -7,7 +7,7 @@ import pg.web.model.torrent.TorrentDetail;
 import java.util.List;
 
 /**Created by Pawel Gawedzki on 9/21/2017.*/
-public class MatchByImdbService extends AbstractMatchService {
+class MatchByImdbService extends AbstractMatchService {
 
     @Override
     protected void matchTorrents(List<TorrentDetail> torrents) {

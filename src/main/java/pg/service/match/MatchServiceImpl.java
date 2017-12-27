@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**Created by Gawa on 15/08/17*/
-public class MatchServiceImpl extends AbstractMatchService {
+class MatchServiceImpl extends AbstractMatchService {
 
     private int matchPrecision;
 

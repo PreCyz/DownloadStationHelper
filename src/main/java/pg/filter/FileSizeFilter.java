@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**Created by Pawel Gawedzki on 9/19/2017.*/
-public class FileSizeFilter implements Filter {
+class FileSizeFilter implements Filter {
 
     private static final Logger logger = LogManager.getLogger(FileSizeFilter.class);
 

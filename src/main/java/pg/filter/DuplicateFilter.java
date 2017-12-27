@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /** Created by Gawa 2017-10-30 */
-public class DuplicateFilter implements Filter {
+class DuplicateFilter implements Filter {
 
     private static final Logger logger = LogManager.getLogger(DuplicateFilter.class);
 

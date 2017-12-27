@@ -1,8 +1,5 @@
-package pg.factory;
+package pg.service.match;
 
-import pg.service.match.MatchByImdbService;
-import pg.service.match.MatchService;
-import pg.service.match.MatchServiceImpl;
 import pg.web.model.ProgramMode;
 
 /**Created by Gawa 2017-09-23*/

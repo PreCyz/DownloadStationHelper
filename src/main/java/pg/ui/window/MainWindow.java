@@ -5,9 +5,9 @@ import pg.ui.controller.AbstractController;
 import java.util.ResourceBundle;
 
 /**Created by Gawa 2017-10-04*/
-public class MainWindow extends AbstractWindow {
+class MainWindow extends AbstractWindow {
 
-    public MainWindow(AbstractController controller, ResourceBundle bundle) {
+    MainWindow(AbstractController controller, ResourceBundle bundle) {
         super(controller, bundle);
     }
 

@@ -2,15 +2,15 @@ package pg.executor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.factory.MatchServiceFactory;
-import pg.factory.TorrentServiceFactory;
 import pg.props.ApplicationPropertiesHelper;
 import pg.service.FileService;
 import pg.service.FileServiceImpl;
 import pg.service.ds.DiskStationService;
 import pg.service.ds.DiskStationServiceImpl;
 import pg.service.match.MatchService;
+import pg.service.match.MatchServiceFactory;
 import pg.service.torrent.TorrentService;
+import pg.service.torrent.TorrentServiceFactory;
 import pg.web.model.DSMethod;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.TorrentDetail;

@@ -1,6 +1,5 @@
-package pg.factory;
+package pg.filter;
 
-import pg.filter.*;
 import pg.props.ApplicationPropertiesHelper;
 import pg.web.model.SettingKeys;
 

@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-23*/
-public class TorrentImdbServiceImpl extends AbstractTorrentService implements TorrentService {
+class TorrentImdbServiceImpl extends AbstractTorrentService implements TorrentService {
     private String imdbId;
 
     @Override

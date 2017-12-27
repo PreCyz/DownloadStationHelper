@@ -1,7 +1,7 @@
 package pg.ui.task.atomic.call;
 
-import pg.factory.TorrentServiceFactory;
 import pg.service.torrent.TorrentService;
+import pg.service.torrent.TorrentServiceFactory;
 import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.TorrentDetail;

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**Created by Pawel Gawedzki on 9/19/2017.*/
-public class HistoryFilter extends DuplicateFilter {
+class HistoryFilter extends DuplicateFilter {
 
     private static final Logger logger = LogManager.getLogger(HistoryFilter.class);
 

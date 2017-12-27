@@ -15,7 +15,7 @@ public abstract class AbstractWindow {
     private final AbstractController controller;
     private final ResourceBundle bundle;
 
-    protected AbstractWindow(AbstractController controller, ResourceBundle bundle) {
+    AbstractWindow(AbstractController controller, ResourceBundle bundle) {
         this.controller = controller;
         this.bundle = bundle;
     }
