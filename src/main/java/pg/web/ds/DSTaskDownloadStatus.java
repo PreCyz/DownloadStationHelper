@@ -1,7 +1,7 @@
-package pg.web.model;
+package pg.web.ds;
 
 /**Created by Gawa on 28/08/17.*/
-public enum DownloadStatus {
+public enum DSTaskDownloadStatus {
     waiting,
     downloading,
     paused,

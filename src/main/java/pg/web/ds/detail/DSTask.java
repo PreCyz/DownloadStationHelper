@@ -1,12 +1,12 @@
 package pg.web.ds.detail;
 
-import pg.web.model.DownloadStatus;
+import pg.web.ds.DSTaskDownloadStatus;
 
 /**Created by Gawa on 27/08/17.*/
 public class DSTask {
     private String id;
     private long size;
-    private DownloadStatus status;
+    private DSTaskDownloadStatus status;
     private String title;
     private String type;
     private String username;
@@ -27,7 +27,7 @@ public class DSTask {
         return size;
     }
 
-    public DownloadStatus getStatus() {
+    public DSTaskDownloadStatus getStatus() {
         return status;
     }
 
