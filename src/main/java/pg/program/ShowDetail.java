@@ -1,4 +1,4 @@
-package pg.web.program;
+package pg.program;
 
 /**Created by Gawa 2017-10-16*/
 public class ShowDetail {

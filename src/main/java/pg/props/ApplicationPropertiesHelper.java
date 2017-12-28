@@ -1,9 +1,9 @@
 package pg.props;
 
+import pg.program.SettingKeys;
+import pg.program.StartParameters;
 import pg.util.AppConstants;
 import pg.web.ds.DSAllowedProtocol;
-import pg.web.program.SettingKeys;
-import pg.web.program.StartParameters;
 
 import java.io.IOException;
 import java.util.Arrays;

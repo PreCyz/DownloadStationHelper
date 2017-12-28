@@ -2,14 +2,14 @@ package pg.props;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.program.TorrentUrlType;
 import pg.util.StringUtils;
 import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
-import pg.web.program.TorrentUrlType;
 
 import java.util.Properties;
 
-import static pg.web.program.SettingKeys.*;
+import static pg.program.SettingKeys.*;
 
 /**Created by Gawa 2017-10-15*/
 public class ConfigBuilder {

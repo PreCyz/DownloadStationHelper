@@ -9,13 +9,13 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.TorrentUrlType;
 import pg.props.ApplicationPropertiesHelper;
 import pg.props.ConfigBuilder;
 import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
-import pg.web.program.TorrentUrlType;
 
 import java.io.File;
 import java.io.IOException;

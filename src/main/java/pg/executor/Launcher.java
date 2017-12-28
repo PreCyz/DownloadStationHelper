@@ -2,6 +2,7 @@ package pg.executor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.program.ProgramMode;
 import pg.props.ApplicationPropertiesHelper;
 import pg.service.FileService;
 import pg.service.FileServiceImpl;
@@ -12,7 +13,6 @@ import pg.service.match.MatchServiceFactory;
 import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;
 import pg.web.ds.detail.DSMethod;
-import pg.web.program.ProgramMode;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.List;

@@ -2,14 +2,14 @@ package pg.service.ds;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.program.ApiName;
+import pg.program.SettingKeys;
+import pg.program.TorrentUrlType;
 import pg.props.ApplicationPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.ds.*;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.program.ApiName;
-import pg.web.program.SettingKeys;
-import pg.web.program.TorrentUrlType;
 import pg.web.torrent.ReducedDetail;
 
 import java.util.List;

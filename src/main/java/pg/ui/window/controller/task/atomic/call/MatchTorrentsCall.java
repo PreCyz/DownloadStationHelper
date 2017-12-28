@@ -1,8 +1,8 @@
 package pg.ui.window.controller.task.atomic.call;
 
+import pg.program.ProgramMode;
 import pg.service.match.MatchService;
 import pg.service.match.MatchServiceFactory;
-import pg.web.program.ProgramMode;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.TorrentDetail;
 

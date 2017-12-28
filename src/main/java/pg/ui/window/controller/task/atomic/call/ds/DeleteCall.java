@@ -2,6 +2,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.ApiName;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
@@ -10,7 +11,6 @@ import pg.web.ds.DSDeletedItem;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.ds.detail.DSTask;
-import pg.web.program.ApiName;
 
 import java.util.Collections;
 import java.util.List;

@@ -2,8 +2,8 @@ package pg.props;
 
 import org.junit.Before;
 import org.junit.Test;
+import pg.program.SettingKeys;
 import pg.util.AppConstants;
-import pg.web.program.SettingKeys;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;

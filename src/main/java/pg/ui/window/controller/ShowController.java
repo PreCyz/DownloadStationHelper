@@ -13,10 +13,10 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.ShowDetail;
 import pg.props.ShowsPropertiesHelper;
 import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
-import pg.web.program.ShowDetail;
 
 import java.io.IOException;
 import java.net.URL;
