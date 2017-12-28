@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.DeleteResponseDS;
+import pg.web.response.DSDeleteResponse;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,14 +60,14 @@ public class JsonUtils {
         }
     }
 
-    public static List<DeleteResponseDS> convertDeleteResponseFromString(String json) {
+    public static List<DSDeleteResponse> convertDeleteResponseFromString(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
             mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
             mapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
-            return mapper.readValue(json, new TypeReference<List<DeleteResponseDS>>(){});
+            return mapper.readValue(json, new TypeReference<List<DSDeleteResponse>>(){});
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
