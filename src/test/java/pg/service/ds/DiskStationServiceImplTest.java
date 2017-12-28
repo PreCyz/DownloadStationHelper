@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentResponse;
 
 import java.util.Arrays;
 import java.util.Collections;

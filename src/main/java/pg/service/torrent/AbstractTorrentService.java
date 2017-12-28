@@ -6,7 +6,7 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.props.ShowsPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;

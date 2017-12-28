@@ -1,8 +1,7 @@
-package pg.web.response;
+package pg.web.model.torrent;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import pg.web.model.torrent.TorrentDetail;
 
 import java.util.List;
 

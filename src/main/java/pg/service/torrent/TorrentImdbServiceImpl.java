@@ -3,7 +3,7 @@ package pg.service.torrent;
 import pg.props.ShowsPropertiesHelper;
 import pg.util.StringUtils;
 import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pg.util.JsonUtils;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.TorrentResponse;
+import pg.web.model.torrent.TorrentResponse;
 
 import java.net.URL;
 import java.nio.file.Path;
