@@ -1,14 +1,14 @@
 package pg.web.response;
 
-import pg.web.response.detail.ErrorCode;
+import pg.web.response.detail.DSErrorCode;
 
 /**Created by Gawa on 26/08/17.*/
 public class DSGeneralResponse {
 
-    private ErrorCode error;
+    private DSErrorCode error;
     private boolean success;
 
-    public ErrorCode getError() {
+    public DSErrorCode getError() {
         return error;
     }
 
