@@ -8,7 +8,7 @@ import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
 import pg.web.response.DeleteItem;
-import pg.web.response.DeleteResponse;
+import pg.web.response.DeleteResponseDS;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
@@ -46,9 +46,9 @@ public class DeleteCall extends BasicCall implements Callable<List<DeleteItem>> 
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            Optional<DeleteResponse> deleteResponse = JsonUtils.convertFromString(response.get(), DeleteResponse.class);
+            Optional<DeleteResponseDS> deleteResponse = JsonUtils.convertFromString(response.get(), DeleteResponseDS.class);
             if (deleteResponse.isPresent() && deleteResponse.get().isSuccess()) {
-                List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponse::getDeletedItems).get();
+                List<DeleteItem> deleteItems = deleteResponse.map(DeleteResponseDS::getDeletedItems).get();
                 for (DeleteItem item : deleteItems) {
                     if (item.getError() == 0) {
                         logger.info("Task '{}' {}.", item.getId(), operation);

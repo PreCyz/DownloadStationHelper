@@ -5,7 +5,7 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
-import pg.web.response.GeneralResponse;
+import pg.web.response.DSGeneralResponse;
 import pg.web.synology.AuthMethod;
 
 import java.util.Optional;
@@ -36,10 +36,10 @@ public class LogoutCall extends BasicCall implements Callable<Void> {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<GeneralResponse> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), GeneralResponse.class);
+                Optional<DSGeneralResponse> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSGeneralResponse.class);
                 if (jsonResponse.isPresent()) {
-                    GeneralResponse logoutResponse = jsonResponse.get();
+                    DSGeneralResponse logoutResponse = jsonResponse.get();
                     if (logoutResponse.isSuccess()) {
                         logger.info("Logout finished.");
                     } else {

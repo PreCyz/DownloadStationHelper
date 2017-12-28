@@ -7,10 +7,10 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.*;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.DSResponse;
-import pg.web.response.GeneralResponse;
-import pg.web.response.LoginResponse;
-import pg.web.response.TaskListResponse;
+import pg.web.response.DSGeneralResponse;
+import pg.web.response.DSResponseDS;
+import pg.web.response.LoginResponseDS;
+import pg.web.response.TaskListResponseDS;
 import pg.web.synology.AuthMethod;
 import pg.web.synology.DSTaskMethod;
 
@@ -46,10 +46,10 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<DSResponse> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), DSResponse.class);
+                Optional<DSResponseDS> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSResponseDS.class);
                 if (jsonResponse.isPresent()) {
-                    DSResponse DSResponse = jsonResponse.get();
+                    DSResponseDS DSResponse = jsonResponse.get();
                     if (DSResponse.isSuccess()) {
                         authInfo = DSResponse.getDsInfo().getAuthInfo();
                         downloadStationTask = DSResponse.getDsInfo().getDownloadStationTask();
@@ -81,11 +81,11 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<LoginResponse> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), LoginResponse.class);
+                Optional<LoginResponseDS> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), LoginResponseDS.class);
                 logger.info("Login format sid.");
                 if (jsonResponse.isPresent()) {
-                    LoginResponse loginResponse = jsonResponse.get();
+                    LoginResponseDS loginResponse = jsonResponse.get();
                     if (loginResponse.isSuccess()) {
                         sid = loginResponse.getLoginDetails().getSid();
                         String logMsg = String.format("Login successful. sid = %s.", sid);
@@ -131,9 +131,9 @@ public class DiskStationServiceImpl implements DiskStationService {
                 GetClient client = new GetClient(requestUrl);
                 Optional<String> response = client.get();
                 if (response.isPresent()) {
-                    Optional<GeneralResponse> jsonResponse = JsonUtils.convertFromString(response.get(), GeneralResponse.class);
+                    Optional<DSGeneralResponse> jsonResponse = JsonUtils.convertFromString(response.get(), DSGeneralResponse.class);
                     if (jsonResponse.isPresent()) {
-                        GeneralResponse createTaskResponse = jsonResponse.get();
+                        DSGeneralResponse createTaskResponse = jsonResponse.get();
                         if (createTaskResponse.isSuccess()) {
                             logger.info("Task creation successful.");
                         } else {
@@ -192,10 +192,10 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<TaskListResponse> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), TaskListResponse.class);
+                Optional<TaskListResponseDS> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), TaskListResponseDS.class);
                 if (jsonResponse.isPresent()) {
-                    TaskListResponse taskListResponse = jsonResponse.get();
+                    TaskListResponseDS taskListResponse = jsonResponse.get();
                     if (taskListResponse.isSuccess()) {
                         logger.info("Total number of tasks on download station is: {}.",
                                 taskListResponse.getTaskListDetail().getTotal());
@@ -232,10 +232,10 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<GeneralResponse> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), GeneralResponse.class);
+                Optional<DSGeneralResponse> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSGeneralResponse.class);
                 if (jsonResponse.isPresent()) {
-                    GeneralResponse logoutResponse = jsonResponse.get();
+                    DSGeneralResponse logoutResponse = jsonResponse.get();
                     if (logoutResponse.isSuccess()) {
                         logger.info("Logout finished.");
                     } else {

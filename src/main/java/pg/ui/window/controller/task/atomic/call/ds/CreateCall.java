@@ -9,7 +9,7 @@ import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.GeneralResponse;
+import pg.web.response.DSGeneralResponse;
 import pg.web.synology.DSTaskMethod;
 
 import java.util.List;
@@ -45,10 +45,10 @@ public class CreateCall extends BasicCall implements Callable<Void> {
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            Optional<GeneralResponse> jsonResponse =
-                    JsonUtils.convertFromString(response.get(), GeneralResponse.class);
+            Optional<DSGeneralResponse> jsonResponse =
+                    JsonUtils.convertFromString(response.get(), DSGeneralResponse.class);
             if (jsonResponse.isPresent()) {
-                GeneralResponse createTaskResponse = jsonResponse.get();
+                DSGeneralResponse createTaskResponse = jsonResponse.get();
                 if (createTaskResponse.isSuccess()) {
                     logger.info("Task creation successful.");
                 } else {
