@@ -2,7 +2,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.response.SynologyResponse;
+import pg.web.response.DSResponse;
 import pg.web.response.detail.DsApiDetail;
 
 import java.util.Optional;
@@ -29,13 +29,13 @@ public class AvailableOperationCall extends BasicCall implements Callable<DsApiD
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            Optional<SynologyResponse> jsonResponse =
-                    JsonUtils.convertFromString(response.get(), SynologyResponse.class);
+            Optional<DSResponse> jsonResponse =
+                    JsonUtils.convertFromString(response.get(), DSResponse.class);
             if (jsonResponse.isPresent()) {
-                SynologyResponse synologyResponse = jsonResponse.get();
-                if (synologyResponse.isSuccess()) {
-                    dsApiDetail.setAuthInfo(synologyResponse.getDsInfo().getAuthInfo());
-                    dsApiDetail.setDownloadStationTask(synologyResponse.getDsInfo().getDownloadStationTask());
+                DSResponse DSResponse = jsonResponse.get();
+                if (DSResponse.isSuccess()) {
+                    dsApiDetail.setAuthInfo(DSResponse.getDsInfo().getAuthInfo());
+                    dsApiDetail.setDownloadStationTask(DSResponse.getDsInfo().getDownloadStationTask());
                 }
             }
         }
