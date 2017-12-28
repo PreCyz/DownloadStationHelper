@@ -8,7 +8,7 @@ import pg.web.client.GetClient;
 import pg.web.model.*;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.DSGeneralResponse;
-import pg.web.response.DSResponseDS;
+import pg.web.response.DSResponse;
 import pg.web.response.LoginResponseDS;
 import pg.web.response.TaskListResponseDS;
 import pg.web.synology.AuthMethod;
@@ -46,10 +46,10 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<DSResponseDS> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), DSResponseDS.class);
+                Optional<DSResponse> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSResponse.class);
                 if (jsonResponse.isPresent()) {
-                    DSResponseDS DSResponse = jsonResponse.get();
+                    DSResponse DSResponse = jsonResponse.get();
                     if (DSResponse.isSuccess()) {
                         authInfo = DSResponse.getDsInfo().getAuthInfo();
                         downloadStationTask = DSResponse.getDsInfo().getDownloadStationTask();
