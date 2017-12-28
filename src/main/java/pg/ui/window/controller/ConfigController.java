@@ -13,8 +13,8 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.props.ConfigBuilder;
 import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
+import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
-import pg.web.model.DSAllowedProtocol;
 import pg.web.model.TorrentUrlType;
 
 import java.io.File;

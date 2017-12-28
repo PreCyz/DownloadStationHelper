@@ -3,8 +3,8 @@ package pg.props;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
+import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
-import pg.web.model.DSAllowedProtocol;
 import pg.web.model.TorrentUrlType;
 
 import java.util.Properties;

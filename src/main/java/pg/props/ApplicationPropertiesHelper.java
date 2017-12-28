@@ -1,7 +1,7 @@
 package pg.props;
 
 import pg.util.AppConstants;
-import pg.web.model.DSAllowedProtocol;
+import pg.web.ds.DSAllowedProtocol;
 import pg.web.model.SettingKeys;
 import pg.web.model.StartParameters;
 

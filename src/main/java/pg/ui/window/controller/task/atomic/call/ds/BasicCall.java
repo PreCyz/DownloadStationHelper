@@ -3,7 +3,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
-import pg.web.model.DSAllowedProtocol;
+import pg.web.ds.DSAllowedProtocol;
 
 /** Created by Gawa 2017-11-11 */
 public class BasicCall {

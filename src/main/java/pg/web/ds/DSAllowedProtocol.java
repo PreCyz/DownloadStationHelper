@@ -1,4 +1,4 @@
-package pg.web.model;
+package pg.web.ds;
 
 /**Created by Gawa 2017-10-14*/
 public enum DSAllowedProtocol {

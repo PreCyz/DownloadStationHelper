@@ -8,7 +8,6 @@ import pg.web.client.GetClient;
 import pg.web.ds.*;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.model.ApiName;
-import pg.web.model.DSAllowedProtocol;
 import pg.web.model.SettingKeys;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
