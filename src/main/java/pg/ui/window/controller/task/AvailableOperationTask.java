@@ -10,7 +10,7 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.AvailableOperationCall;
 import pg.util.AppConstants;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.io.IOException;
 import java.io.InputStream;

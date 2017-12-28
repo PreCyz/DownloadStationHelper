@@ -1,6 +1,6 @@
-package pg.web.response;
+package pg.web.ds;
 
-import pg.web.response.detail.DSErrorCode;
+import pg.web.ds.detail.DSErrorCode;
 
 /**Created by Gawa on 26/08/17.*/
 public class DSGeneralResponse {

@@ -35,7 +35,7 @@ abstract class AbstractTorrentService implements TorrentService {
             String json = client.get().get();
             JsonUtils.convertFromString(json, TorrentResponse.class).ifPresent(torrentResponses::add);
         } else {
-            logger.info("No response for url {}", requestUrl);
+            logger.info("No ds for url {}", requestUrl);
         }
         return torrentResponses;
     }

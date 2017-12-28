@@ -1,4 +1,4 @@
-package pg.web.response;
+package pg.web.ds;
 
 /** Created by Gawa 2017-11-12 */
 public class DSDeletedItem {

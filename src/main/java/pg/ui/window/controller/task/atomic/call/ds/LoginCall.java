@@ -6,8 +6,8 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.DSLoginResponse;
-import pg.web.response.detail.DSApiDetails;
+import pg.web.ds.DSLoginResponse;
+import pg.web.ds.detail.DSApiDetails;
 import pg.web.synology.AuthMethod;
 
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class LoginCall extends BasicCall implements Callable<String> {
                 }
             } else {
                 throw new ProgramException(UIError.LOGIN_DS,
-                        new IllegalArgumentException("Login unsuccessful. No response from server."));
+                        new IllegalArgumentException("Login unsuccessful. No ds from server."));
             }
         }
     }

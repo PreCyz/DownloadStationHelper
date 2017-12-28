@@ -1,4 +1,4 @@
-package pg.web.response.detail;
+package pg.web.ds.detail;
 
 public enum DSMethod {
     COPY_FILE, REST

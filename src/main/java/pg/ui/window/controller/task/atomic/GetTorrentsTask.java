@@ -35,7 +35,7 @@ public class GetTorrentsTask {
         try {
             return task.get();
         } catch (Exception e) {
-            logger.error("Error when getting response for {}", url, e);
+            logger.error("Error when getting ds for {}", url, e);
             throw new ProgramException(UIError.GET_TORRENTS, e);
         }
     }

@@ -1,9 +1,9 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.model.ApiName;
-import pg.web.response.DSDeletedItem;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.detail.DSTask;
+import pg.web.ds.DSDeletedItem;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
 import java.util.List;

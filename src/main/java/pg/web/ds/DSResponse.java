@@ -1,7 +1,7 @@
-package pg.web.response;
+package pg.web.ds;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import pg.web.response.detail.DSInfo;
+import pg.web.ds.detail.DSInfo;
 
 /**Created by Gawa on 24/08/17.*/
 public class DSResponse extends DSGeneralResponse {

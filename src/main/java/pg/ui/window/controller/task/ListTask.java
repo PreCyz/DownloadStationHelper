@@ -8,9 +8,9 @@ import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.ui.window.controller.task.atomic.call.ds.LoginCall;
-import pg.web.response.detail.DSTask;
-import pg.web.response.detail.DSTaskListDetail;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DSTask;
+import pg.web.ds.detail.DSTaskListDetail;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

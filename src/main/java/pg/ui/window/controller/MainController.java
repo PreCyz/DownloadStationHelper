@@ -21,7 +21,7 @@ import pg.ui.window.controller.task.*;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
-import pg.web.response.detail.DSTask;
+import pg.web.ds.detail.DSTask;
 
 import java.io.InputStream;
 import java.net.URL;

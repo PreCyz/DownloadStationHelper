@@ -20,7 +20,7 @@ import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.ui.ResourceHelper;
 import pg.ui.window.controller.task.atomic.call.ds.LogoutCall;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.io.IOException;
 import java.util.Locale;

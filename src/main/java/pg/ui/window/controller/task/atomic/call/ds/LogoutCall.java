@@ -4,8 +4,8 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.DSGeneralResponse;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.DSGeneralResponse;
 import pg.web.synology.AuthMethod;
 
 import java.util.Optional;

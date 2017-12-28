@@ -1,4 +1,4 @@
-package pg.web.response.detail;
+package pg.web.ds.detail;
 
 /**Created by Gawa on 26/08/17.*/
 public class DSErrorCode {

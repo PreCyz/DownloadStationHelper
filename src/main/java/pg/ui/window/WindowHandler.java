@@ -2,7 +2,7 @@ package pg.ui.window;
 
 import javafx.stage.Window;
 import pg.exception.ProgramException;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DsApiDetail;
 
 /**Created by Gawa 2017-10-04*/
 public interface WindowHandler {

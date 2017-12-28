@@ -3,9 +3,9 @@ package pg.ui.window.controller.task;
 import javafx.scene.control.ListView;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
-import pg.web.response.DSDeletedItem;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.detail.DSTask;
+import pg.web.ds.DSDeletedItem;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.detail.DSTask;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

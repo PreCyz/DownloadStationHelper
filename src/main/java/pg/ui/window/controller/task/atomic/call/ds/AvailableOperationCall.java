@@ -2,8 +2,8 @@ package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.response.DSResponse;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.DSResponse;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;

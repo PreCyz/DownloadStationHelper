@@ -4,7 +4,7 @@ import javafx.concurrent.Task;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.AvailableOperationCall;
 import pg.ui.window.controller.task.atomic.call.ds.LoginCall;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.util.concurrent.ExecutorService;
 

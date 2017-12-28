@@ -1,4 +1,4 @@
-package pg.web.response.detail;
+package pg.web.ds.detail;
 
 /** Created by Gawa 2017-11-11 */
 public class DsApiDetail {

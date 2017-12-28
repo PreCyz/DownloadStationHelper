@@ -6,10 +6,10 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.DSDeleteResponse;
-import pg.web.response.DSDeletedItem;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.detail.DSTask;
+import pg.web.ds.DSDeleteResponse;
+import pg.web.ds.DSDeletedItem;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
 import java.util.Collections;

@@ -55,7 +55,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                     String response = task.getResponse();
                     JsonUtils.convertFromString(response, TorrentResponse.class).ifPresent(torrentsForRequest::add);
                     it.remove();
-                    logger.info("[{}] torrents in response.",
+                    logger.info("[{}] torrents in ds.",
                             torrentsForRequest.stream()
                                     .mapToInt(tr -> tr.getTorrents().size())
                                     .sum()

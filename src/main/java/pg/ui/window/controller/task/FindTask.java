@@ -14,8 +14,8 @@ import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.model.torrent.TorrentDetail;
-import pg.web.response.detail.DSTask;
-import pg.web.response.detail.DsApiDetail;
+import pg.web.ds.detail.DSTask;
+import pg.web.ds.detail.DsApiDetail;
 
 import java.util.Collections;
 import java.util.List;

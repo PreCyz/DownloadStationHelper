@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.DSDeleteResponse;
+import pg.web.ds.DSDeleteResponse;
 
 import java.io.IOException;
 import java.nio.file.Path;

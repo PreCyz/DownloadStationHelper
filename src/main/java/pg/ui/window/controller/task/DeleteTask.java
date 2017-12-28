@@ -10,10 +10,10 @@ import org.apache.logging.log4j.Logger;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
-import pg.web.response.DSDeletedItem;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.detail.DSTask;
-import pg.web.response.detail.DSTaskListDetail;
+import pg.web.ds.DSDeletedItem;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.detail.DSTask;
+import pg.web.ds.detail.DSTaskListDetail;
 
 import java.util.List;
 import java.util.Set;

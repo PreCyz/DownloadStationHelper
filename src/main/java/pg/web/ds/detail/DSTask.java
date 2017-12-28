@@ -1,4 +1,4 @@
-package pg.web.response.detail;
+package pg.web.ds.detail;
 
 import pg.web.model.DownloadStatus;
 

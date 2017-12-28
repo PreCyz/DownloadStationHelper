@@ -6,9 +6,9 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.DSTaskListResponse;
-import pg.web.response.detail.DSApiDetails;
-import pg.web.response.detail.DSTaskListDetail;
+import pg.web.ds.DSTaskListResponse;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.ds.detail.DSTaskListDetail;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;

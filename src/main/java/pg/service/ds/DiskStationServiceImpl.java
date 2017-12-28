@@ -10,11 +10,11 @@ import pg.web.model.ApiName;
 import pg.web.model.SettingKeys;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.response.DSGeneralResponse;
-import pg.web.response.DSLoginResponse;
-import pg.web.response.DSResponse;
-import pg.web.response.DSTaskListResponse;
-import pg.web.response.detail.DSApiDetails;
+import pg.web.ds.DSGeneralResponse;
+import pg.web.ds.DSLoginResponse;
+import pg.web.ds.DSResponse;
+import pg.web.ds.DSTaskListResponse;
+import pg.web.ds.detail.DSApiDetails;
 import pg.web.synology.AuthMethod;
 import pg.web.synology.DSTaskMethod;
 
@@ -101,7 +101,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                         throw new IllegalArgumentException(logMsg);
                     }
                 } else {
-                    throw new IllegalArgumentException("Login unsuccessful. No response from server.");
+                    throw new IllegalArgumentException("Login unsuccessful. No ds from server.");
                 }
 
             }

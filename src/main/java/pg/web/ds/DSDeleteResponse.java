@@ -1,4 +1,4 @@
-package pg.web.response;
+package pg.web.ds;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
