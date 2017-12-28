@@ -5,7 +5,10 @@ import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.*;
+import pg.web.model.AllowedProtocol;
+import pg.web.model.ApiName;
+import pg.web.model.SettingKeys;
+import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.DSGeneralResponse;
 import pg.web.response.DSLoginResponse;
@@ -199,7 +202,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                     DSTaskListResponse taskListResponse = jsonResponse.get();
                     if (taskListResponse.isSuccess()) {
                         logger.info("Total number of tasks on download station is: {}.",
-                                taskListResponse.getTaskListDetail().getTotal());
+                                taskListResponse.getDSTaskListDetail().getTotal());
                     } else {
                         String logMsg = String.format("List of tasks finished with error %d - %s.",
                                 taskListResponse.getError().getCode(),

@@ -6,15 +6,15 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.detail.DSApiDetails;
 import pg.web.response.DSTaskListResponse;
-import pg.web.response.detail.TaskListDetail;
+import pg.web.response.detail.DSApiDetails;
+import pg.web.response.detail.DSTaskListDetail;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-11-11 */
-public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail> {
+public class ListOfTaskCall extends BasicCall implements Callable<DSTaskListDetail> {
 
     private final String sid;
     private final DSApiDetails downloadStationTask;
@@ -26,11 +26,11 @@ public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail
     }
 
     @Override
-    public TaskListDetail call() {
+    public DSTaskListDetail call() {
         return listOfTasks();
     }
 
-    private TaskListDetail listOfTasks() {
+    private DSTaskListDetail listOfTasks() {
         String requestUrl = buildTaskListUrl();
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
@@ -41,8 +41,8 @@ public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail
                 DSTaskListResponse taskListResponse = jsonResponse.get();
                 if (taskListResponse.isSuccess()) {
                     logger.info("Total number of tasks on download station is: {}.",
-                            taskListResponse.getTaskListDetail().getTotal());
-                    return taskListResponse.getTaskListDetail();
+                            taskListResponse.getDSTaskListDetail().getTotal());
+                    return taskListResponse.getDSTaskListDetail();
                 } else {
                     String logMsg = String.format("List of tasks finished with error %d - %s.",
                             taskListResponse.getError().getCode(),

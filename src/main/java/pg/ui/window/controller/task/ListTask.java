@@ -9,8 +9,8 @@ import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.ui.window.controller.task.atomic.call.ds.LoginCall;
 import pg.web.response.detail.DSTask;
+import pg.web.response.detail.DSTaskListDetail;
 import pg.web.response.detail.DsApiDetail;
-import pg.web.response.detail.TaskListDetail;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -64,7 +64,7 @@ public class ListTask extends Task<Void> {
     }
 
     protected void getListOfTasks() {
-        AppTask<TaskListDetail> listOfTasks = new AppTask<>(
+        AppTask<DSTaskListDetail> listOfTasks = new AppTask<>(
                 new ListOfTaskCall(sid, dsApiDetail.getDownloadStationTask()), executor
         );
         List<DSTask> tasks = listOfTasks.get().getTasks();

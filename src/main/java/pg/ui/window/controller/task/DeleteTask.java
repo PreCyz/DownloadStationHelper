@@ -13,7 +13,7 @@ import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.web.response.DSDeletedItem;
 import pg.web.response.detail.DSApiDetails;
 import pg.web.response.detail.DSTask;
-import pg.web.response.detail.TaskListDetail;
+import pg.web.response.detail.DSTaskListDetail;
 
 import java.util.List;
 import java.util.Set;
@@ -79,7 +79,7 @@ public class DeleteTask extends Task<Void> {
     }
 
     private ObservableList<DSTask> getListOfTasks() {
-        AppTask<TaskListDetail> listOfTasks = new AppTask<>(new ListOfTaskCall(sid, downloadStationTask), executor);
+        AppTask<DSTaskListDetail> listOfTasks = new AppTask<>(new ListOfTaskCall(sid, downloadStationTask), executor);
         ObservableList<DSTask> dsTasks = FXCollections.observableList(listOfTasks.get().getTasks());
         if (dsTasks.isEmpty()) {
             dsTasks.add(DSTask.NOTHING_TO_DISPLAY);

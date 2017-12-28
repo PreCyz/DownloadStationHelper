@@ -3,7 +3,7 @@ package pg.web.response.detail;
 import java.util.List;
 
 /**Created by Gawa on 27/08/17.*/
-public class TaskListDetail {
+public class DSTaskListDetail {
     private int offset;
     private List<DSTask> tasks;
     private int total;
