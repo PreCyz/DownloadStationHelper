@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
 import pg.web.model.AllowedProtocol;
-import pg.web.model.DSMethod;
+import pg.web.response.detail.DSMethod;
 import pg.web.model.TorrentUrlType;
 
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package pg.web.model;
+package pg.web.response.detail;
 
 /**Created by Gawa on 24/08/17.*/
 public class DSApiDetails {

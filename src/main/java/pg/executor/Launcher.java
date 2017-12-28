@@ -11,7 +11,7 @@ import pg.service.match.MatchService;
 import pg.service.match.MatchServiceFactory;
 import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;
-import pg.web.model.DSMethod;
+import pg.web.response.detail.DSMethod;
 import pg.web.model.ProgramMode;
 import pg.web.model.torrent.TorrentDetail;
 

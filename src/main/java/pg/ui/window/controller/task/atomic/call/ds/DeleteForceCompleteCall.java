@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.model.ApiName;
-import pg.web.model.DSApiDetails;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;

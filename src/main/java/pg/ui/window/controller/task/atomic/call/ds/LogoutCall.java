@@ -4,7 +4,7 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.model.DSApiDetails;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.response.DSGeneralResponse;
 import pg.web.synology.AuthMethod;
 

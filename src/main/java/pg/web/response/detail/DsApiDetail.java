@@ -1,7 +1,5 @@
 package pg.web.response.detail;
 
-import pg.web.model.DSApiDetails;
-
 /** Created by Gawa 2017-11-11 */
 public class DsApiDetail {
     private DSApiDetails authInfo;

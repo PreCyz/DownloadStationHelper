@@ -3,7 +3,7 @@ package pg.ui.window.controller.task;
 import javafx.scene.control.ListView;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
-import pg.web.model.DSApiDetails;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 

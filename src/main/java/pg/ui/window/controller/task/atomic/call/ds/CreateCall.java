@@ -6,7 +6,7 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.model.DSApiDetails;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.DSGeneralResponse;

@@ -14,7 +14,7 @@ import pg.props.ConfigBuilder;
 import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.model.AllowedProtocol;
-import pg.web.model.DSMethod;
+import pg.web.response.detail.DSMethod;
 import pg.web.model.TorrentUrlType;
 
 import java.io.File;

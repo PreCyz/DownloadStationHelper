@@ -11,6 +11,7 @@ import pg.web.response.DSGeneralResponse;
 import pg.web.response.DSLoginResponse;
 import pg.web.response.DSResponse;
 import pg.web.response.DSTaskListResponse;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.synology.AuthMethod;
 import pg.web.synology.DSTaskMethod;
 
