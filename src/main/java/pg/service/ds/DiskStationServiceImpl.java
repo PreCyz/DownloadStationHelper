@@ -7,8 +7,8 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.ds.*;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.model.AllowedProtocol;
 import pg.web.model.ApiName;
+import pg.web.model.DSAllowedProtocol;
 import pg.web.model.SettingKeys;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
@@ -64,7 +64,7 @@ public class DiskStationServiceImpl implements DiskStationService {
         }
         String server = application.getServerUrl();
         if (server != null && !server.isEmpty()) {
-            AllowedProtocol protocol = application.getServerPort(AllowedProtocol.https);
+            DSAllowedProtocol protocol = application.getServerPort(DSAllowedProtocol.https);
             return serverUrl = String.format("%s://%s:%s", protocol.name(), server, protocol.port());
         }
         return serverUrl = "";

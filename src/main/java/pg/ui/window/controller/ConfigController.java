@@ -13,8 +13,8 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.props.ConfigBuilder;
 import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
-import pg.web.model.AllowedProtocol;
 import pg.web.ds.detail.DSMethod;
+import pg.web.model.DSAllowedProtocol;
 import pg.web.model.TorrentUrlType;
 
 import java.io.File;
@@ -67,7 +67,7 @@ public class ConfigController extends AbstractController {
     private void initializeFromAppProperties() {
         serverUrl.setText(appHelper.getServerUrl());
 
-        final AllowedProtocol protocol = appHelper.getServerPort(AllowedProtocol.https);
+        final DSAllowedProtocol protocol = appHelper.getServerPort(DSAllowedProtocol.https);
         serverPort.setValue(String.format("%d - %s", protocol.port(), protocol.name()));
         serverLogin.setText(appHelper.getUsername());
         serverPassword.setText(appHelper.getPassword());
@@ -90,7 +90,7 @@ public class ConfigController extends AbstractController {
     private void setupComoBoxes() {
         serverPort.setItems(
                 FXCollections.observableList(
-                        Arrays.stream(AllowedProtocol.values())
+                        Arrays.stream(DSAllowedProtocol.values())
                                 .map(port -> String.format("%d - %s", port.port(), port.name()))
                                 .collect(Collectors.toList())
                 )

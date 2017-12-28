@@ -3,8 +3,8 @@ package pg.props;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
-import pg.web.model.AllowedProtocol;
 import pg.web.ds.detail.DSMethod;
+import pg.web.model.DSAllowedProtocol;
 import pg.web.model.TorrentUrlType;
 
 import java.util.Properties;
@@ -36,9 +36,9 @@ public class ConfigBuilder {
         if (StringUtils.nullOrTrimEmpty(serverPort)) {
             return this;
         }
-        String port = String.valueOf(AllowedProtocol.https.port());
-        if (serverPort.endsWith(AllowedProtocol.http.name())) {
-            port = String.valueOf(AllowedProtocol.http.port());
+        String port = String.valueOf(DSAllowedProtocol.https.port());
+        if (serverPort.endsWith(DSAllowedProtocol.http.name())) {
+            port = String.valueOf(DSAllowedProtocol.http.port());
         }
         config.setProperty(SERVER_PORT.key(), port);
         return this;
