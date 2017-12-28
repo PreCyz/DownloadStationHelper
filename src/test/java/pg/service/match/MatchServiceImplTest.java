@@ -3,8 +3,8 @@ package pg.service.match;
 import org.junit.Before;
 import org.junit.Test;
 import pg.util.JsonUtils;
-import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentResponse;
+import pg.web.torrent.ReducedDetail;
+import pg.web.torrent.TorrentResponse;
 
 import java.net.URL;
 import java.nio.file.Path;

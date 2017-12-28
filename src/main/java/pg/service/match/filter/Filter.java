@@ -1,6 +1,6 @@
 package pg.service.match.filter;
 
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 

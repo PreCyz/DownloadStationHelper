@@ -2,8 +2,8 @@ package pg.service.torrent;
 
 import pg.props.ShowsPropertiesHelper;
 import pg.util.StringUtils;
-import pg.web.model.torrent.TorrentDetail;
-import pg.web.model.torrent.TorrentResponse;
+import pg.web.torrent.TorrentDetail;
+import pg.web.torrent.TorrentResponse;
 
 import java.util.LinkedList;
 import java.util.List;

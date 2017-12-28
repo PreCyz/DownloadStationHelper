@@ -3,7 +3,7 @@ package pg.service.match.filter;
 import org.junit.After;
 import org.junit.Test;
 import pg.TorrentDetailBuilder;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.Calendar;
 import java.util.Collections;

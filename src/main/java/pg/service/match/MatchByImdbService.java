@@ -1,8 +1,8 @@
 package pg.service.match;
 
 import pg.util.JsonUtils;
-import pg.web.model.torrent.ReducedDetailBuilder;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.ReducedDetailBuilder;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package pg.service.match.filter;
 
 import org.junit.After;
 import org.junit.Test;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;

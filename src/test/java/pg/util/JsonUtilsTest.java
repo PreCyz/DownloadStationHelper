@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import pg.web.model.torrent.ReducedDetail;
+import pg.web.torrent.ReducedDetail;
 
 import java.io.File;
 import java.io.IOException;

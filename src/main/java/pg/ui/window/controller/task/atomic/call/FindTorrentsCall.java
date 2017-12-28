@@ -4,7 +4,7 @@ import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;
 import pg.util.StringUtils;
 import pg.web.model.ProgramMode;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 import java.util.concurrent.Callable;

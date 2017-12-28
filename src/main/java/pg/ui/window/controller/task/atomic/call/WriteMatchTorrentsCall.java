@@ -3,7 +3,7 @@ package pg.ui.window.controller.task.atomic.call;
 import pg.props.ApplicationPropertiesHelper;
 import pg.service.FileService;
 import pg.service.FileServiceImpl;
-import pg.web.model.torrent.ReducedDetail;
+import pg.web.torrent.ReducedDetail;
 
 import java.util.List;
 import java.util.concurrent.Callable;

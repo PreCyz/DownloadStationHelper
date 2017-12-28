@@ -13,7 +13,7 @@ import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;
 import pg.web.ds.detail.DSMethod;
 import pg.web.model.ProgramMode;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 

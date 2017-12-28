@@ -11,11 +11,11 @@ import pg.ui.window.controller.task.atomic.call.UpdateImdbMapCall;
 import pg.ui.window.controller.task.atomic.call.WriteMatchTorrentsCall;
 import pg.ui.window.controller.task.atomic.call.ds.CreateCall;
 import pg.util.StringUtils;
-import pg.web.model.ProgramMode;
-import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentDetail;
 import pg.web.ds.detail.DSTask;
 import pg.web.ds.detail.DsApiDetail;
+import pg.web.model.ProgramMode;
+import pg.web.torrent.ReducedDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.Collections;
 import java.util.List;

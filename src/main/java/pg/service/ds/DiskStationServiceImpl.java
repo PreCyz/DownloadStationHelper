@@ -10,7 +10,7 @@ import pg.web.ds.detail.DSApiDetails;
 import pg.web.model.ApiName;
 import pg.web.model.SettingKeys;
 import pg.web.model.TorrentUrlType;
-import pg.web.model.torrent.ReducedDetail;
+import pg.web.torrent.ReducedDetail;
 
 import java.util.List;
 import java.util.Optional;

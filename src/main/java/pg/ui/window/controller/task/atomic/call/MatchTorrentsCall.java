@@ -3,8 +3,8 @@ package pg.ui.window.controller.task.atomic.call;
 import pg.service.match.MatchService;
 import pg.service.match.MatchServiceFactory;
 import pg.web.model.ProgramMode;
-import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.ReducedDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 import java.util.concurrent.Callable;

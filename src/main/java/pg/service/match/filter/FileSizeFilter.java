@@ -2,7 +2,7 @@ package pg.service.match.filter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 import java.util.stream.Collectors;

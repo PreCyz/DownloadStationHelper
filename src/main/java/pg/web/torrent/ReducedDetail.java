@@ -1,4 +1,4 @@
-package pg.web.model.torrent;
+package pg.web.torrent;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

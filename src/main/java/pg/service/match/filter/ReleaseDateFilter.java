@@ -3,7 +3,7 @@ package pg.service.match.filter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

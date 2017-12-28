@@ -7,8 +7,8 @@ import pg.exception.UIError;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.controller.task.atomic.GetTorrentsTask;
 import pg.util.JsonUtils;
-import pg.web.model.torrent.TorrentDetail;
-import pg.web.model.torrent.TorrentResponse;
+import pg.web.torrent.TorrentDetail;
+import pg.web.torrent.TorrentResponse;
 
 import java.util.ArrayList;
 import java.util.Iterator;

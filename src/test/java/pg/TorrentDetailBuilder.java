@@ -1,6 +1,6 @@
 package pg;
 
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.TorrentDetail;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

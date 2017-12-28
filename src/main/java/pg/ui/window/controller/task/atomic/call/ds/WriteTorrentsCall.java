@@ -2,7 +2,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.client.GetClient;
 import pg.web.model.SettingKeys;
-import pg.web.model.torrent.ReducedDetail;
+import pg.web.torrent.ReducedDetail;
 
 import java.util.List;
 import java.util.concurrent.Callable;

@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
-import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.ReducedDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.nio.file.Path;
 import java.util.*;

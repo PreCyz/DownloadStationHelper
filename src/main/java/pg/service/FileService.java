@@ -1,7 +1,7 @@
 package pg.service;
 
-import pg.web.model.torrent.ReducedDetail;
-import pg.web.model.torrent.TorrentDetail;
+import pg.web.torrent.ReducedDetail;
+import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
 
