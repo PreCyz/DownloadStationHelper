@@ -3,7 +3,7 @@ package pg.ui.window.controller.task.atomic.call;
 import pg.service.torrent.TorrentService;
 import pg.service.torrent.TorrentServiceFactory;
 import pg.util.StringUtils;
-import pg.web.model.ProgramMode;
+import pg.web.program.ProgramMode;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.List;

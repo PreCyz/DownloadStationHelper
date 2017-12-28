@@ -15,7 +15,7 @@ import pg.ui.window.WindowHandler;
 import pg.util.StringUtils;
 import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
-import pg.web.model.TorrentUrlType;
+import pg.web.program.TorrentUrlType;
 
 import java.io.File;
 import java.io.IOException;

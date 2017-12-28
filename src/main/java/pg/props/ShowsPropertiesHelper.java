@@ -1,7 +1,7 @@
 package pg.props;
 
 import pg.util.AppConstants;
-import pg.web.model.ShowDetail;
+import pg.web.program.ShowDetail;
 
 import java.io.IOException;
 import java.util.*;

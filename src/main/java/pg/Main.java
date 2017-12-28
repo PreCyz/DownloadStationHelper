@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.executor.Launcher;
 import pg.props.ApplicationPropertiesHelper;
-import pg.web.model.ProgramMode;
-import pg.web.model.StartParameters;
+import pg.web.program.ProgramMode;
+import pg.web.program.StartParameters;
 
 import java.util.Arrays;
 

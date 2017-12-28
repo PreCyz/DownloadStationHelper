@@ -1,4 +1,4 @@
-package pg.web.model;
+package pg.web.program;
 
 /**Created by Gawa 2017-10-16*/
 public class ShowDetail {

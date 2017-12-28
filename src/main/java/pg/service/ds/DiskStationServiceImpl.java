@@ -7,9 +7,9 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.ds.*;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.model.ApiName;
-import pg.web.model.SettingKeys;
-import pg.web.model.TorrentUrlType;
+import pg.web.program.ApiName;
+import pg.web.program.SettingKeys;
+import pg.web.program.TorrentUrlType;
 import pg.web.torrent.ReducedDetail;
 
 import java.util.List;

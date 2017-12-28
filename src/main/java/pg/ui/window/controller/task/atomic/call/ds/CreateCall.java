@@ -8,8 +8,8 @@ import pg.web.client.GetClient;
 import pg.web.ds.DSGeneralResponse;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.model.ApiName;
-import pg.web.model.TorrentUrlType;
+import pg.web.program.ApiName;
+import pg.web.program.TorrentUrlType;
 import pg.web.torrent.ReducedDetail;
 
 import java.util.List;

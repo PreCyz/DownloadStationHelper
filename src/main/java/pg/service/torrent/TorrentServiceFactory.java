@@ -1,6 +1,6 @@
 package pg.service.torrent;
 
-import pg.web.model.ProgramMode;
+import pg.web.program.ProgramMode;
 
 /**Created by Gawa 2017-09-23*/
 public class TorrentServiceFactory {

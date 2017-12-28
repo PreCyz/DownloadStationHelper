@@ -1,7 +1,7 @@
 package pg.service.match.filter;
 
 import pg.props.ApplicationPropertiesHelper;
-import pg.web.model.SettingKeys;
+import pg.web.program.SettingKeys;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package pg.web.model;
+package pg.web.program;
 
 /**Created by Gawa on 24/08/17.*/
 public final class ApiName {

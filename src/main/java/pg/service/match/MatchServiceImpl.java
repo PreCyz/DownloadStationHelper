@@ -1,7 +1,7 @@
 package pg.service.match;
 
 import pg.util.JsonUtils;
-import pg.web.model.ShowKeys;
+import pg.web.program.ShowKeys;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.ReducedDetailBuilder;
 import pg.web.torrent.TorrentDetail;

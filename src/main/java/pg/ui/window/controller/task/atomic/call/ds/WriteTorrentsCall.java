@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.client.GetClient;
-import pg.web.model.SettingKeys;
+import pg.web.program.SettingKeys;
 import pg.web.torrent.ReducedDetail;
 
 import java.util.List;

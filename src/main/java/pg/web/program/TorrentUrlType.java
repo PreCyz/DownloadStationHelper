@@ -1,4 +1,4 @@
-package pg.web.model;
+package pg.web.program;
 
 public enum TorrentUrlType {
     torrent, magnet

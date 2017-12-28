@@ -4,7 +4,7 @@ import pg.web.ds.DSDeletedItem;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.ds.detail.DSTask;
-import pg.web.model.ApiName;
+import pg.web.program.ApiName;
 
 import java.util.List;
 import java.util.stream.Collectors;

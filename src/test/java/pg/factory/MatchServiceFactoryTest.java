@@ -5,7 +5,7 @@ import pg.service.match.MatchByImdbService;
 import pg.service.match.MatchService;
 import pg.service.match.MatchServiceFactory;
 import pg.service.match.MatchServiceImpl;
-import pg.web.model.ProgramMode;
+import pg.web.program.ProgramMode;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;

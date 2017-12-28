@@ -5,7 +5,7 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiName;
+import pg.web.program.ApiName;
 import pg.web.ds.DSTaskListResponse;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.ds.detail.DSTaskListDetail;

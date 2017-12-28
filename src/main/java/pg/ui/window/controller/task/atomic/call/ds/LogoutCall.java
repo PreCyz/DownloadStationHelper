@@ -6,7 +6,7 @@ import pg.web.client.GetClient;
 import pg.web.ds.DSActivity;
 import pg.web.ds.DSGeneralResponse;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.model.ApiName;
+import pg.web.program.ApiName;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;
