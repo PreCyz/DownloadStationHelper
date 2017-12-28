@@ -5,12 +5,12 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiName;
+import pg.web.ds.DSGeneralResponse;
+import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
+import pg.web.model.ApiName;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
-import pg.web.ds.DSGeneralResponse;
-import pg.web.synology.DSTaskMethod;
 
 import java.util.List;
 import java.util.Optional;

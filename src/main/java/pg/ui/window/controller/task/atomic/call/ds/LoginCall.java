@@ -5,10 +5,10 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
+import pg.web.ds.DSActivity;
 import pg.web.ds.DSLoginResponse;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.model.ApiName;
-import pg.web.synology.DSActivity;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;

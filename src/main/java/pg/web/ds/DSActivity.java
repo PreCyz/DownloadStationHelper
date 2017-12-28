@@ -1,4 +1,4 @@
-package pg.web.synology;
+package pg.web.ds;
 
 /**Created by Gawa on 25/08/17.*/
 public enum DSActivity {

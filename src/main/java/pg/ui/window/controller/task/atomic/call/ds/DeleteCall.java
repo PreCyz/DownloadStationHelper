@@ -5,12 +5,12 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiName;
 import pg.web.ds.DSDeleteResponse;
 import pg.web.ds.DSDeletedItem;
+import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.ds.detail.DSTask;
-import pg.web.synology.DSTaskMethod;
+import pg.web.model.ApiName;
 
 import java.util.Collections;
 import java.util.List;
