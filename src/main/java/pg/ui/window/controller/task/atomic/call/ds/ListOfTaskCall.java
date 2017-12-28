@@ -7,7 +7,7 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
-import pg.web.response.TaskListResponseDS;
+import pg.web.response.DSTaskListResponse;
 import pg.web.response.detail.TaskListDetail;
 
 import java.util.Optional;
@@ -35,10 +35,10 @@ public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            Optional<TaskListResponseDS> jsonResponse =
-                    JsonUtils.convertFromString(response.get(), TaskListResponseDS.class);
+            Optional<DSTaskListResponse> jsonResponse =
+                    JsonUtils.convertFromString(response.get(), DSTaskListResponse.class);
             if (jsonResponse.isPresent()) {
-                TaskListResponseDS taskListResponse = jsonResponse.get();
+                DSTaskListResponse taskListResponse = jsonResponse.get();
                 if (taskListResponse.isSuccess()) {
                     logger.info("Total number of tasks on download station is: {}.",
                             taskListResponse.getTaskListDetail().getTotal());

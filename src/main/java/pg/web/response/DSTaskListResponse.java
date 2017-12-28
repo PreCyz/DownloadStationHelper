@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pg.web.response.detail.TaskListDetail;
 
 /**Created by Gawa on 27/08/17.*/
-public class TaskListResponseDS extends DSGeneralResponse {
+public class DSTaskListResponse extends DSGeneralResponse {
 
     @JsonProperty("data")
     private TaskListDetail taskListDetail;

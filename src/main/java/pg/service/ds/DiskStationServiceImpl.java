@@ -8,9 +8,9 @@ import pg.web.client.GetClient;
 import pg.web.model.*;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.DSGeneralResponse;
+import pg.web.response.DSLoginResponse;
 import pg.web.response.DSResponse;
-import pg.web.response.LoginResponseDS;
-import pg.web.response.TaskListResponseDS;
+import pg.web.response.DSTaskListResponse;
 import pg.web.synology.AuthMethod;
 import pg.web.synology.DSTaskMethod;
 
@@ -81,11 +81,11 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<LoginResponseDS> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), LoginResponseDS.class);
+                Optional<DSLoginResponse> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSLoginResponse.class);
                 logger.info("Login format sid.");
                 if (jsonResponse.isPresent()) {
-                    LoginResponseDS loginResponse = jsonResponse.get();
+                    DSLoginResponse loginResponse = jsonResponse.get();
                     if (loginResponse.isSuccess()) {
                         sid = loginResponse.getLoginDetails().getSid();
                         String logMsg = String.format("Login successful. sid = %s.", sid);
@@ -192,10 +192,10 @@ public class DiskStationServiceImpl implements DiskStationService {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                Optional<TaskListResponseDS> jsonResponse =
-                        JsonUtils.convertFromString(response.get(), TaskListResponseDS.class);
+                Optional<DSTaskListResponse> jsonResponse =
+                        JsonUtils.convertFromString(response.get(), DSTaskListResponse.class);
                 if (jsonResponse.isPresent()) {
-                    TaskListResponseDS taskListResponse = jsonResponse.get();
+                    DSTaskListResponse taskListResponse = jsonResponse.get();
                     if (taskListResponse.isSuccess()) {
                         logger.info("Total number of tasks on download station is: {}.",
                                 taskListResponse.getTaskListDetail().getTotal());

@@ -7,7 +7,7 @@ import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
-import pg.web.response.LoginResponseDS;
+import pg.web.response.DSLoginResponse;
 import pg.web.synology.AuthMethod;
 
 import java.util.Optional;
@@ -35,11 +35,11 @@ public class LoginCall extends BasicCall implements Callable<String> {
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            Optional<LoginResponseDS> jsonResponse =
-                    JsonUtils.convertFromString(response.get(), LoginResponseDS.class);
+            Optional<DSLoginResponse> jsonResponse =
+                    JsonUtils.convertFromString(response.get(), DSLoginResponse.class);
             logger.info("Login format sid.");
             if (jsonResponse.isPresent()) {
-                LoginResponseDS loginResponse = jsonResponse.get();
+                DSLoginResponse loginResponse = jsonResponse.get();
                 if (loginResponse.isSuccess()) {
                     sid = loginResponse.getLoginDetails().getSid();
                     String logMsg = String.format("Login successful. sid = %s.", sid);
