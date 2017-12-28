@@ -3,10 +3,10 @@ package pg.ui.window.controller.task.atomic.call.ds;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiName;
-import pg.web.ds.detail.DSApiDetails;
 import pg.web.ds.DSGeneralResponse;
-import pg.web.synology.AuthMethod;
+import pg.web.ds.detail.DSApiDetails;
+import pg.web.model.ApiName;
+import pg.web.synology.DSActivity;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -60,7 +60,7 @@ public class LogoutCall extends BasicCall implements Callable<Void> {
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
                 "version=" + authInfo.getMaxVersion() + "&" +
-                "method=" + AuthMethod.LOGOUT.method() + "&" +
+                "method=" + DSActivity.LOGOUT.method() + "&" +
                 "session=" + "DownloadStation" + "&" +
                 "format=" + "sid";
     }

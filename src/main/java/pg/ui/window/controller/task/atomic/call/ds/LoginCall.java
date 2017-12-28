@@ -5,10 +5,10 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiName;
 import pg.web.ds.DSLoginResponse;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.synology.AuthMethod;
+import pg.web.model.ApiName;
+import pg.web.synology.DSActivity;
 
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -64,7 +64,7 @@ public class LoginCall extends BasicCall implements Callable<String> {
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
                 "version=" + authInfo.getMaxVersion() + "&" +
-                "method=" + AuthMethod.LOGIN.method() + "&" +
+                "method=" + DSActivity.LOGIN.method() + "&" +
                 "account=" + userName + "&" +
                 "passwd=" + password + "&" +
                 "session=" + "DownloadStation" + "&" +

@@ -5,17 +5,17 @@ import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.AllowedProtocol;
-import pg.web.model.ApiName;
-import pg.web.model.SettingKeys;
-import pg.web.model.TorrentUrlType;
-import pg.web.model.torrent.ReducedDetail;
 import pg.web.ds.DSGeneralResponse;
 import pg.web.ds.DSLoginResponse;
 import pg.web.ds.DSResponse;
 import pg.web.ds.DSTaskListResponse;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.synology.AuthMethod;
+import pg.web.model.AllowedProtocol;
+import pg.web.model.ApiName;
+import pg.web.model.SettingKeys;
+import pg.web.model.TorrentUrlType;
+import pg.web.model.torrent.ReducedDetail;
+import pg.web.synology.DSActivity;
 import pg.web.synology.DSTaskMethod;
 
 import java.util.List;
@@ -115,7 +115,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
                 "version=" + authInfo.getMaxVersion() + "&" +
-                "method=" + AuthMethod.LOGIN.method() + "&" +
+                "method=" + DSActivity.LOGIN.method() + "&" +
                 "account=" + userName + "&" +
                 "passwd=" + password + "&" +
                 "session=" + "DownloadStation" + "&" +
@@ -260,7 +260,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                 "?" +
                 "api=" + ApiName.API_AUTH + "&" +
                 "version=" + authInfo.getMaxVersion() + "&" +
-                "method=" + AuthMethod.LOGOUT.method() + "&" +
+                "method=" + DSActivity.LOGOUT.method() + "&" +
                 "session=" + "DownloadStation" + "&" +
                 "format=" + "sid";
     }
