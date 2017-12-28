@@ -5,7 +5,7 @@ import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
 
 /**Created by Gawa on 24/08/17.*/
-public class SynologyDetailResponse {
+public class DSInfo {
 
     @JsonProperty(ApiName.API_AUTH)
     private ApiDetails authInfo;
