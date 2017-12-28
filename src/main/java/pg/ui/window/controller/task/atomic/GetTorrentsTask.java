@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
-import pg.ui.window.controller.task.atomic.call.GetTorrentsCall;
+import pg.ui.window.controller.task.atomic.call.torrent.GetTorrentsCall;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
