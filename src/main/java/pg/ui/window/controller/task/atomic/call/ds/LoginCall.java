@@ -6,8 +6,8 @@ import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.model.ApiName;
-import pg.web.response.detail.DSApiDetails;
 import pg.web.response.DSLoginResponse;
+import pg.web.response.detail.DSApiDetails;
 import pg.web.synology.AuthMethod;
 
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class LoginCall extends BasicCall implements Callable<String> {
             if (jsonResponse.isPresent()) {
                 DSLoginResponse loginResponse = jsonResponse.get();
                 if (loginResponse.isSuccess()) {
-                    sid = loginResponse.getLoginDetails().getSid();
+                    sid = loginResponse.getDSLoginDetails().getSid();
                     String logMsg = String.format("Login successful. sid = %s.", sid);
                     logger.info(logMsg);
                 } else {

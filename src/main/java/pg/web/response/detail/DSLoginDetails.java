@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by Gawa on 25/08/17.
  */
-public class LoginDetails {
+public class DSLoginDetails {
     @JsonProperty("is_portal_port")
     private boolean portalPort;
     private String sid;

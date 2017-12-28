@@ -91,7 +91,7 @@ public class DiskStationServiceImpl implements DiskStationService {
                 if (jsonResponse.isPresent()) {
                     DSLoginResponse loginResponse = jsonResponse.get();
                     if (loginResponse.isSuccess()) {
-                        sid = loginResponse.getLoginDetails().getSid();
+                        sid = loginResponse.getDSLoginDetails().getSid();
                         String logMsg = String.format("Login successful. sid = %s.", sid);
                         logger.info(logMsg);
                     } else {
