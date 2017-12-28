@@ -1,26 +1,26 @@
 package pg.web.response.detail;
 
-import pg.web.model.ApiDetails;
+import pg.web.model.DSApiDetails;
 
 /** Created by Gawa 2017-11-11 */
 public class DsApiDetail {
-    private ApiDetails authInfo;
-    private ApiDetails downloadStationTask;
+    private DSApiDetails authInfo;
+    private DSApiDetails downloadStationTask;
     private String sid;
 
-    public ApiDetails getAuthInfo() {
+    public DSApiDetails getAuthInfo() {
         return authInfo;
     }
 
-    public void setAuthInfo(ApiDetails authInfo) {
+    public void setAuthInfo(DSApiDetails authInfo) {
         this.authInfo = authInfo;
     }
 
-    public ApiDetails getDownloadStationTask() {
+    public DSApiDetails getDownloadStationTask() {
         return downloadStationTask;
     }
 
-    public void setDownloadStationTask(ApiDetails downloadStationTask) {
+    public void setDownloadStationTask(DSApiDetails downloadStationTask) {
         this.downloadStationTask = downloadStationTask;
     }
 

@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /** Created by Gawa 2017-11-11 */
 public class DeleteForceCompleteCall extends DeleteCall {
 
-    public DeleteForceCompleteCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
+    public DeleteForceCompleteCall(String sid, List<DSTask> tasksToDelete, DSApiDetails downloadStationTask) {
         super(sid, tasksToDelete, downloadStationTask);
         this.operation = "cleaned";
     }

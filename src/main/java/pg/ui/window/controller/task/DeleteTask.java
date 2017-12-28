@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
-import pg.web.model.ApiDetails;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 import pg.web.response.detail.TaskListDetail;
@@ -25,12 +25,12 @@ public class DeleteTask extends Task<Void> {
 
     protected final ExecutorService executor;
     protected final String sid;
-    protected final ApiDetails downloadStationTask;
+    protected final DSApiDetails downloadStationTask;
     protected final List<DSTask> torrentsToDelete;
     protected final Logger logger;
     private final ListView<DSTask> listView;
 
-    public DeleteTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask,
+    public DeleteTask(ListView<DSTask> listView, String sid, DSApiDetails downloadStationTask,
                       List<DSTask> torrentsToDelete, ExecutorService executor) {
         this.torrentsToDelete = torrentsToDelete;
         this.executor = executor;

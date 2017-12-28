@@ -5,8 +5,8 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DSDeleteResponse;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
@@ -23,10 +23,10 @@ public class DeleteCall extends BasicCall implements Callable<List<DeleteItem>> 
 
     protected final String sid;
     protected final List<DSTask> tasksToDelete;
-    protected final ApiDetails downloadStationTask;
+    protected final DSApiDetails downloadStationTask;
     protected String operation;
 
-    public DeleteCall(String sid, List<DSTask> tasksToDelete, ApiDetails downloadStationTask) {
+    public DeleteCall(String sid, List<DSTask> tasksToDelete, DSApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.tasksToDelete = tasksToDelete;

@@ -5,8 +5,8 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.model.TorrentUrlType;
 import pg.web.model.torrent.ReducedDetail;
 import pg.web.response.DSGeneralResponse;
@@ -23,9 +23,9 @@ public class CreateCall extends BasicCall implements Callable<Void> {
 
     private final String sid;
     private final List<ReducedDetail> matchTorrents;
-    private final ApiDetails downloadStationTask;
+    private final DSApiDetails downloadStationTask;
 
-    public CreateCall(String sid, List<ReducedDetail> matchTorrents, ApiDetails downloadStationTask) {
+    public CreateCall(String sid, List<ReducedDetail> matchTorrents, DSApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.matchTorrents = matchTorrents;

@@ -3,8 +3,8 @@ package pg.ui.window.controller.task.atomic.call.ds;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DSGeneralResponse;
 import pg.web.synology.AuthMethod;
 
@@ -14,9 +14,9 @@ import java.util.concurrent.Callable;
 /** Created by Gawa 2017-11-11 */
 public class LogoutCall extends BasicCall implements Callable<Void> {
 
-    private ApiDetails authInfo;
+    private DSApiDetails authInfo;
 
-    public LogoutCall(ApiDetails authInfo) {
+    public LogoutCall(DSApiDetails authInfo) {
         super();
         this.authInfo = authInfo;
     }

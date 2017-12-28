@@ -1,7 +1,7 @@
 package pg.web.model;
 
 /**Created by Gawa on 24/08/17.*/
-public class ApiDetails {
+public class DSApiDetails {
 
     private int maxVersion;
     private int minVersion;

@@ -25,8 +25,8 @@ public class DiskStationServiceImpl implements DiskStationService {
     private static final Logger logger = LogManager.getLogger(DiskStationServiceImpl.class);
 
     private final ApplicationPropertiesHelper application;
-    private ApiDetails authInfo;
-    private ApiDetails downloadStationTask;
+    private DSApiDetails authInfo;
+    private DSApiDetails downloadStationTask;
     private List<ReducedDetail> foundTorrents;
     private String sid;
     private String serverUrl;

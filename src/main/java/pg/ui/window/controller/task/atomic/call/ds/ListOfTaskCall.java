@@ -5,8 +5,8 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DSTaskListResponse;
 import pg.web.response.detail.TaskListDetail;
 
@@ -17,9 +17,9 @@ import java.util.concurrent.Callable;
 public class ListOfTaskCall extends BasicCall implements Callable<TaskListDetail> {
 
     private final String sid;
-    private final ApiDetails downloadStationTask;
+    private final DSApiDetails downloadStationTask;
 
-    public ListOfTaskCall(String sid, ApiDetails downloadStationTask) {
+    public ListOfTaskCall(String sid, DSApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.downloadStationTask = downloadStationTask;

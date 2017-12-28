@@ -3,7 +3,7 @@ package pg.ui.window.controller.task;
 import javafx.scene.control.ListView;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
-import pg.web.model.ApiDetails;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class DeleteForceCompleteTask extends DeleteTask {
 
-    public DeleteForceCompleteTask(ListView<DSTask> listView, String sid, ApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
+    public DeleteForceCompleteTask(ListView<DSTask> listView, String sid, DSApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
         super(listView, sid, downloadStationTask, torrentsToDelete, executor);
     }
 

@@ -5,8 +5,8 @@ import pg.exception.UIError;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
-import pg.web.model.ApiDetails;
 import pg.web.model.ApiName;
+import pg.web.model.DSApiDetails;
 import pg.web.response.DSLoginResponse;
 import pg.web.synology.AuthMethod;
 
@@ -16,10 +16,10 @@ import java.util.concurrent.Callable;
 /** Created by Gawa 2017-11-11 */
 public class LoginCall extends BasicCall implements Callable<String> {
 
-    private final ApiDetails authInfo;
+    private final DSApiDetails authInfo;
     private String sid;
 
-    public LoginCall(ApiDetails authInfo) {
+    public LoginCall(DSApiDetails authInfo) {
         super();
         this.authInfo = authInfo;
     }
