@@ -1,8 +1,8 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.web.model.ApiName;
+import pg.web.response.DSDeletedItem;
 import pg.web.response.detail.DSApiDetails;
-import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 import pg.web.synology.DSTaskMethod;
 
@@ -18,7 +18,7 @@ public class DeleteForceCompleteCall extends DeleteCall {
     }
 
     @Override
-    public List<DeleteItem> call() {
+    public List<DSDeletedItem> call() {
         return super.call();
     }
 

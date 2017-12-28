@@ -8,9 +8,9 @@ import java.util.List;
 public class DSDeleteResponse extends DSGeneralResponse {
 
     @JsonProperty("data")
-    private List<DeleteItem> deletedItems;
+    private List<DSDeletedItem> deletedItems;
 
-    public List<DeleteItem> getDeletedItems() {
+    public List<DSDeletedItem> getDeletedItems() {
         return deletedItems;
     }
 }

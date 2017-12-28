@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
+import pg.web.response.DSDeletedItem;
 import pg.web.response.detail.DSApiDetails;
-import pg.web.response.DeleteItem;
 import pg.web.response.detail.DSTask;
 import pg.web.response.detail.TaskListDetail;
 
@@ -44,14 +44,14 @@ public class DeleteTask extends Task<Void> {
     protected Void call() throws Exception {
         updateProgress(0, 5);
 
-        AppTask<List<DeleteItem>> deleteTask = executeDSTasks();
+        AppTask<List<DSDeletedItem>> deleteTask = executeDSTasks();
 
         ObservableList<DSTask> dsTasks = getListOfTasks();
         updateListView(dsTasks);
 
         Set<String> deletedTasks = deleteTask.get().stream()
                 .filter(deleteItem -> deleteItem.getError() == 0)
-                .map(DeleteItem::getId)
+                .map(DSDeletedItem::getId)
                 .collect(Collectors.toSet());
         updateProgress(4, 5);
 
@@ -64,8 +64,8 @@ public class DeleteTask extends Task<Void> {
         return null;
     }
 
-    protected AppTask<List<DeleteItem>> executeDSTasks() throws InterruptedException {
-        AppTask<List<DeleteItem>> deleteTask = new AppTask<>(
+    protected AppTask<List<DSDeletedItem>> executeDSTasks() throws InterruptedException {
+        AppTask<List<DSDeletedItem>> deleteTask = new AppTask<>(
                 new DeleteCall(sid, torrentsToDelete, downloadStationTask),
                 executor
         );
