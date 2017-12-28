@@ -7,10 +7,10 @@ import pg.web.response.detail.DSInfo;
 public class SynologyResponse extends GeneralResponse {
 
     @JsonProperty("data")
-    private DSInfo detailResponse;
+    private DSInfo dsInfo;
 
-    public DSInfo getDetailResponse() {
-        return detailResponse;
+    public DSInfo getDsInfo() {
+        return dsInfo;
     }
 
 }

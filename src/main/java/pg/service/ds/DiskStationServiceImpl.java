@@ -51,8 +51,8 @@ public class DiskStationServiceImpl implements DiskStationService {
                 if (jsonResponse.isPresent()) {
                     SynologyResponse synologyResponse = jsonResponse.get();
                     if (synologyResponse.isSuccess()) {
-                        authInfo = synologyResponse.getDetailResponse().getAuthInfo();
-                        downloadStationTask = synologyResponse.getDetailResponse().getDownloadStationTask();
+                        authInfo = synologyResponse.getDsInfo().getAuthInfo();
+                        downloadStationTask = synologyResponse.getDsInfo().getDownloadStationTask();
                     }
                 }
             }

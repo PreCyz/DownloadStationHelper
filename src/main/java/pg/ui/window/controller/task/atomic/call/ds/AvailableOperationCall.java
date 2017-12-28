@@ -34,8 +34,8 @@ public class AvailableOperationCall extends BasicCall implements Callable<DsApiD
             if (jsonResponse.isPresent()) {
                 SynologyResponse synologyResponse = jsonResponse.get();
                 if (synologyResponse.isSuccess()) {
-                    dsApiDetail.setAuthInfo(synologyResponse.getDetailResponse().getAuthInfo());
-                    dsApiDetail.setDownloadStationTask(synologyResponse.getDetailResponse().getDownloadStationTask());
+                    dsApiDetail.setAuthInfo(synologyResponse.getDsInfo().getAuthInfo());
+                    dsApiDetail.setDownloadStationTask(synologyResponse.getDsInfo().getDownloadStationTask());
                 }
             }
         }
