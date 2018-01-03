@@ -30,7 +30,6 @@ public class ProgramException extends RuntimeException {
 
     @Override
     public String getMessage() {
-
         if (!arguments.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             for(UIError error : arguments.keySet()) {
