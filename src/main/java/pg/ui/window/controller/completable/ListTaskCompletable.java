@@ -91,7 +91,7 @@ public class ListTaskCompletable extends Task<Void> {
         return null;
     }
 
-    String getLoginSid() {
+    public String getLoginSid() {
         return sid;
     }
 }

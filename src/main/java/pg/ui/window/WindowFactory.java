@@ -1,7 +1,7 @@
 package pg.ui.window;
 
 import pg.ui.window.controller.ConfigController;
-import pg.ui.window.controller.MainController;
+import pg.ui.window.controller.MainControllerCompletable;
 import pg.ui.window.controller.ShowController;
 
 import java.util.ResourceBundle;
@@ -11,7 +11,7 @@ public enum WindowFactory {
     MAIN {
         @Override
         public AbstractWindow createWindow(WindowHandler windowHandler, ResourceBundle bundle) {
-            return new MainWindow(new MainController(windowHandler), bundle);
+            return new MainWindow(new MainControllerCompletable(windowHandler), bundle);
         }
     },
     CONFIG {

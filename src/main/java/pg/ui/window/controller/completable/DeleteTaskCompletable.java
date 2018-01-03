@@ -7,6 +7,8 @@ import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.exception.ProgramException;
+import pg.exception.UIError;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.web.ds.DSDeletedItem;
@@ -48,11 +50,15 @@ public class DeleteTaskCompletable extends Task<Void> {
         return null;
     }
 
-    private List<DSDeletedItem> deleteDSTasks() {
+    protected List<DSDeletedItem> deleteDSTasks() {
         updateProgress(1, 5);
         DeleteCall deleteCall = new DeleteCall(sid, torrentsToDelete, downloadStationTask);
         updateProgress(2, 5);
-        return deleteCall.call();
+        try {
+            return deleteCall.call();
+        } catch (Exception ex) {
+            throw new ProgramException(UIError.DELETE_TASK, ex);
+        }
     }
 
     private Set<String> updateUIMessage(List<DSDeletedItem> dsDeletedItems) {
