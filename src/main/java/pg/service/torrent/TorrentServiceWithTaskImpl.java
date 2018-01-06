@@ -36,7 +36,8 @@ public class TorrentServiceWithTaskImpl extends ConcurrentTorrentServiceImpl {
         }
 
         List<TorrentResponse> torrentResponses = new ArrayList<>();
-        fxTask.updateProgressTo30(0.03);
+        double onePercentOfProgress = 1.0 / 30;
+        fxTask.updateProgressTo30(onePercentOfProgress);
         double done = 0;
         while (!tasks.isEmpty()) {
             for (Iterator<GetTorrentsTask> it = tasks.iterator(); it.hasNext(); ) {
