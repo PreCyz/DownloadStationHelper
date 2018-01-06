@@ -2,7 +2,6 @@ package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.scene.control.ListView;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
@@ -16,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 /** Created by Gawa 2017-10-29 */
-public class ListTaskCompletable extends Task<Void> {
+public class ListTaskCompletable extends UpdatableTask<Void> {
 
     protected final ListView<DSTask> listView;
     protected final ExecutorService executor;
@@ -38,40 +37,39 @@ public class ListTaskCompletable extends Task<Void> {
     }
 
     @Override
-    protected Void call() throws Exception {
-        updateProgress(0, 10);
+    protected Void call() {
+        updateProgress(0, 100);
 
         if (sid == null) {
             CompletableFuture.supplyAsync(this::loginToDiskStation, executor)
                     .thenApply(resultSid -> getDsTaskListDetail())
-                    .thenApply(this::updateUIView);
+                    .thenAccept(this::updateUIView);
         } else {
             CompletableFuture.supplyAsync(this::getDsTaskListDetail, executor)
-                    .thenApply(this::updateUIView);
+                    .thenAccept(this::updateUIView);
         }
         return null;
     }
 
     protected String loginToDiskStation() {
-        updateProgress(3, 10);
+        updateProgress(30, 100);
         LoginCall loginCall = new LoginCall(dsApiDetail.getAuthInfo());
-        updateProgress(6, 10);
+        updateProgress(60, 100);
         updateMessage("Login in progress.");
         windowHandler.logoutOnExit();
         windowHandler.setDsApiDetail(dsApiDetail);
-        String resultSid = loginCall.call();
-        setSid(resultSid);
-        return resultSid;
+        setSid(loginCall.call());
+        return getLoginSid();
     }
 
     protected DSTaskListDetail getDsTaskListDetail() {
-        updateProgress(7, 10);
+        updateProgress(70, 100);
 
         ListOfTaskCall listOfTaskCall = new ListOfTaskCall(sid, dsApiDetail.getDownloadStationTask());
         return listOfTaskCall.call();
     }
 
-    protected Void updateUIView(DSTaskListDetail listOfTasks) {
+    protected void updateUIView(DSTaskListDetail listOfTasks) {
         List<DSTask> tasks = listOfTasks.getTasks();
         if (tasks.isEmpty()) {
             tasks.add(DSTask.NOTHING_TO_DISPLAY);
@@ -87,11 +85,15 @@ public class ListTaskCompletable extends Task<Void> {
         }
 
         updateMessage("List of tasks on disk station.");
-        updateProgress(10, 10);
-        return null;
+        updateProgress(100, 100);
     }
 
     public String getLoginSid() {
         return sid;
+    }
+
+    @Override
+    public void updateProgressTo30(double workDone) {
+        updateProgress(workDone * 30, 100);
     }
 }

@@ -178,12 +178,11 @@ public class MainControllerCompletable extends AbstractController {
     private EventHandler<ActionEvent> imdbButtonAction() {
         return e -> {
             try {
+                cancelTask();
                 if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
-                    cancelTask();
                     //infoLabel.textProperty().unbind();
                     infoLabel.setText("Please choose imdb id.");
                 } else {
-                    cancelTask();
                     String imdbId = existingImdbMap.entrySet()
                             .stream()
                             .filter(entry -> entry.getValue().equals(imdbComboBox.getValue()))
@@ -222,6 +221,7 @@ public class MainControllerCompletable extends AbstractController {
     private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
         return event -> {
             try {
+                String sid = extractSid();
                 if (KeyCode.L == event.getCode()) {
                     listTask = new ListTaskCompletable(
                             torrentListView,
@@ -229,7 +229,7 @@ public class MainControllerCompletable extends AbstractController {
                             windowHandler,
                             executor
                     );
-                    listTask.setSid(extractSid());
+                    listTask.setSid(sid);
                     resetProperties(listTask);
                     futureTask = executor.submit(listTask);
                 }
@@ -239,7 +239,7 @@ public class MainControllerCompletable extends AbstractController {
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
                     deleteTask = new DeleteTaskCompletable(
                             torrentListView,
-                            extractSid(),
+                            sid,
                             availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                             torrentsToDelete,
                             executor
@@ -249,23 +249,13 @@ public class MainControllerCompletable extends AbstractController {
                 } else if (KeyCode.F == event.getCode()) {
                     deleteTask = new DeleteForceCompleteTaskCompletable(
                             torrentListView,
-                            extractSid(),
+                            sid,
                             availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                             torrentsToDelete,
                             executor
                     );
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
-                } else if (KeyCode.L == event.getCode()) {
-                    listTask = new ListTaskCompletable(
-                            torrentListView,
-                            availableOperationTask.getDsApiDetail(),
-                            windowHandler,
-                            executor
-                    );
-                    listTask.setSid(extractSid());
-                    resetProperties(listTask);
-                    futureTask = executor.submit(listTask);
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());

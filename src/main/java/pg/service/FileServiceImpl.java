@@ -10,6 +10,7 @@ import pg.web.torrent.TorrentDetail;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-15*/
 public class FileServiceImpl implements FileService {
@@ -23,7 +24,9 @@ public class FileServiceImpl implements FileService {
         Path filePath = AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE);
         Optional<TreeMap> treeMap = JsonUtils.convertFromFile(filePath, TreeMap.class);
         Map<String, ReducedDetail> torrentsMap = treeMap.orElse(new TreeMap<String, ReducedDetail>());
-        foundTorrents.forEach(reducedDetail -> torrentsMap.put(reducedDetail.getTitle(), reducedDetail));
+        torrentsMap.putAll(foundTorrents.stream()
+                .collect(Collectors.toMap(ReducedDetail::getTitle, reducedDetail -> reducedDetail))
+        );
         JsonUtils.writeToFile(filePath, torrentsMap);
         logger.info("[{}] torrents stored in file [{}].", torrentsMap.size(), filePath);
     }

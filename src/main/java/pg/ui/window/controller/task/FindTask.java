@@ -6,7 +6,7 @@ import javafx.scene.control.ListView;
 import pg.program.ProgramMode;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.AppTask;
-import pg.ui.window.controller.task.atomic.call.ds.CreateCall;
+import pg.ui.window.controller.task.atomic.call.ds.CreateTaskCall;
 import pg.ui.window.controller.task.atomic.call.torrent.FindTorrentsCall;
 import pg.ui.window.controller.task.atomic.call.torrent.MatchTorrentsCall;
 import pg.ui.window.controller.task.atomic.call.torrent.UpdateImdbMapCall;
@@ -106,7 +106,7 @@ public class FindTask extends ListTask {
 
     private void createTasks() throws InterruptedException {
         AppTask<Void> createTasks = new AppTask<>(
-                new CreateCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
+                new CreateTaskCall(sid, matchTorrents.get(), dsApiDetail.getDownloadStationTask()),
                 executor
         );
         updateMessage("Torrents started");

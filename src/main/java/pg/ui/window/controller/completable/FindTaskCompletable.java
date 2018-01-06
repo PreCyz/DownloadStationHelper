@@ -7,11 +7,8 @@ import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.program.ProgramMode;
 import pg.ui.window.WindowHandler;
-import pg.ui.window.controller.task.atomic.call.ds.CreateCall;
-import pg.ui.window.controller.task.atomic.call.torrent.FindTorrentsCall;
-import pg.ui.window.controller.task.atomic.call.torrent.MatchTorrentsCall;
-import pg.ui.window.controller.task.atomic.call.torrent.UpdateImdbMapCall;
-import pg.ui.window.controller.task.atomic.call.torrent.WriteMatchTorrentsCall;
+import pg.ui.window.controller.task.atomic.call.ds.CreateTaskCall;
+import pg.ui.window.controller.task.atomic.call.torrent.*;
 import pg.util.StringUtils;
 import pg.web.ds.detail.DSTask;
 import pg.web.ds.detail.DsApiDetail;
@@ -42,28 +39,11 @@ public class FindTaskCompletable extends ListTaskCompletable {
         this.programMode = ProgramMode.IMDB;
     }
 
-    @Override
     protected Void call() {
-        updateProgress(0, 100);
-
-        CompletableFuture<List<ReducedDetail>> matchTorrents = CompletableFuture.supplyAsync(this::findTorrents, executor)
-                .thenApply(this::updateImdbMap).thenApply(this::matchTorrents);
-
-        if (this.matchTorrents.isEmpty()) {
-            matchTorrents.thenAccept(torrents -> updateUIWithNothingToDisplay());
-            return null;
-        }
-
-        matchTorrents.thenAccept(this::writeMatchTorrents);
-        if (getLoginSid() == null) {
-            matchTorrents.thenAccept(torrents -> loginToDiskStation());
-        }
-        matchTorrents.thenAccept(this::createTasks)
-                .thenApply(a -> getDsTaskListDetail())
-                .thenAccept(this::updateUIView);
-
-        updateMessage("Torrents started.");
-        updateProgress(100, 100);
+        CompletableFuture.supplyAsync(this::findTorrents, executor)
+                .thenApply(this::updateImdbMap)
+                .thenApply(this::matchTorrents)
+                .thenAccept(this::createTasksAndUpdateUI);
         return null;
     }
 
@@ -71,7 +51,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
         try {
             List<TorrentDetail> torrentDetails;
             if (StringUtils.nullOrTrimEmpty(imdbId)) {
-                torrentDetails = new FindTorrentsCall().call();
+                torrentDetails = new FindTorrentsWithTaskCall(this).call();
             } else {
                 torrentDetails = new FindTorrentsCall(imdbId).call();
             }
@@ -105,6 +85,19 @@ public class FindTaskCompletable extends ListTaskCompletable {
         }
     }
 
+    private void createTasksAndUpdateUI(List<ReducedDetail> torrents) {
+        if (torrents.isEmpty()) {
+            updateUIWithNothingToDisplay();
+        } else {
+            writeMatchTorrents(torrents);
+            if (getLoginSid() == null) {
+                loginToDiskStation();
+            }
+            createTasks(torrents);
+            updateUIView(getDsTaskListDetail());
+        }
+    }
+
     private void updateUIWithNothingToDisplay() {
         updateMessage("No torrents to start");
         updateProgress(100, 100);
@@ -119,21 +112,20 @@ public class FindTaskCompletable extends ListTaskCompletable {
         }
     }
 
-    private List<ReducedDetail> writeMatchTorrents(List<ReducedDetail> torrents) {
+    private void writeMatchTorrents(List<ReducedDetail> torrents) {
         try {
             new WriteMatchTorrentsCall(torrents).call();
             updateProgress(65, 100);
             updateMessage("Match torrents stored");
-            return torrents;
         } catch (Exception ex) {
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
 
     private void createTasks(List<ReducedDetail> torrents) {
-        new CreateCall(getLoginSid(), torrents, dsApiDetail.getDownloadStationTask()).call();
+        new CreateTaskCall(getLoginSid(), torrents, dsApiDetail.getDownloadStationTask()).call();
         updateMessage("Torrents started");
-        updateProgress(99, 99);
+        updateProgress(99, 100);
     }
 
     private String messageAfterMatch() {

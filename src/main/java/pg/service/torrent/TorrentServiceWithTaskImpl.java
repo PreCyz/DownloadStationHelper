@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
-import pg.props.ApplicationPropertiesHelper;
+import pg.ui.window.controller.completable.UpdatableTask;
 import pg.ui.window.controller.task.atomic.GetTorrentsTask;
 import pg.util.JsonUtils;
 import pg.web.torrent.TorrentDetail;
@@ -13,27 +13,18 @@ import pg.web.torrent.TorrentResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-/** Created by Gawa 2017-10-25 */
-public class ConcurrentTorrentServiceImpl implements TorrentService {
+/** Created by Gawa 2018-01-06 */
+public class TorrentServiceWithTaskImpl extends ConcurrentTorrentServiceImpl {
 
-    private static final Logger logger = LogManager.getLogger(ConcurrentTorrentServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(TorrentServiceWithTaskImpl.class);
 
-    private final int defaultLimit = 100;
-    private final String defaultUrl = "https://eztv.ag/api/get-torrents";
-    private final ApplicationPropertiesHelper application;
-    private final String url;
-    protected final int defaultPage = 1;
-    protected final ExecutorService executorService;
-    protected int limit = defaultLimit;
+    private UpdatableTask<?> fxTask;
 
-    public ConcurrentTorrentServiceImpl() {
-        this.application = ApplicationPropertiesHelper.getInstance();
-        this.executorService = Executors.newFixedThreadPool(getPage());
-        this.url = application.getUrl(defaultUrl);
+    TorrentServiceWithTaskImpl(UpdatableTask<?> fxTask) {
+        super();
+        this.fxTask = fxTask;
     }
 
     @Override
@@ -45,6 +36,7 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
         }
 
         List<TorrentResponse> torrentResponses = new ArrayList<>();
+        double done = 0;
         while (!tasks.isEmpty()) {
             for (Iterator<GetTorrentsTask> it = tasks.iterator(); it.hasNext(); ) {
                 GetTorrentsTask task = it.next();
@@ -61,6 +53,8 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
                                     .sum()
                     );
                     torrentResponses.addAll(torrentsForRequest);
+                    double workDone = ++done / numberOfPages;
+                    fxTask.updateProgressTo30(workDone);
                 }
             }
             if (!tasks.isEmpty()) {
@@ -75,16 +69,5 @@ public class ConcurrentTorrentServiceImpl implements TorrentService {
         return torrentResponses.stream()
                 .flatMap(tr -> tr.getTorrents().stream())
                 .collect(Collectors.toList());
-    }
-
-    protected Integer getPage() {
-        return application.getPage(defaultPage);
-    }
-
-    protected String createUrl(int currentPage) {
-        limit = application.getLimit(defaultLimit);
-        String limitParam = String.format("limit=%d", limit);
-        String page = String.format("page=%d", currentPage);
-        return String.format("%s?%s&%s", url, limitParam, page);
     }
 }
