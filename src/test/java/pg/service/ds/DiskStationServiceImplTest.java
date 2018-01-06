@@ -24,7 +24,6 @@ public class DiskStationServiceImplTest {
 
     @Test
     public void givenNoServerAddressInSettingsWhenPrepareServerUrlTheReturnHttpServerAddress() {
-
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
         String actual = diskStationService.prepareServerUrl();
