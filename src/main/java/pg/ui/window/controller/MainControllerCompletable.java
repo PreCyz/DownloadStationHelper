@@ -21,6 +21,7 @@ import pg.ui.window.controller.completable.DeleteForceCompleteTaskCompletable;
 import pg.ui.window.controller.completable.DeleteTaskCompletable;
 import pg.ui.window.controller.completable.FindTaskCompletable;
 import pg.ui.window.controller.completable.ListTaskCompletable;
+import pg.ui.window.controller.handler.AutoCompleteComboBoxHandler;
 import pg.ui.window.controller.task.AvailableOperationTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
@@ -131,6 +132,7 @@ public class MainControllerCompletable extends AbstractController {
                 .collect(Collectors.toList());
         imdbComboBox.setItems(FXCollections.observableList(sortedImdbs));
         numberOfShowsLabel.setText(String.format("%s %d", numberOfShowsLabel.getText(), existingImdbMap.size()));
+        new AutoCompleteComboBoxHandler<>(imdbComboBox, numberOfShowsLabel);
     }
 
     private void setupButtons() {

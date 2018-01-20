@@ -18,7 +18,7 @@
       <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="225.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
       <Pane fx:id="imdbPane" disable="true" layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
          <children>
-            <ComboBox fx:id="imdbComboBox" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="366.0">
+            <ComboBox fx:id="imdbComboBox" editable="true" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="366.0">
                <tooltip>
                   <Tooltip text="%main.imdb.combobox.tooltip" />
                </tooltip></ComboBox>
