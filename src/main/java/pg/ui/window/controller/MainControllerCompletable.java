@@ -51,6 +51,7 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Pane connectionPane;
     @FXML private Pane imdbPane;
     @FXML private Pane favouritePane;
+    @FXML private Label numberOfShowsLabel;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -129,6 +130,7 @@ public class MainControllerCompletable extends AbstractController {
                 .sorted()
                 .collect(Collectors.toList());
         imdbComboBox.setItems(FXCollections.observableList(sortedImdbs));
+        numberOfShowsLabel.setText(String.format("%s %d", numberOfShowsLabel.getText(), existingImdbMap.size()));
     }
 
     private void setupButtons() {
