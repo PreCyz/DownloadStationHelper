@@ -131,7 +131,7 @@ public class MainControllerCompletable extends AbstractController {
                 .sorted()
                 .collect(Collectors.toList());
         imdbComboBox.setItems(FXCollections.observableList(sortedImdbs));
-        numberOfShowsLabel.setText(String.format("%s %d", numberOfShowsLabel.getText(), existingImdbMap.size()));
+        numberOfShowsLabel.setText(String.valueOf(existingImdbMap.size()));
         new AutoCompleteComboBoxHandler<>(imdbComboBox, numberOfShowsLabel);
     }
 

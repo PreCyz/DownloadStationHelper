@@ -93,8 +93,7 @@ public class AutoCompleteComboBoxHandler<T> implements EventHandler<KeyEvent> {
         comboBox.getEditor().setText(comboBoxText);
         if (!list.isEmpty()) {
             comboBox.show();
-            String info = numberOfShowsLabel.getText().substring(0, numberOfShowsLabel.getText().indexOf(":") + 1);
-            numberOfShowsLabel.setText(String.format("%s %d", info, list.size()));
+            numberOfShowsLabel.setText(String.valueOf(list.size()));
         }
     }
 
@@ -111,7 +110,7 @@ public class AutoCompleteComboBoxHandler<T> implements EventHandler<KeyEvent> {
         ObservableList<T> list = FXCollections.observableArrayList();
         for (T value : data) {
             String lowerCaseValue = value.toString().toLowerCase();
-            if (lowerCaseValue.startsWith(comboBoxText.toLowerCase())) {
+            if (lowerCaseValue.contains(comboBoxText.toLowerCase())) {
                 list.add(value);
             }
         }

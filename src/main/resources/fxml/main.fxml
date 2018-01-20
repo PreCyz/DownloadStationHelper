@@ -26,7 +26,8 @@
                <tooltip>
                   <Tooltip text="%main.imdb.tooltip" />
                </tooltip></Button>
-            <Label fx:id="numberOfShowsLabel" layoutX="173.0" layoutY="40.0" prefHeight="15.0" prefWidth="199.0" text="%main.imdb.number" />
+            <Label layoutX="173.0" layoutY="40.0" prefHeight="15.0" prefWidth="122.0" text="%main.imdb.number" />
+            <Label fx:id="numberOfShowsLabel" layoutX="295.0" layoutY="40.0" prefHeight="15.0" prefWidth="78.0" style="-fx-text-fill: green;" />
          </children>
       </Pane>
       <Pane fx:id="favouritePane" disable="true" layoutX="408.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
