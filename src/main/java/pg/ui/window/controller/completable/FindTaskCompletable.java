@@ -2,6 +2,7 @@ package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
@@ -25,6 +26,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
 
     private ProgramMode programMode;
     private String imdbId;
+    private Label numberOfShowsLabel;
 
     private List<ReducedDetail> matchTorrents;
 
@@ -37,6 +39,10 @@ public class FindTaskCompletable extends ListTaskCompletable {
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
         this.programMode = ProgramMode.IMDB;
+    }
+
+    public void setNumberOfShowsLabel(Label numberOfShowsLabel) {
+        this.numberOfShowsLabel = numberOfShowsLabel;
     }
 
     protected Void call() {
@@ -65,7 +71,16 @@ public class FindTaskCompletable extends ListTaskCompletable {
 
     private List<TorrentDetail> updateImdbMap(List<TorrentDetail> torrents) {
         try {
-            new UpdateImdbMapCall(torrents).call();
+            Integer imdbMapSize = new UpdateImdbMapCall(torrents).call();
+            if (numberOfShowsLabel != null) {
+                if (Platform.isFxApplicationThread()) {
+                    numberOfShowsLabel.setText(String.valueOf(imdbMapSize));
+                } else {
+                    Platform.runLater(() -> {
+                        numberOfShowsLabel.setText(String.valueOf(imdbMapSize));
+                    });
+                }
+            }
             updateProgress(35, 100);
             updateMessage("Imdb map stored");
             return torrents;

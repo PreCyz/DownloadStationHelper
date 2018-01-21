@@ -44,8 +44,8 @@ public class FileServiceImpl implements FileService {
     public void writeImdbMapToFile() {
         if (!imdbTitleMap.isEmpty()) {
             Path filePath = AppConstants.fullFilePath(AppConstants.IMDB_FILE_NAME);
-            Map<String,String> existingImdbMap = JsonUtils.convertFromFile(filePath, TreeMap.class)
-                    .orElse(new TreeMap<String,String>());
+            Map<String, String> existingImdbMap = JsonUtils.convertFromFile(filePath, TreeMap.class)
+                    .orElse(new TreeMap<String, String>());
             imdbTitleMap.putAll(existingImdbMap);
             JsonUtils.writeToFile(filePath, imdbTitleMap);
             int newImdbNumber = imdbTitleMap.size() - existingImdbMap.size();
@@ -55,5 +55,13 @@ public class FileServiceImpl implements FileService {
         } else {
             logger.info("No new imdb ids where found.");
         }
+    }
+
+    @Override
+    public int getImdbMapSize() {
+        if (imdbTitleMap != null) {
+            return imdbTitleMap.size();
+        }
+        return 0;
     }
 }

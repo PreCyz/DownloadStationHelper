@@ -151,6 +151,7 @@ public class MainControllerCompletable extends AbstractController {
                         executor
                 );
                 findTask.setSid(extractSid());
+                findTask.setNumberOfShowsLabel(numberOfShowsLabel);
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
             } catch (Exception ex) {
@@ -196,7 +197,8 @@ public class MainControllerCompletable extends AbstractController {
                     findTask = new FindTaskCompletable(
                             torrentListView,
                             availableOperationTask.getDsApiDetail(),
-                            windowHandler, executor
+                            windowHandler,
+                            executor
                     );
                     findTask.setImdbId(imdbId);
                     findTask.setSid(extractSid());

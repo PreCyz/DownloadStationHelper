@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-10-29 */
-public class UpdateImdbMapCall implements Callable<Void> {
+public class UpdateImdbMapCall implements Callable<Integer> {
 
     private final List<TorrentDetail> torrents;
 
@@ -17,11 +17,11 @@ public class UpdateImdbMapCall implements Callable<Void> {
     }
 
     @Override
-    public Void call() throws Exception {
+    public Integer call() {
         FileService fileService = new FileServiceImpl();
         fileService.buildImdbMap(torrents);
         fileService.writeImdbMapToFile();
-        return null;
+        return fileService.getImdbMapSize();
     }
 
 }

@@ -10,4 +10,5 @@ public interface FileService {
     void writeTorrentsToFile(List<ReducedDetail> foundTorrents);
     void buildImdbMap(List<TorrentDetail> torrentResponses);
     void writeImdbMapToFile();
+    int getImdbMapSize();
 }
