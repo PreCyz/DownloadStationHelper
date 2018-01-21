@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -110,19 +111,28 @@ public class ConfigController extends AbstractController {
     }
 
     private EventHandler<ActionEvent> torrentLocationAction() {
-        return e -> torrentLocationText.setText(openDirectoryChooser("Choose torrent location"));
+        return e -> {
+            Optional<String> torrentLocation = openDirectoryChooser("Choose torrent location");
+            torrentLocation.ifPresent(location -> torrentLocationText.setText(location));
+        };
     }
 
-    private String openDirectoryChooser(String title) {
+    private Optional<String> openDirectoryChooser(String title) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(title);
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         final File file = directoryChooser.showDialog(windowHandler.currentWindow());
-        return file.getAbsolutePath();
+        if (file == null) {
+            return Optional.empty();
+        }
+        return Optional.of(file.getAbsolutePath());
     }
 
     private EventHandler<ActionEvent> resultLocationAction() {
-        return e -> resultLocationText.setText(openDirectoryChooser("Choose result location"));
+        return e -> {
+            Optional<String> resultLocation = openDirectoryChooser("Choose result location");
+            resultLocation.ifPresent(location -> resultLocationText.setText(location));
+        };
     }
 
     private EventHandler<ActionEvent> doneAction() {
