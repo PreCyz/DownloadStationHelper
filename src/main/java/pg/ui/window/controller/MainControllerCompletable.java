@@ -17,10 +17,7 @@ import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.WindowHandler;
-import pg.ui.window.controller.completable.DeleteForceCompleteTaskCompletable;
-import pg.ui.window.controller.completable.DeleteTaskCompletable;
-import pg.ui.window.controller.completable.FindTaskCompletable;
-import pg.ui.window.controller.completable.ListTaskCompletable;
+import pg.ui.window.controller.completable.*;
 import pg.ui.window.controller.handler.AutoCompleteComboBoxHandler;
 import pg.ui.window.controller.task.AvailableOperationTask;
 import pg.util.AppConstants;
@@ -45,6 +42,7 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private CheckBox chooseCheckBox;
     @FXML private Button allButton;
     @FXML private Button imdbButton;
+    @FXML private Button useLinkButton;
     @FXML private ComboBox<String> imdbComboBox;
     @FXML private ListView<DSTask> torrentListView;
     @FXML private Label infoLabel;
@@ -63,6 +61,7 @@ public class MainControllerCompletable extends AbstractController {
     private AvailableOperationTask availableOperationTask;
     private DeleteTaskCompletable deleteTask;
     private ListTaskCompletable listTask;
+    private UseLinkTaskCompletable useLinkTask;
     private ApplicationPropertiesHelper application;
 
     public MainControllerCompletable(WindowHandler windowHandler) {
@@ -138,6 +137,7 @@ public class MainControllerCompletable extends AbstractController {
     private void setupButtons() {
         allButton.setOnAction(allButtonAction());
         imdbButton.setOnAction(imdbButtonAction());
+        useLinkButton.setOnAction(useLinkButtonAction());
     }
 
     private EventHandler<ActionEvent> allButtonAction() {
@@ -213,6 +213,48 @@ public class MainControllerCompletable extends AbstractController {
                     windowHandler.handleException(new ProgramException(UIError.IMDB, ex));
                 }
             }
+        };
+    }
+
+    private EventHandler<ActionEvent> useLinkButtonAction() {
+        return e -> {
+            String userName = application.getUsername();
+            String password = application.getPassword();
+            if (StringUtils.nullOrTrimEmpty(userName)) {
+                windowHandler.handleException(new ProgramException(UIError.USERNAME_DS));
+                return;
+            }
+            if (StringUtils.nullOrTrimEmpty(password)) {
+                windowHandler.handleException(new ProgramException(UIError.PASSWORD_DS));
+                return;
+            }
+
+            TextInputDialog dialog = new TextInputDialog(AppConstants.EMPTY_STRING);
+            dialog.setTitle("Link dialog");
+            String msg = "Paste the link.\n" +
+                    "U may use: (http://, http://, ftp://, ftps://, sftp://, magnet:, thunder://, flashget://, " +
+                    "qqdl://)";
+            dialog.setHeaderText(msg);
+            dialog.setContentText(AppConstants.EMPTY_STRING);
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(link -> {
+                try {
+                    useLinkTask = new UseLinkTaskCompletable(
+                            torrentListView,
+                            availableOperationTask.getDsApiDetail(),
+                            windowHandler,
+                            link,
+                            executor
+                    );
+                    useLinkTask.setSid(extractSid());
+                    resetProperties(useLinkTask);
+                    futureTask = executor.submit(useLinkTask);
+                } catch (Exception ex) {
+                    logger.error(ex.getLocalizedMessage());
+                    windowHandler.handleException((ProgramException) ex);
+                }
+            });
         };
     }
 

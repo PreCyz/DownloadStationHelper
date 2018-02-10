@@ -36,6 +36,7 @@
                <tooltip>
                   <Tooltip text="%main.all.tooltip" />
                </tooltip></Button>
+            <Button fx:id="useLinkButton" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.useLink" />
          </children>
       </Pane>
       <ProgressIndicator fx:id="progressIndicator" layoutX="499.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" progress="0.0" />
