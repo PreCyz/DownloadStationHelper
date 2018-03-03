@@ -26,6 +26,7 @@ public class DSTaskToTaskDetailConverter extends AbstractConverter<DSTask, TaskD
         if (dsTask.getSize() == 0) {
             return Double.NaN;
         }
-        return 100 * downloadedSize / dsTask.getSize();
+        double progress = 100.0 * downloadedSize / dsTask.getSize();
+        return (int) (100 * progress) / 100d;
     }
 }
