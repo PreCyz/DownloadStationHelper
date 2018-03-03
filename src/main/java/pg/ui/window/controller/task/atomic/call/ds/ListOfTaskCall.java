@@ -64,6 +64,7 @@ public class ListOfTaskCall extends BasicCall implements Callable<DSTaskListDeta
                 "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
                 "version=" + downloadStationTask.getMaxVersion() + "&" +
                 "method=" + "list" + "&" +
+                "additional=" + "detail,file" + "&" +
                 "_sid=" + sid;
     }
 }

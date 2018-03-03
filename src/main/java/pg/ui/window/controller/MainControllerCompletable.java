@@ -7,14 +7,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.util.StringConverter;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.TaskDetail;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.completable.*;
@@ -23,7 +27,6 @@ import pg.ui.window.controller.task.AvailableOperationTask;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
-import pg.web.ds.detail.DSTask;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -44,17 +47,18 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Button imdbButton;
     @FXML private Button useLinkButton;
     @FXML private ComboBox<String> imdbComboBox;
-    @FXML private ListView<DSTask> torrentListView;
+    //@FXML private ListView<DSTask> torrentListView;
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Pane connectionPane;
     @FXML private Pane imdbPane;
     @FXML private Pane favouritePane;
     @FXML private Label numberOfShowsLabel;
+    @FXML private TableView<TaskDetail> taskTableView;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
-    private List<DSTask> torrentsToDelete;
+    private List<TaskDetail> torrentsToDelete;
 
     private ExecutorService executor;
     private FindTaskCompletable findTask;
@@ -73,13 +77,55 @@ public class MainControllerCompletable extends AbstractController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        setUpTaskTableView();
         setupConnectingPane();
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
-        setupListView();
+        //setupListView();
         getAvailableOperation();
         progressIndicator.setVisible(false);
+    }
+
+    private void setUpTaskTableView() {
+        TableColumn<TaskDetail, ?> column = taskTableView.getColumns().get(0);
+        TableColumn<TaskDetail, String> titleColumn = new TableColumn<>();
+        titleColumn.setText(column.getText());
+        titleColumn.setPrefWidth(column.getPrefWidth());
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        column = taskTableView.getColumns().get(1);
+        TableColumn<TaskDetail, String> statusColumn = new TableColumn<>();
+        statusColumn.setText(column.getText());
+        statusColumn.setPrefWidth(column.getPrefWidth());
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        column = taskTableView.getColumns().get(2);
+        TableColumn<TaskDetail, Double> progressColumn = new TableColumn<>();
+        progressColumn.setText(column.getText());
+        progressColumn.setPrefWidth(column.getPrefWidth());
+        progressColumn.setCellValueFactory(new PropertyValueFactory<>("progress"));
+        progressColumn.setCellFactory(TextFieldTableCell.forTableColumn(doubleStringConverter()));
+
+        taskTableView.getColumns().clear();
+        taskTableView.getColumns().addAll(titleColumn, statusColumn, progressColumn);
+
+        taskTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        taskTableView.getSelectionModel().selectedItemProperty().addListener(tableViewChangeListener());
+    }
+
+    private StringConverter<Double> doubleStringConverter() {
+        return new StringConverter<Double>() {
+            @Override
+            public String toString(Double object) {
+                return object.toString();
+            }
+            @Override
+            public Double fromString(String string) {
+                return Double.valueOf(string);
+            }
+        };
     }
 
     private void setupConnectingPane() {
@@ -145,7 +191,7 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 cancelTask();
                 findTask = new FindTaskCompletable(
-                        torrentListView,
+                        taskTableView,
                         availableOperationTask.getDsApiDetail(),
                         windowHandler,
                         executor
@@ -195,7 +241,7 @@ public class MainControllerCompletable extends AbstractController {
                             .findFirst()
                             .orElse("");
                     findTask = new FindTaskCompletable(
-                            torrentListView,
+                            taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             executor
@@ -241,7 +287,7 @@ public class MainControllerCompletable extends AbstractController {
             result.ifPresent(link -> {
                 try {
                     useLinkTask = new UseLinkTaskCompletable(
-                            torrentListView,
+                            taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             link,
@@ -258,13 +304,13 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
-    private void setupListView() {
-        //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
-        torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
-        torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
-        torrentListView.requestFocus();
-    }
+//    private void setupListView() {
+//        //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
+//        torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
+//        torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//        torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
+//        torrentListView.requestFocus();
+//    }
 
     private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
         return event -> {
@@ -272,7 +318,7 @@ public class MainControllerCompletable extends AbstractController {
                 String sid = extractSid();
                 if (KeyCode.L == event.getCode()) {
                     listTask = new ListTaskCompletable(
-                            torrentListView,
+                            taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             executor
@@ -286,7 +332,7 @@ public class MainControllerCompletable extends AbstractController {
                 }
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
                     deleteTask = new DeleteTaskCompletable(
-                            torrentListView,
+                            taskTableView,
                             sid,
                             availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                             torrentsToDelete,
@@ -296,7 +342,7 @@ public class MainControllerCompletable extends AbstractController {
                     futureTask = executor.submit(deleteTask);
                 } else if (KeyCode.F == event.getCode()) {
                     deleteTask = new DeleteForceCompleteTaskCompletable(
-                            torrentListView,
+                            taskTableView,
                             sid,
                             availableOperationTask.getDsApiDetail().getDownloadStationTask(),
                             torrentsToDelete,
@@ -338,10 +384,17 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
-    private ChangeListener<DSTask> listViewChangeListener() {
+    /*private ChangeListener<DSTask> listViewChangeListener() {
         return (observable, oldValue, newValue) -> {
             torrentsToDelete = new ArrayList<>();
             torrentsToDelete.addAll(torrentListView.getSelectionModel().getSelectedItems());
+        };
+    }*/
+
+    private ChangeListener<TaskDetail> tableViewChangeListener() {
+        return (observable, oldValue, newValue) -> {
+            torrentsToDelete = new ArrayList<>();
+            torrentsToDelete.addAll(taskTableView.getSelectionModel().getSelectedItems());
         };
     }
 }

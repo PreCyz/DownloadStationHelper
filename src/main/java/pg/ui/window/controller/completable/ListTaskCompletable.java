@@ -2,7 +2,10 @@ package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import pg.converter.Converter;
+import pg.converter.DSTaskToTaskDetailConverter;
+import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.ui.window.controller.task.atomic.call.ds.LoginCall;
@@ -17,16 +20,16 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class ListTaskCompletable extends UpdatableTask<Void> {
 
-    protected final ListView<DSTask> listView;
+    protected final TableView<TaskDetail> tableView;
     protected final ExecutorService executor;
     protected final DsApiDetail dsApiDetail;
     protected final WindowHandler windowHandler;
 
     private String sid;
 
-    public ListTaskCompletable(ListView<DSTask> listView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+    public ListTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
                                ExecutorService executor) {
-        this.listView = listView;
+        this.tableView = tableView;
         this.dsApiDetail = dsApiDetail;
         this.executor = executor;
         this.windowHandler = windowHandler;
@@ -75,12 +78,14 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
             tasks.add(DSTask.NOTHING_TO_DISPLAY);
         }
         if (Platform.isFxApplicationThread()) {
-            listView.setItems(FXCollections.observableList(tasks));
-            listView.requestFocus();
+            Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
+            tableView.setItems(FXCollections.observableList(converter.convert(tasks)));
+            tableView.requestFocus();
         } else {
             Platform.runLater(() -> {
-                listView.setItems(FXCollections.observableList(tasks));
-                listView.requestFocus();
+                Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
+                tableView.setItems(FXCollections.observableList(converter.convert(tasks)));
+                tableView.requestFocus();
             });
         }
 

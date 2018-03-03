@@ -1,9 +1,9 @@
 package pg.ui.window.controller.completable;
 
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.CreateTaskFromLinkCall;
-import pg.web.ds.detail.DSTask;
 import pg.web.ds.detail.DsApiDetail;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,9 +14,9 @@ public class UseLinkTaskCompletable extends ListTaskCompletable {
 
     private String link;
 
-    public UseLinkTaskCompletable(ListView<DSTask> listView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
-                                    String link, ExecutorService executor) {
-        super(listView, dsApiDetail, windowHandler, executor);
+    public UseLinkTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+                                  String link, ExecutorService executor) {
+        super(tableView, dsApiDetail, windowHandler, executor);
         this.link = link;
     }
 

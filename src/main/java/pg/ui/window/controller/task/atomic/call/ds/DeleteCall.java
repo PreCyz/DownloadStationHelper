@@ -3,6 +3,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.program.ApiName;
+import pg.program.TaskDetail;
 import pg.service.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
@@ -10,7 +11,6 @@ import pg.web.ds.DSDeleteResponse;
 import pg.web.ds.DSDeletedItem;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.ds.detail.DSTask;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 public class DeleteCall extends BasicCall implements Callable<List<DSDeletedItem>> {
 
     protected final String sid;
-    protected final List<DSTask> tasksToDelete;
+    protected final List<TaskDetail> tasksToDelete;
     protected final DSApiDetails downloadStationTask;
     protected String operation;
 
-    public DeleteCall(String sid, List<DSTask> tasksToDelete, DSApiDetails downloadStationTask) {
+    public DeleteCall(String sid, List<TaskDetail> tasksToDelete, DSApiDetails downloadStationTask) {
         super();
         this.sid = sid;
         this.tasksToDelete = tasksToDelete;
@@ -69,7 +69,7 @@ public class DeleteCall extends BasicCall implements Callable<List<DSDeletedItem
     }
 
     protected String buildCreateTaskUrl() {
-        String id = String.join(",", tasksToDelete.stream().map(DSTask::getId).collect(Collectors.toList()));
+        String id = String.join(",", tasksToDelete.stream().map(TaskDetail::getId).collect(Collectors.toList()));
 
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
                 "?" +

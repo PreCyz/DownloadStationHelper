@@ -1,12 +1,12 @@
 package pg.ui.window.controller.completable;
 
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.TaskDetail;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
 import pg.web.ds.DSDeletedItem;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.ds.detail.DSTask;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +16,9 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class DeleteForceCompleteTaskCompletable extends DeleteTaskCompletable {
 
-    public DeleteForceCompleteTaskCompletable(ListView<DSTask> listView, String sid, DSApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
+    public DeleteForceCompleteTaskCompletable(TableView<TaskDetail> listView, String sid,
+                                              DSApiDetails downloadStationTask, List<TaskDetail> torrentsToDelete,
+                                              ExecutorService executor) {
         super(listView, sid, downloadStationTask, torrentsToDelete, executor);
     }
 

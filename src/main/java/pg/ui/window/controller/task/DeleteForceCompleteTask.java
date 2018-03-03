@@ -1,11 +1,11 @@
 package pg.ui.window.controller.task;
 
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import pg.program.TaskDetail;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
 import pg.web.ds.DSDeletedItem;
 import pg.web.ds.detail.DSApiDetails;
-import pg.web.ds.detail.DSTask;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class DeleteForceCompleteTask extends DeleteTask {
 
-    public DeleteForceCompleteTask(ListView<DSTask> listView, String sid, DSApiDetails downloadStationTask, List<DSTask> torrentsToDelete, ExecutorService executor) {
-        super(listView, sid, downloadStationTask, torrentsToDelete, executor);
+    public DeleteForceCompleteTask(TableView<TaskDetail> tableView, String sid, DSApiDetails downloadStationTask, List<TaskDetail> torrentsToDelete, ExecutorService executor) {
+        super(tableView, sid, downloadStationTask, torrentsToDelete, executor);
     }
 
     @Override

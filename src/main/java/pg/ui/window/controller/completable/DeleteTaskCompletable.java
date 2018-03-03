@@ -4,11 +4,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.converter.Converter;
+import pg.converter.DSTaskToTaskDetailConverter;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.program.TaskDetail;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteCall;
 import pg.ui.window.controller.task.atomic.call.ds.ListOfTaskCall;
 import pg.web.ds.DSDeletedItem;
@@ -27,17 +30,17 @@ public class DeleteTaskCompletable extends Task<Void> {
     protected final ExecutorService executor;
     protected final String sid;
     protected final DSApiDetails downloadStationTask;
-    protected final List<DSTask> torrentsToDelete;
+    protected final List<TaskDetail> torrentsToDelete;
     protected final Logger logger;
-    private final ListView<DSTask> listView;
+    private final TableView<TaskDetail> tableView;
 
-    public DeleteTaskCompletable(ListView<DSTask> listView, String sid, DSApiDetails downloadStationTask,
-                                 List<DSTask> torrentsToDelete, ExecutorService executor) {
+    public DeleteTaskCompletable(TableView<TaskDetail> tableView, String sid, DSApiDetails downloadStationTask,
+                                 List<TaskDetail> torrentsToDelete, ExecutorService executor) {
         this.torrentsToDelete = torrentsToDelete;
         this.executor = executor;
         this.sid = sid;
         this.downloadStationTask = downloadStationTask;
-        this.listView = listView;
+        this.tableView = tableView;
         this.logger = LogManager.getLogger(this.getClass());
     }
 
@@ -45,7 +48,7 @@ public class DeleteTaskCompletable extends Task<Void> {
     protected Void call() {
         CompletableFuture.supplyAsync(this::deleteDSTasks, executor)
                 .thenApply(this::updateUIMessage)
-                .thenApply(deletedItems -> getListOfDSTasks())
+                .thenApply(deletedItems -> getTaskDetails())
                 .thenApply(this::updateDSTasksInUI);
         return null;
     }
@@ -74,24 +77,25 @@ public class DeleteTaskCompletable extends Task<Void> {
         return deletedTasks;
     }
 
-    private ObservableList<DSTask> getListOfDSTasks() {
+    private ObservableList<TaskDetail> getTaskDetails() {
         ListOfTaskCall listOfTaskCall = new ListOfTaskCall(sid, downloadStationTask);
-        ObservableList<DSTask> dsTasks = FXCollections.observableList(listOfTaskCall.call().getTasks());
-        if (dsTasks.isEmpty()) {
-            dsTasks.add(DSTask.NOTHING_TO_DISPLAY);
+        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
+        ObservableList<TaskDetail> taskDetails = FXCollections.observableList(converter.convert(listOfTaskCall.call().getTasks()));
+        if (taskDetails.isEmpty()) {
+            taskDetails.add(TaskDetail.getNothingToDisplay());
         }
         updateProgress(4, 5);
-        return dsTasks;
+        return taskDetails;
     }
 
-    private Void updateDSTasksInUI(ObservableList<DSTask> dsTasks) {
+    private Void updateDSTasksInUI(final ObservableList<TaskDetail> taskDetails) {
         if (Platform.isFxApplicationThread()) {
-            listView.setItems(dsTasks);
-            listView.requestFocus();
+            tableView.setItems(taskDetails);
+            tableView.requestFocus();
         } else {
             Platform.runLater(() -> {
-                listView.setItems(dsTasks);
-                listView.requestFocus();
+                tableView.setItems(taskDetails);
+                tableView.requestFocus();
             });
         }
         updateProgress(5, 5);
