@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="414.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="414.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar prefHeight="29.0" prefWidth="600.0">
+      <MenuBar prefHeight="29.0" prefWidth="775.0">
         <menus>
           <Menu mnemonicParsing="false" text="%main.menu.config">
             <items>
@@ -15,10 +15,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <ListView fx:id="torrentListView" layoutX="12.0" layoutY="126.0" prefHeight="225.0" prefWidth="578.0" style="-fx-border-style: solid; -fx-border-color: silver;" />
-      <Pane fx:id="imdbPane" disable="true" layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="381.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
+      <Pane fx:id="imdbPane" disable="true" layoutX="12.0" layoutY="37.0" prefHeight="67.0" prefWidth="550.0" style="-fx-border-style: solid; -fx-background-color: linear-gradient(to bottom right, silver, gainsboro); -fx-border-color: silver;">
          <children>
-            <ComboBox fx:id="imdbComboBox" editable="true" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="366.0">
+            <ComboBox fx:id="imdbComboBox" editable="true" layoutX="7.0" layoutY="5.0" prefHeight="25.0" prefWidth="536.0">
                <tooltip>
                   <Tooltip text="%main.imdb.combobox.tooltip" />
                </tooltip></ComboBox>
@@ -30,7 +29,7 @@
             <Label fx:id="numberOfShowsLabel" layoutX="295.0" layoutY="40.0" prefHeight="15.0" prefWidth="78.0" style="-fx-text-fill: green;" />
          </children>
       </Pane>
-      <Pane fx:id="favouritePane" disable="true" layoutX="408.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
+      <Pane fx:id="favouritePane" disable="true" layoutX="579.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
          <children>
             <Button fx:id="allButton" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" text="%main.all">
                <tooltip>
@@ -39,12 +38,19 @@
             <Button fx:id="useLinkButton" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.useLink" />
          </children>
       </Pane>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="499.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" progress="0.0" />
-      <Label fx:id="infoLabel" layoutX="12.0" layoutY="361.0" prefHeight="40.0" prefWidth="455.0" wrapText="true" />
-      <Pane fx:id="connectionPane" layoutX="549.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="671.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" progress="0.0" />
+      <Label fx:id="infoLabel" layoutX="12.0" layoutY="361.0" prefHeight="40.0" prefWidth="580.0" wrapText="true" />
+      <Pane fx:id="connectionPane" layoutX="721.0" layoutY="361.0" prefHeight="40.0" prefWidth="40.0" />
       <Label layoutX="88.0" layoutY="108.0" prefHeight="15.0" prefWidth="136.0" style="-fx-text-fill: navy;" text="%config.shortcut.clean" />
       <Label layoutX="233.0" layoutY="108.0" prefHeight="15.0" prefWidth="145.0" style="-fx-text-fill: navy;" text="%config.shortcut.delete" />
       <Label layoutX="387.0" layoutY="108.0" prefHeight="15.0" prefWidth="97.0" style="-fx-text-fill: navy;" text="%config.shortcut.list" />
       <Label layoutX="12.0" layoutY="108.0" prefHeight="15.0" prefWidth="67.0" style="-fx-text-fill: navy;" text="%config.shortcut" />
+      <TableView fx:id="taskTableView" layoutX="12.0" layoutY="132.0" prefHeight="220.0" prefWidth="750.0">
+        <columns>
+          <TableColumn prefWidth="587.0" text="%main.taskTable.column.title" />
+          <TableColumn prefWidth="84.0" text="%main.taskTable.column.status" />
+            <TableColumn prefWidth="72.0" text="%main.taskTable.column.progress" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
