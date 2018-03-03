@@ -10,8 +10,7 @@ public class DSTask {
     private String title;
     private String type;
     private String username;
-
-    public final static DSTask NOTHING_TO_DISPLAY = new DSTask("Nothing to display");
+    private DSAdditional additional;
 
     public DSTask() {}
 
@@ -43,11 +42,19 @@ public class DSTask {
         return username;
     }
 
+    public DSAdditional getAdditional() {
+        return additional;
+    }
+
     @Override
     public String toString() {
-        if (status != null) {
-            return String.format("%s [%s]", title, status);
-        }
-        return title;
+        return "DSTask{" +
+                "id='" + id + '\'' +
+                ", size=" + size +
+                ", status=" + status +
+                ", title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
