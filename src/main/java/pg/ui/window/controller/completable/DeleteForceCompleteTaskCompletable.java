@@ -16,10 +16,10 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class DeleteForceCompleteTaskCompletable extends DeleteTaskCompletable {
 
-    public DeleteForceCompleteTaskCompletable(TableView<TaskDetail> listView, String sid,
+    public DeleteForceCompleteTaskCompletable(TableView<TaskDetail> tableView, String sid,
                                               DSApiDetails downloadStationTask, List<TaskDetail> torrentsToDelete,
                                               ExecutorService executor) {
-        super(listView, sid, downloadStationTask, torrentsToDelete, executor);
+        super(tableView, sid, downloadStationTask, torrentsToDelete, executor);
     }
 
     @Override

@@ -15,15 +15,7 @@ public class DSAdditional {
         return detail;
     }
 
-    public void setDetail(DSAdditionalDetail detail) {
-        this.detail = detail;
-    }
-
     public List<DSFileDetail> getFileDetails() {
         return fileDetails;
-    }
-
-    public void setFileDetails(List<DSFileDetail> fileDetails) {
-        this.fileDetails = fileDetails;
     }
 }

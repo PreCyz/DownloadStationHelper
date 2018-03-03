@@ -73,18 +73,17 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
     }
 
     protected void updateUIView(DSTaskListDetail listOfTasks) {
-        List<DSTask> tasks = listOfTasks.getTasks();
+        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
+        List<TaskDetail> tasks = converter.convert(listOfTasks.getTasks());
         if (tasks.isEmpty()) {
-            tasks.add(DSTask.NOTHING_TO_DISPLAY);
+            tasks.add(TaskDetail.getNothingToDisplay());
         }
         if (Platform.isFxApplicationThread()) {
-            Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
-            tableView.setItems(FXCollections.observableList(converter.convert(tasks)));
+            tableView.setItems(FXCollections.observableList(tasks));
             tableView.requestFocus();
         } else {
             Platform.runLater(() -> {
-                Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
-                tableView.setItems(FXCollections.observableList(converter.convert(tasks)));
+                tableView.setItems(FXCollections.observableList(tasks));
                 tableView.requestFocus();
             });
         }

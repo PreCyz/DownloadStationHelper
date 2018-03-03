@@ -83,7 +83,7 @@ public class DeleteTask extends Task<Void> {
 
     private ObservableList<TaskDetail> getListOfTasks() {
         AppTask<DSTaskListDetail> listOfTasks = new AppTask<>(new ListOfTaskCall(sid, downloadStationTask), executor);
-        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter<>();
+        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
         ObservableList<TaskDetail> taskDetails = FXCollections.observableList(converter.convert(listOfTasks.get().getTasks()));
         if (taskDetails.isEmpty()) {
             taskDetails.add(TaskDetail.getNothingToDisplay());

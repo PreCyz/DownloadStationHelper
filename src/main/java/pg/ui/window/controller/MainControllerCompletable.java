@@ -12,8 +12,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 import pg.exception.ProgramException;
@@ -47,7 +45,6 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Button imdbButton;
     @FXML private Button useLinkButton;
     @FXML private ComboBox<String> imdbComboBox;
-    //@FXML private ListView<DSTask> torrentListView;
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Pane connectionPane;
@@ -82,11 +79,11 @@ public class MainControllerCompletable extends AbstractController {
         setupMenuItems();
         initializeImdbComboBox();
         setupButtons();
-        //setupListView();
         getAvailableOperation();
         progressIndicator.setVisible(false);
     }
 
+    @SuppressWarnings("unchecked")
     private void setUpTaskTableView() {
         TableColumn<TaskDetail, ?> column = taskTableView.getColumns().get(0);
         TableColumn<TaskDetail, String> titleColumn = new TableColumn<>();
@@ -112,7 +109,9 @@ public class MainControllerCompletable extends AbstractController {
         taskTableView.getColumns().addAll(titleColumn, statusColumn, progressColumn);
 
         taskTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        taskTableView.getSelectionModel().selectedItemProperty().addListener(tableViewChangeListener());
+        taskTableView.getSelectionModel().selectedItemProperty().addListener(toDeleteChangeListener());
+        taskTableView.setOnKeyReleased(keyReleasedEventHandler());
+        taskTableView.requestFocus();
     }
 
     private StringConverter<Double> doubleStringConverter() {
@@ -304,15 +303,7 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
-//    private void setupListView() {
-//        //torrentListView.setOnMouseClicked(listViewDoubleClickEvent());
-//        torrentListView.setOnKeyReleased(listViewKeyReleasedEventHandler());
-//        torrentListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//        torrentListView.getSelectionModel().selectedItemProperty().addListener(listViewChangeListener());
-//        torrentListView.requestFocus();
-//    }
-
-    private EventHandler<KeyEvent> listViewKeyReleasedEventHandler() {
+    private EventHandler<KeyEvent> keyReleasedEventHandler() {
         return event -> {
             try {
                 String sid = extractSid();
@@ -376,22 +367,7 @@ public class MainControllerCompletable extends AbstractController {
         return sid;
     }
 
-    private EventHandler<MouseEvent> listViewDoubleClickEvent() {
-        return mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2) {
-                System.out.println("Double clicked");
-            }
-        };
-    }
-
-    /*private ChangeListener<DSTask> listViewChangeListener() {
-        return (observable, oldValue, newValue) -> {
-            torrentsToDelete = new ArrayList<>();
-            torrentsToDelete.addAll(torrentListView.getSelectionModel().getSelectedItems());
-        };
-    }*/
-
-    private ChangeListener<TaskDetail> tableViewChangeListener() {
+    private ChangeListener<TaskDetail> toDeleteChangeListener() {
         return (observable, oldValue, newValue) -> {
             torrentsToDelete = new ArrayList<>();
             torrentsToDelete.addAll(taskTableView.getSelectionModel().getSelectedItems());

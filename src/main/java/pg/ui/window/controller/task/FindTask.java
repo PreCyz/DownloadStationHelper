@@ -2,8 +2,9 @@ package pg.ui.window.controller.task;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import pg.program.ProgramMode;
+import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.CreateTaskCall;
@@ -12,7 +13,6 @@ import pg.ui.window.controller.task.atomic.call.torrent.MatchTorrentsCall;
 import pg.ui.window.controller.task.atomic.call.torrent.UpdateImdbMapCall;
 import pg.ui.window.controller.task.atomic.call.torrent.WriteMatchTorrentsCall;
 import pg.util.StringUtils;
-import pg.web.ds.detail.DSTask;
 import pg.web.ds.detail.DsApiDetail;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.TorrentDetail;
@@ -29,8 +29,8 @@ public class FindTask extends ListTask {
 
     private AppTask<List<ReducedDetail>> matchTorrents;
 
-    public FindTask(ListView<DSTask> listView, DsApiDetail dsApiDetail, WindowHandler windowHandler, ExecutorService executor) {
-        super(listView, dsApiDetail, windowHandler, executor);
+    public FindTask(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler, ExecutorService executor) {
+        super(tableView, dsApiDetail, windowHandler, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
@@ -51,12 +51,12 @@ public class FindTask extends ListTask {
             updateMessage("No torrents to start");
             updateProgress(100, 100);
             if (Platform.isFxApplicationThread()) {
-                listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)));
-                listView.requestFocus();
+                tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
+                tableView.requestFocus();
             } else {
                 Platform.runLater(() -> {
-                    listView.setItems(FXCollections.observableList(Collections.singletonList(DSTask.NOTHING_TO_DISPLAY)));
-                    listView.requestFocus();
+                    tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
+                    tableView.requestFocus();
                 });
             }
             return null;
