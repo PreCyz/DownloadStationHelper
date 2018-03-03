@@ -19,11 +19,13 @@ public class DSTaskToTaskDetailConverter extends AbstractConverter<DSTask, TaskD
 
     private double calculateProgress(DSTask dsTask) {
         DSAdditional additional = dsTask.getAdditional();
-        long totalSize = additional.getFileDetails().stream().mapToLong(item -> Long.parseLong(item.getSize())).sum();
-        long downloadedSize = additional.getFileDetails().stream().mapToLong(item -> Long.parseLong(item.getSizeDownloaded())).sum();
-        if (totalSize == 0) {
+        if (additional.getFileDetails() == null || additional.getFileDetails().isEmpty()) {
             return Double.NaN;
         }
-        return 100 * downloadedSize / totalSize;
+        long downloadedSize = additional.getFileDetails().stream().mapToLong(item -> Long.parseLong(item.getSizeDownloaded())).sum();
+        if (dsTask.getSize() == 0) {
+            return Double.NaN;
+        }
+        return 100 * downloadedSize / dsTask.getSize();
     }
 }

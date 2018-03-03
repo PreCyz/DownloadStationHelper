@@ -47,9 +47,9 @@
       <Label layoutX="12.0" layoutY="108.0" prefHeight="15.0" prefWidth="67.0" style="-fx-text-fill: navy;" text="%config.shortcut" />
       <TableView fx:id="taskTableView" layoutX="12.0" layoutY="132.0" prefHeight="220.0" prefWidth="750.0">
         <columns>
-          <TableColumn prefWidth="587.0" text="%main.taskTable.column.title" />
-          <TableColumn prefWidth="84.0" text="%main.taskTable.column.status" />
-            <TableColumn prefWidth="72.0" text="%main.taskTable.column.progress" />
+          <TableColumn prefWidth="553.0" text="%main.taskTable.column.title" />
+          <TableColumn prefWidth="93.0" text="%main.taskTable.column.status" />
+            <TableColumn prefWidth="97.0" text="%main.taskTable.column.progress" />
         </columns>
       </TableView>
    </children>

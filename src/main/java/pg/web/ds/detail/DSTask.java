@@ -45,16 +45,4 @@ public class DSTask {
     public DSAdditional getAdditional() {
         return additional;
     }
-
-    @Override
-    public String toString() {
-        return "DSTask{" +
-                "id='" + id + '\'' +
-                ", size=" + size +
-                ", status=" + status +
-                ", title='" + title + '\'' +
-                ", type='" + type + '\'' +
-                ", username='" + username + '\'' +
-                '}';
-    }
 }
