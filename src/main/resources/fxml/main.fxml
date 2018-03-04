@@ -49,7 +49,7 @@
         <columns>
           <TableColumn prefWidth="553.0" text="%main.taskTable.column.title" />
           <TableColumn prefWidth="93.0" text="%main.taskTable.column.status" />
-            <TableColumn prefWidth="103.0" text="%main.taskTable.column.progress" />
+            <TableColumn prefWidth="101.0" text="%main.taskTable.column.progress" />
         </columns>
       </TableView>
    </children>

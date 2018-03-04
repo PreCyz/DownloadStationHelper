@@ -87,12 +87,14 @@ public class MainControllerCompletable extends AbstractController {
     private void setUpTaskTableView() {
         TableColumn<TaskDetail, ?> column = taskTableView.getColumns().get(0);
         TableColumn<TaskDetail, String> titleColumn = new TableColumn<>();
+        titleColumn.setResizable(false);
         titleColumn.setText(column.getText());
         titleColumn.setPrefWidth(column.getPrefWidth());
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
         column = taskTableView.getColumns().get(1);
         TableColumn<TaskDetail, String> statusColumn = new TableColumn<>();
+        statusColumn.setResizable(false);
         statusColumn.setText(column.getText());
         statusColumn.setPrefWidth(column.getPrefWidth());
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -100,6 +102,7 @@ public class MainControllerCompletable extends AbstractController {
 
         column = taskTableView.getColumns().get(2);
         TableColumn<TaskDetail, Double> progressColumn = new TableColumn<>();
+        progressColumn.setResizable(false);
         progressColumn.setText(column.getText());
         progressColumn.setPrefWidth(column.getPrefWidth());
         progressColumn.setCellValueFactory(new PropertyValueFactory<>("progress"));
