@@ -277,7 +277,7 @@ public class MainControllerCompletable extends AbstractController {
             TextInputDialog dialog = new TextInputDialog(AppConstants.EMPTY_STRING);
             dialog.setTitle("Link dialog");
             String msg = "Paste the link.\n" +
-                    "U may use: (http://, http://, ftp://, ftps://, sftp://, magnet:, thunder://, flashget://, " +
+                    "You may use: (http://, http://, ftp://, ftps://, sftp://, magnet:, thunder://, flashget://, " +
                     "qqdl://)";
             dialog.setHeaderText(msg);
             dialog.setContentText(AppConstants.EMPTY_STRING);
