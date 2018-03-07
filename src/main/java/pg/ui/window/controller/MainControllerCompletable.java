@@ -233,7 +233,6 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 cancelTask();
                 if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
-                    //infoLabel.textProperty().unbind();
                     infoLabel.setText("Please choose imdb id.");
                 } else {
                     String imdbId = existingImdbMap.entrySet()

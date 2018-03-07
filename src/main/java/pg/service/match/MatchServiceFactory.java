@@ -11,6 +11,8 @@ public class MatchServiceFactory {
         switch (programMode) {
             case IMDB:
                 return new MatchByImdbService();
+            case IMDB_COMAND_LINE:
+                return new MatchByImdbService();
             default:
                 return new MatchServiceImpl();
         }

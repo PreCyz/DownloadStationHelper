@@ -57,9 +57,9 @@ public class FindTaskCompletable extends ListTaskCompletable {
         try {
             List<TorrentDetail> torrentDetails;
             if (StringUtils.nullOrTrimEmpty(imdbId)) {
-                torrentDetails = new FindTorrentsWithTaskCall(this).call();
+                torrentDetails = new FindFavouriteTorrentsCall(this).call();
             } else {
-                torrentDetails = new FindTorrentsCall(imdbId).call();
+                torrentDetails = new FindImdbTorrentsCall(imdbId, this).call();
             }
             updateProgress(30, 100);
             updateMessage("Found torrents");

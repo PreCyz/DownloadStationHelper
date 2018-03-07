@@ -34,8 +34,8 @@ public class Main {
 
     private static ProgramMode extractMode(String[] args) {
         if (Arrays.stream(args).anyMatch(StartParameters.IMDB_MODE.param()::equals)) {
-            logger.info("Program mode: [{}].", ProgramMode.IMDB);
-            return ProgramMode.IMDB;
+            logger.info("Program mode: [{}].", ProgramMode.IMDB_COMAND_LINE);
+            return ProgramMode.IMDB_COMAND_LINE;
         }
         logger.info("Program mode: [{}].", ProgramMode.ALL_CONCURRENT);
         return ProgramMode.ALL_CONCURRENT;

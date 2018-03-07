@@ -1,7 +1,5 @@
 package pg.service.torrent;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.ui.window.controller.completable.UpdatableTask;
@@ -16,26 +14,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2018-01-06 */
-public class TorrentServiceWithTaskImpl extends ConcurrentTorrentServiceImpl {
-
-    private static final Logger logger = LogManager.getLogger(TorrentServiceWithTaskImpl.class);
+public class FavouriteTorrentServiceImpl extends AbstractTorrentService {
 
     private UpdatableTask<?> fxTask;
 
-    TorrentServiceWithTaskImpl(UpdatableTask<?> fxTask) {
+    public FavouriteTorrentServiceImpl(UpdatableTask<?> fxTask) {
         super();
         this.fxTask = fxTask;
     }
 
     @Override
     public List<TorrentDetail> findTorrents() {
-        Integer numberOfPages = getPage();
-        List<GetTorrentsTask> tasks = new ArrayList<>(numberOfPages);
-        for (int page = defaultPage; page <= numberOfPages; page++) {
-            tasks.add(new GetTorrentsTask(createUrl(page), executorService));
-        }
-
+        List<GetTorrentsTask> tasks = createGetTorrentsTasks();
         List<TorrentResponse> torrentResponses = new ArrayList<>();
+        executeTasks(tasks, torrentResponses);
+        return torrentResponses.stream()
+                .flatMap(tr -> tr.getTorrents().stream())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    protected void executeTasks(List<GetTorrentsTask> tasks, List<TorrentResponse> torrentResponses) {
         double onePercentOfProgress = 1.0 / 30;
         fxTask.updateProgressTo30(onePercentOfProgress);
         double done = 0;
@@ -55,7 +54,7 @@ public class TorrentServiceWithTaskImpl extends ConcurrentTorrentServiceImpl {
                                     .sum()
                     );
                     torrentResponses.addAll(torrentsForRequest);
-                    fxTask.updateProgressTo30(++done / numberOfPages);
+                    fxTask.updateProgressTo30(++done / getNumberOfPages());
                 }
             }
             if (!tasks.isEmpty()) {
@@ -67,8 +66,5 @@ public class TorrentServiceWithTaskImpl extends ConcurrentTorrentServiceImpl {
                 }
             }
         }
-        return torrentResponses.stream()
-                .flatMap(tr -> tr.getTorrents().stream())
-                .collect(Collectors.toList());
     }
 }
