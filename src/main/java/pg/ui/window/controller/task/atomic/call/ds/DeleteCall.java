@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 public class DeleteCall extends BasicCall implements Callable<List<DSDeletedItem>> {
 
     protected final String sid;
-    protected final List<TaskDetail> tasksToDelete;
+    final List<TaskDetail> tasksToDelete;
     protected final DSApiDetails downloadStationTask;
-    protected String operation;
+    String operation;
 
     public DeleteCall(String sid, List<TaskDetail> tasksToDelete, DSApiDetails downloadStationTask) {
         super();

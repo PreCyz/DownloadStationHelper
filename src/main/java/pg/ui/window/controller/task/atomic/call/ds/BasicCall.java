@@ -12,7 +12,7 @@ public class BasicCall {
     protected final ApplicationPropertiesHelper application;
     private static String serverUrl;
 
-    public BasicCall() {
+    BasicCall() {
         this.logger = LogManager.getLogger(this.getClass());
         this.application = ApplicationPropertiesHelper.getInstance();
     }
