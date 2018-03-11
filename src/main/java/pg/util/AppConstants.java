@@ -17,6 +17,9 @@ public final class AppConstants {
     public static final String IMG_RESOURCE_PATH = String.format("img%s", File.separator);
     public static final String CONNECTING_GIF = String.format("%sconnecting.gif", IMG_RESOURCE_PATH);
     public static final String CONNECTED_GIF = String.format("%sconnected.gif", IMG_RESOURCE_PATH);
+    public static final String DELETE_PNG = String.format("%sdelete.png", IMG_RESOURCE_PATH);
+    public static final String ADD_PNG = String.format("%sadd.png", IMG_RESOURCE_PATH);
+    public static final String CLEAN_PNG = String.format("%sclean.png", IMG_RESOURCE_PATH);
     public static final String FXML_RESOURCE_PATH = String.format("fxml%s", File.separator);
     public static final String CSS_RESOURCE_PATH = String.format("css%s", File.separator);
 
