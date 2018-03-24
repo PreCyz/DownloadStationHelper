@@ -21,7 +21,7 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.completable.*;
 import pg.ui.window.controller.handler.AutoCompleteComboBoxHandler;
-import pg.ui.window.controller.setup.ButtonSetup;
+import pg.ui.window.controller.setup.ActionButtonSetup;
 import pg.ui.window.controller.setup.ComponentSetup;
 import pg.ui.window.controller.task.AvailableOperationTask;
 import pg.util.AppConstants;
@@ -52,6 +52,7 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Button resumeButton;
     @FXML private Button stopButton;
     @FXML private Button pauseButton;
+    @FXML private Button forceDeleteButton;
     @FXML private ComboBox<String> imdbComboBox;
     @FXML private Label infoLabel;
     @FXML private ProgressIndicator progressIndicator;
@@ -191,8 +192,8 @@ public class MainControllerCompletable extends AbstractController {
     }
 
     private void setupButtons() {
-        ComponentSetup setup = new ButtonSetup(Arrays.asList(
-                deleteButton, addButton, cleanButton, resumeButton, pauseButton, stopButton
+        ComponentSetup setup = new ActionButtonSetup(Arrays.asList(
+                deleteButton, addButton, cleanButton, resumeButton, pauseButton, stopButton, forceDeleteButton
         ));
         setup.setup();
         allButton.setOnAction(allButtonAction());
