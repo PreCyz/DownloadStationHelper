@@ -12,6 +12,8 @@ import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 import pg.web.torrent.ReducedDetail;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -71,9 +73,17 @@ public class CreateTaskCall extends BasicCall implements Callable<Void> {
         Function<ReducedDetail, String> extractUrlType = reducedDetail -> {
             switch (urlType) {
                 case magnet:
-                    return reducedDetail.getMagnetUrl();
+                    try {
+                        return URLEncoder.encode(reducedDetail.getMagnetUrl(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        return reducedDetail.getMagnetUrl();
+                    }
                 default:
-                    return reducedDetail.getTorrentUrl();
+                    try {
+                        return URLEncoder.encode(reducedDetail.getTorrentUrl(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        return reducedDetail.getTorrentUrl();
+                    }
             }
         };
         String uri = String.join(",", matchTorrents.stream()
