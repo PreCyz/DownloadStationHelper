@@ -46,8 +46,8 @@ public class ActionButtonSetup implements ComponentSetup {
         addImg.setFitHeight(button.getPrefHeight() - 10);
         addImg.setFitWidth(button.getPrefHeight() - 10);
         button.setGraphic(addImg);
-        System.out.printf("Button: %s [width,height] -> [%f,%f]%n",
-                button.getId(), button.getPrefWidth(), button.getPrefHeight());
+        /*System.out.printf("Button: %s [width,height] -> [%f,%f]%n",
+                button.getId(), button.getPrefWidth(), button.getPrefHeight());*/
     }
 
     @NotNull

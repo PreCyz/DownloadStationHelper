@@ -17,7 +17,6 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
@@ -67,29 +66,9 @@ public class CreateTaskCall extends BasicCall implements Callable<Void> {
     }
 
     private String buildCreateTaskUrl() {
-        final TorrentUrlType urlType = TorrentUrlType.valueOf(
-                application.getTorrentUrlType(TorrentUrlType.torrent.name())
-        );
-        Function<ReducedDetail, String> extractUrlType = reducedDetail -> {
-            switch (urlType) {
-                case magnet:
-                    try {
-                        return URLEncoder.encode(reducedDetail.getMagnetUrl(), "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        return reducedDetail.getMagnetUrl();
-                    }
-                default:
-                    try {
-                        return URLEncoder.encode(reducedDetail.getTorrentUrl(), "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        return reducedDetail.getTorrentUrl();
-                    }
-            }
-        };
-        String uri = String.join(",", matchTorrents.stream()
-                .map(extractUrlType)
-                .collect(Collectors.toList())
-        );
+        String uri = matchTorrents.stream()
+                .map(this::getEncodedTorrentUri)
+                .collect(Collectors.joining(","));
 
         String destination = application.getDestination();
 
@@ -101,5 +80,25 @@ public class CreateTaskCall extends BasicCall implements Callable<Void> {
                 "_sid=" + sid + "&" +
                 "destination=" + destination + "&" +
                 "uri=" + uri;
+    }
+
+    private String getEncodedTorrentUri(ReducedDetail reducedDetail) {
+        final TorrentUrlType urlType = TorrentUrlType.valueOf(
+                application.getTorrentUrlType(TorrentUrlType.torrent.name())
+        );
+        switch (urlType) {
+            case magnet:
+                try {
+                    return URLEncoder.encode(reducedDetail.getMagnetUrl(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    return reducedDetail.getMagnetUrl();
+                }
+            default:
+                try {
+                    return URLEncoder.encode(reducedDetail.getTorrentUrl(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    return reducedDetail.getTorrentUrl();
+                }
+        }
     }
 }
