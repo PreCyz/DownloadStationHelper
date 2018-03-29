@@ -1,5 +1,6 @@
 package pg.web.ds.detail;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pg.web.ds.DSTaskDownloadStatus;
 
 /**Created by Gawa on 27/08/17.*/
@@ -11,6 +12,8 @@ public class DSTask {
     private String type;
     private String username;
     private DSAdditional additional;
+    @JsonProperty("status_extra")
+    private DSStatusExtra statusExtra;
 
     public DSTask() {}
 
@@ -44,5 +47,9 @@ public class DSTask {
 
     public DSAdditional getAdditional() {
         return additional;
+    }
+
+    public DSStatusExtra getStatusExtra() {
+        return statusExtra;
     }
 }
