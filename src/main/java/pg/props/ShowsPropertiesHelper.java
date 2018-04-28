@@ -64,7 +64,7 @@ public final class ShowsPropertiesHelper {
     }
 
     public Set<ShowDetail> getShowDetails() {
-        Set<ShowDetail> showDetails = new TreeSet<>(getShowDetailComparator());
+        Set<ShowDetail> showDetails = new TreeSet<>(ShowDetail.COMPARATOR);
         for (Object keyObject : keySet()) {
             String key = String.valueOf(keyObject);
             if (key.endsWith("baseWords")) {
@@ -75,17 +75,6 @@ public final class ShowsPropertiesHelper {
             }
         }
         return showDetails;
-    }
-
-    public Comparator<ShowDetail> getShowDetailComparator() {
-        return (o1, o2) -> {
-                if (o1.getId() > o2.getId()) {
-                    return 1;
-                }  else if (o1.getId() < o2.getId()) {
-                    return -1;
-                }
-                return 0;
-            };
     }
 
     protected int extractIdFromKey(final String key) {
