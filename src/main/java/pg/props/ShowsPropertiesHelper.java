@@ -4,7 +4,10 @@ import pg.program.ShowDetail;
 import pg.util.AppConstants;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**Created by Gawa on 9/18/2017.*/
 public final class ShowsPropertiesHelper {
@@ -28,7 +31,7 @@ public final class ShowsPropertiesHelper {
         return shows;
     }
 
-    protected static Properties loadShowsProperties() {
+    public static Properties loadShowsProperties() {
         Optional<Properties> showsOpt = PropertiesHelper.loadProperties(AppConstants.SHOWS_PROPERTIES);
         return showsOpt.orElseGet(() -> PropertiesHelper.loadDefaultProperties(AppConstants.SHOWS_PROPERTIES));
     }
