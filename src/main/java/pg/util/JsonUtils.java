@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pg.program.ShowDetail;
 import pg.web.ds.DSDeleteResponse;
 import pg.web.torrent.ReducedDetail;
 
@@ -49,9 +50,9 @@ public class JsonUtils {
         return Collections.emptyMap();
     }
 
-    public static <T> Set<T> convertJsonToSet(Path jsonPath) {
+    public static Set<ShowDetail> convertJsonToSet(Path jsonPath) {
         try {
-            return new ObjectMapper().readValue(jsonPath.toFile(), new TypeReference<Set<T>>() {});
+            return new ObjectMapper().readValue(jsonPath.toFile(), new TypeReference<Set<ShowDetail>>() {});
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }

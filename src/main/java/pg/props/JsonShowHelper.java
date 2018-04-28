@@ -9,12 +9,9 @@ import pg.program.ShowDetail;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,7 +24,7 @@ public class JsonShowHelper {
     private boolean initialized;
 
     private JsonShowHelper() {
-        showDetails = new LinkedHashSet<>();
+        showDetails = new TreeSet<>(ShowDetail.COMPARATOR);;
         initialized = false;
     }
 
@@ -42,17 +39,8 @@ public class JsonShowHelper {
         if (initialized) {
             return showDetails;
         }
-        return loadShowDetails();
-    }
-
-    private Set<ShowDetail> loadShowDetails() {
-        String showsJson = getShowsPath().toString();
-        try (InputStream is = new FileInputStream(showsJson)) {
-            showDetails = JsonUtils.convertJsonToSet(getShowsPath());
-            initialized = true;
-        } catch (IOException e) {
-            logger.error("Can't find user's {}. Loading default one.", showsJson);
-        }
+        initialized = true;
+        showDetails.addAll(JsonUtils.convertJsonToSet(getShowsPath()));
         return showDetails;
     }
 
@@ -70,5 +58,9 @@ public class JsonShowHelper {
             logger.error("Could not save shows.json", ex);
             throw new ProgramException(UIError.SAVE_PROPERTIES, ex);
         }
+    }
+
+    public boolean jsonShowsNotExist() {
+        return Files.notExists(getShowsPath());
     }
 }

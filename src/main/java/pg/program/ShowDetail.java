@@ -1,5 +1,7 @@
 package pg.program;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Comparator;
 
 /**
@@ -19,6 +21,8 @@ public class ShowDetail {
         }
         return 0;
     };
+
+    public ShowDetail() {/*needed for json mapping*/}
 
     public ShowDetail(int id, String title) {
         this.id = id;
@@ -64,6 +68,7 @@ public class ShowDetail {
         this.matchPrecision = matchPrecision;
     }
 
+    @JsonIgnore
     public int getBaseWordsCount() {
         return getBaseWords().split(",").length;
     }

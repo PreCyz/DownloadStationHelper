@@ -38,8 +38,10 @@ public class FXMain extends Application {
     }
 
     private void upgradePropertiesToJson() {
-        Set<ShowDetail> showDetails = new PropertiesToShowDetailsConverter()
-                .convert(ShowsPropertiesHelper.loadShowsProperties());
-        JsonShowHelper.getInstance().saveShows(showDetails);
+        if (JsonShowHelper.getInstance().jsonShowsNotExist()) {
+            Set<ShowDetail> showDetails = new PropertiesToShowDetailsConverter()
+                    .convert(ShowsPropertiesHelper.loadShowsProperties());
+            JsonShowHelper.getInstance().saveShows(showDetails);
+        }
     }
 }
