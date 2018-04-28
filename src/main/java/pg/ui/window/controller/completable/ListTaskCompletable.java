@@ -3,7 +3,7 @@ package pg.ui.window.controller.completable;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
-import pg.converter.Converter;
+import pg.converter.AbstractConverter;
 import pg.converter.DSTaskToTaskDetailConverter;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
@@ -73,7 +73,7 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
     }
 
     protected void updateUIView(DSTaskListDetail listOfTasks) {
-        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
+        AbstractConverter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
         List<TaskDetail> tasks = converter.convert(listOfTasks.getTasks());
         if (tasks.isEmpty()) {
             tasks.add(TaskDetail.getNothingToDisplay());

@@ -7,7 +7,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.TableView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.converter.Converter;
+import pg.converter.AbstractConverter;
 import pg.converter.DSTaskToTaskDetailConverter;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
@@ -79,7 +79,7 @@ public class DeleteTaskCompletable extends Task<Void> {
 
     private ObservableList<TaskDetail> getTaskDetails() {
         ListOfTaskCall listOfTaskCall = new ListOfTaskCall(sid, downloadStationTask);
-        Converter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
+        AbstractConverter<DSTask, TaskDetail> converter = new DSTaskToTaskDetailConverter();
         ObservableList<TaskDetail> taskDetails = FXCollections.observableList(converter.convert(listOfTaskCall.call().getTasks()));
         if (taskDetails.isEmpty()) {
             taskDetails.add(TaskDetail.getNothingToDisplay());
