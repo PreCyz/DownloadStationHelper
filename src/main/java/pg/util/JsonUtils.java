@@ -49,6 +49,15 @@ public class JsonUtils {
         return Collections.emptyMap();
     }
 
+    public static <T> Set<T> convertJsonToSet(Path jsonPath) {
+        try {
+            return new ObjectMapper().readValue(jsonPath.toFile(), new TypeReference<Set<T>>() {});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage());
+        }
+        return Collections.emptySet();
+    }
+
     public static void writeToFile(Path filePath, Object object) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -57,6 +66,7 @@ public class JsonUtils {
             logger.info("File {} was written to '{}'.", filePath.getFileName(), filePath.toAbsolutePath());
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -67,7 +77,7 @@ public class JsonUtils {
             mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
             mapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
-            return mapper.readValue(json, new TypeReference<List<DSDeleteResponse>>(){});
+            return mapper.readValue(json, new TypeReference<List<DSDeleteResponse>>() {});
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
