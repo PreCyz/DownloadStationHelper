@@ -16,7 +16,14 @@ public class PropertiesToShowDetailsConverter extends AbstractConverter<Properti
                 String baseWords = showDetail.getBaseWords();
                 int firstComma = baseWords.indexOf(",", 0);
                 String title = baseWords.substring(0, firstComma);
+
                 showDetail.setTitle(title);
+                showDetail.setBaseWords(baseWords.substring(firstComma + 1));
+
+                showDetail.setMatchPrecision(showDetail.getMatchPrecision() - 1);
+                if (showDetail.getMatchPrecision() > showDetail.getBaseWordsCount()) {
+                    showDetail.setMatchPrecision(showDetail.getBaseWordsCount());
+                }
             }
         }
         return showDetails;
