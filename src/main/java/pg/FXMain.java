@@ -2,11 +2,17 @@ package pg;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import pg.converter.PropertiesToShowDetailsConverter;
+import pg.program.ShowDetail;
+import pg.props.JsonShowHelper;
+import pg.props.ShowsPropertiesHelper;
 import pg.ui.checker.ApplicationChecker;
 import pg.ui.checker.Checker;
 import pg.ui.checker.ShowChecker;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.WindowHandlerImpl;
+
+import java.util.Set;
 
 /** Created by Gawa 2017-10-04*/
 public class FXMain extends Application {
@@ -17,6 +23,8 @@ public class FXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        upgradePropertiesToJson();
+
         WindowHandler windowHandler = new WindowHandlerImpl(primaryStage);
         Checker checker = new ApplicationChecker();
         if (!checker.ready()) {
@@ -27,5 +35,11 @@ public class FXMain extends Application {
             windowHandler.launchShowWindow();
         }
         windowHandler.launchMainWindow();
+    }
+
+    private void upgradePropertiesToJson() {
+        Set<ShowDetail> showDetails = new PropertiesToShowDetailsConverter()
+                .convert(ShowsPropertiesHelper.loadShowsProperties());
+        JsonShowHelper.getInstance().saveShows(showDetails);
     }
 }
