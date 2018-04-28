@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2018-03-03 */
-abstract class AbstractConverter<S, D> implements Converter<S, D> {
+public abstract class AbstractConverter<S, D> implements Converter<S, D> {
 
     public abstract D convert(S source);
 
