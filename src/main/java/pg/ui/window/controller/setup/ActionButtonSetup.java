@@ -42,10 +42,10 @@ public class ActionButtonSetup implements ComponentSetup {
     }
 
     private void setupWithImage(Button button) {
-        ImageView addImg = new ImageView(getButtonImage(button));
-        addImg.setFitHeight(button.getPrefHeight() - 10);
-        addImg.setFitWidth(button.getPrefHeight() - 10);
-        button.setGraphic(addImg);
+        ImageView imageView = new ImageView(getButtonImage(button));
+        imageView.setFitHeight(button.getPrefHeight() - 10);
+        imageView.setFitWidth(button.getPrefHeight() - 10);
+        button.setGraphic(imageView);
         /*System.out.printf("Button: %s [width,height] -> [%f,%f]%n",
                 button.getId(), button.getPrefWidth(), button.getPrefHeight());*/
     }
