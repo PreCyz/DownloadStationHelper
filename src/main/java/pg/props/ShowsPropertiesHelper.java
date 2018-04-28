@@ -3,13 +3,13 @@ package pg.props;
 import pg.program.ShowDetail;
 import pg.util.AppConstants;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
 /**Created by Gawa on 9/18/2017.*/
+@Deprecated
 public final class ShowsPropertiesHelper {
 
     private static ShowsPropertiesHelper instance;
@@ -46,17 +46,8 @@ public final class ShowsPropertiesHelper {
         return Integer.valueOf(getShowsProperties().getProperty(key, String.valueOf(defaultValue)));
     }
 
-    public String getMatchPrecision(int showNumber) {
-        String key = String.format("show.%d.imdbId", showNumber);
-        return getShowsProperties().getProperty(key);
-    }
-
     public String getProperty(String key) {
         return getShowsProperties().getProperty(key);
-    }
-
-    public String getProperty(String key, String defaultValue) {
-        return getShowsProperties().getProperty(key, defaultValue);
     }
 
     public Set<Object> keySet() {
@@ -92,23 +83,4 @@ public final class ShowsPropertiesHelper {
         return 0;
     }
 
-    public void prepareAndStore(Set<ShowDetail> showDetails) throws IOException {
-        Properties showsToSave = prepareShowProperties(showDetails);
-        PropertiesHelper.storeShowProperties(showsToSave);
-        instance = null;
-        shows = null;
-    }
-
-    private Properties prepareShowProperties(Set<ShowDetail> showDetails) {
-        Properties shows = new Properties();
-        for (ShowDetail showDetail : showDetails) {
-            String baseWordKey = String.format("show.%d.baseWords", showDetail.getId());
-            shows.put(baseWordKey, showDetail.getBaseWords());
-            if (showDetail.getMatchPrecision() != showDetail.getBaseWordsCount()) {
-                String matchPrecisionKey = String.format("show.%d.matchPrecision", showDetail.getId());
-                shows.put(matchPrecisionKey, String.valueOf(showDetail.getMatchPrecision()));
-            }
-        }
-        return shows;
-    }
 }
