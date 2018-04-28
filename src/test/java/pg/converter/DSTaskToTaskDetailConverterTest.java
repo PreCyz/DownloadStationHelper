@@ -12,8 +12,9 @@ import pg.web.ds.detail.DSFileDetail;
 import pg.web.ds.detail.DSTask;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -36,7 +37,7 @@ public class DSTaskToTaskDetailConverterTest {
     @Test
     @Ignore
     public void givenDSTask_when_convert_then_returnTaskDetail() {
-        List<TaskDetail> actual = converter.convert(Collections.singletonList(mockDsTask()));
+        List<TaskDetail> actual = Stream.of(converter.convert(mockDsTask())).collect(Collectors.toList());
 
         assertThat(actual, hasSize(1));
         TaskDetail actualTaskDetail = actual.get(0);
