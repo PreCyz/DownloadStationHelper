@@ -9,13 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
-import pg.exception.ProgramException;
-import pg.exception.UIError;
 import pg.program.ShowDetail;
 import pg.props.JsonShowHelper;
 import pg.ui.window.WindowHandler;
@@ -34,8 +28,6 @@ public class ShowController extends AbstractController {
 
     @FXML
     private TableView<ShowDetail> showTableView;
-    @FXML
-    private TextField idToRemove;
     @FXML
     private Button addButton;
     @FXML
@@ -63,7 +55,6 @@ public class ShowController extends AbstractController {
         data = FXCollections.observableArrayList(showDetails);
         showTableView.setItems(data);
         showTableView.setEditable(true);
-        showTableView.setRowFactory(tableViewRowFactory());
     }
 
     private void setupButtons() {
@@ -114,15 +105,20 @@ public class ShowController extends AbstractController {
 
         showTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         showTableView.getSelectionModel().selectedItemProperty().addListener(toDeleteChangeListener());
-        showTableView.setOnKeyReleased(keyReleasedEventHandler());
-        showTableView.requestFocus();
     }
 
     private EventHandler<TableColumn.CellEditEvent<ShowDetail, String>> baseWordsCellEditAction() {
-        return t -> t.getTableView()
-                .getItems()
-                .get(t.getTablePosition().getRow())
-                .setBaseWords(t.getNewValue());
+        return t -> {
+            t.getTableView()
+                    .getItems()
+                    .get(t.getTablePosition().getRow())
+                    .setBaseWords(t.getNewValue());
+            t.getTableView()
+                    .getItems()
+                    .get(t.getTablePosition().getRow())
+                    .setMatchPrecision(t.getNewValue().split(",").length);
+            showTableView.refresh();
+        };
     }
 
     private EventHandler<TableColumn.CellEditEvent<ShowDetail, String>> titleCellEditAction() {
@@ -168,41 +164,6 @@ public class ShowController extends AbstractController {
         }
     }
 
-    private Callback<TableView<ShowDetail>, TableRow<ShowDetail>> tableViewRowFactory() {
-        return tableView -> {
-            TableRow<ShowDetail> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
-                    ShowDetail clickedRow = row.getItem();
-                    if (event.getButton() == MouseButton.PRIMARY && (event.getClickCount() < 3)) {
-                        idToRemove.setText(String.valueOf(clickedRow.getId()));
-                    } else if (event.getButton() == MouseButton.MIDDLE) {
-                        removeRow(clickedRow.getId());
-                    }
-                }
-            });
-            return row;
-        };
-    }
-
-    private void removeRow(final int index) {
-        if (index > 0) {
-            final Set<ShowDetail> filtered = new TreeSet<>(ShowDetail.COMPARATOR);
-            filtered.addAll(data.stream()
-                    .filter(d -> d.getId() != index)
-                    .collect(Collectors.toSet()));
-            int idx = 1;
-            for (ShowDetail showDetail : filtered) {
-                showDetail.setId(idx);
-                idx++;
-            }
-            data.clear();
-            data.addAll(filtered);
-            idToRemove.clear();
-            maxIndex--;
-        }
-    }
-
     private EventHandler<ActionEvent> addAction() {
         return event -> addShowDetail();
     }
@@ -221,7 +182,20 @@ public class ShowController extends AbstractController {
     }
 
     private EventHandler<ActionEvent> removeAction() {
-        return event -> removeRow(getInt(idToRemove.getText()));
+        return event -> {
+            showsToDelete = new LinkedHashSet<>(showTableView.getSelectionModel().getSelectedItems());
+            List<ShowDetail> filteredData = data.stream()
+                    .filter(sd -> showsToDelete.stream().noneMatch(std -> std.getId() == sd.getId()))
+                    .sorted(ShowDetail.COMPARATOR)
+                    .collect(Collectors.toList());
+            for (int idx = 0; idx < filteredData.size(); idx++) {
+                ShowDetail sd = filteredData.get(idx);
+                sd.setId(idx + 1);
+            }
+            data = FXCollections.observableArrayList(filteredData);
+            showTableView.setItems(data);
+            showTableView.refresh();
+        };
     }
 
     private EventHandler<ActionEvent> doneAction() {
@@ -237,31 +211,6 @@ public class ShowController extends AbstractController {
     private ChangeListener<ShowDetail> toDeleteChangeListener() {
         return (observable, oldValue, newValue) ->
                 showsToDelete = new LinkedHashSet<>(showTableView.getSelectionModel().getSelectedItems());
-    }
-
-    private EventHandler<KeyEvent> keyReleasedEventHandler() {
-        return event -> {
-            try {
-                if (!showsToDelete.isEmpty() && EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE).contains(event.getCode())) {
-                    Set<ShowDetail> currentSet = showHelper.getShowDetails();
-                    currentSet.removeAll(showsToDelete);
-                    showHelper.saveShows(currentSet);
-                } else if (EnumSet.of(KeyCode.A, KeyCode.PLUS).contains(event.getCode())) {
-                    addShowDetail();
-                } else if (event.getCode() == KeyCode.ENTER) {
-                    done();
-                }
-            } catch (Exception ex) {
-                logger.error(ex.getLocalizedMessage());
-                if (ex instanceof ProgramException) {
-                    windowHandler.handleException((ProgramException) ex);
-                } else {
-                    windowHandler.handleException(new ProgramException(UIError.SHORTCUT, ex));
-                }
-            } finally {
-                showTableView.requestFocus();
-            }
-        };
     }
 
 }
