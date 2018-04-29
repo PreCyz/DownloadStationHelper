@@ -52,6 +52,10 @@ public final class ApplicationPropertiesHelper {
         return application;
     }
 
+    public String getAppVersion() {
+        return getApplicationProperties().getProperty(SettingKeys.APP_VERSION.key(), "N/A");
+    }
+
     public String getUrl(String defaultValue) {
         return getApplicationProperties().getProperty(SettingKeys.URL.key(), defaultValue);
     }

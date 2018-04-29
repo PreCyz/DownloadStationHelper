@@ -2,6 +2,7 @@ package pg.program;
 
 /**Created by Gawa on 15/08/17.*/
 public enum SettingKeys {
+    APP_VERSION("app.version"),
     URL("eztv.restUrl"),
     LIMIT("query.limit"),
     PAGE("query.page"),

@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
+import pg.props.ApplicationPropertiesHelper;
 import pg.ui.ResourceHelper;
 import pg.ui.window.controller.task.atomic.call.ds.LogoutCall;
 import pg.web.ds.detail.DsApiDetail;
@@ -92,7 +93,8 @@ public class WindowHandlerImpl implements WindowHandler {
             logger.warn("Problem with loading window icon: {}.", ex.getMessage());
         }
         try {
-            stage.setTitle(bundle.getString(window.windowTitleBundle()));
+            stage.setTitle(String.format("%s v.%s", bundle.getString(window.windowTitleBundle()),
+                    ApplicationPropertiesHelper.getInstance().getAppVersion()));
             stage.setResizable(window.resizable());
 	        Scene scene = new Scene(window.root());
 	        scene.getStylesheets().add(window.css());

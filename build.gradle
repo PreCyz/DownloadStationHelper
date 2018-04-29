@@ -28,7 +28,14 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
 }
 
-def buildVersion = '2.1.6'
+def appVersionKey = 'app.version'
+Properties properties = new Properties()
+File propertiesFile = new File("$buildDir/resources/main/application.properties")
+propertiesFile.withInputStream {
+    properties.load(it)
+}
+
+def buildVersion = properties."$appVersionKey"
 def jarName = "DSHelper-$buildVersion"
 def jarNameFx = "DSHelper-FX-$buildVersion"
 def fxMainClassName = 'pg.FXMain'
