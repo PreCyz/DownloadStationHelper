@@ -133,6 +133,10 @@ public final class ApplicationPropertiesHelper {
         return Integer.valueOf(getApplicationProperties().getProperty(SettingKeys.API_VERSION.key(), "0"));
     }
 
+    public long getLiveTrackInterval() {
+        return Long.valueOf(getApplicationProperties().getProperty(SettingKeys.LIVE_TRACK.key(), "0"));
+    }
+
     public void extractUsername(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.USERNAME.key())) {
             return;

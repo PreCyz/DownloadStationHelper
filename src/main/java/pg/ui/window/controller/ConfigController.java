@@ -49,6 +49,7 @@ public class ConfigController extends AbstractController {
     @FXML private ComboBox<DSMethod> creationMethod;
     @FXML private ComboBox<TorrentUrlType> torrentUrlType;
     @FXML private Button doneButton;
+    @FXML private TextField liveTrackInterval;
 
     private final ApplicationPropertiesHelper appHelper;
 
@@ -66,9 +67,8 @@ public class ConfigController extends AbstractController {
     }
 
     private void initializeFromAppProperties() {
-        serverUrl.setText(appHelper.getServerUrl());
-
         final DSAllowedProtocol protocol = appHelper.getServerPort(DSAllowedProtocol.https);
+        serverUrl.setText(appHelper.getServerUrl());
         serverPort.setValue(String.format("%d - %s", protocol.port(), protocol.name()));
         serverLogin.setText(appHelper.getUsername());
         serverPassword.setText(appHelper.getPassword());
@@ -86,6 +86,7 @@ public class ConfigController extends AbstractController {
         resultLocationText.setText(appHelper.getFilePath(""));
         creationMethod.setValue(DSMethod.valueOf(appHelper.getCreationMethod(DSMethod.REST.name())));
         torrentUrlType.setValue(TorrentUrlType.valueOf(appHelper.getTorrentUrlType(TorrentUrlType.torrent.name())));
+        liveTrackInterval.setText(String.valueOf(appHelper.getLiveTrackInterval()));
     }
 
     private void setupComoBoxes() {
@@ -155,7 +156,8 @@ public class ConfigController extends AbstractController {
                     .withTorrentLocation(torrentLocationText.getText())
                     .withResultLocation(resultLocationText.getText())
                     .withCreationMethod(creationMethod.getValue())
-                    .withTorrentUrlType(torrentUrlType.getValue());
+                    .withTorrentUrlType(torrentUrlType.getValue())
+                    .withLiveTrackInterval(liveTrackInterval.getText());
 
             try {
                 appHelper.store(configBuilder);

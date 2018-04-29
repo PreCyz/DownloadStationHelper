@@ -53,40 +53,41 @@
             <TableColumn prefWidth="101.0" text="%main.taskTable.column.progress" />
         </columns>
       </TableView>
-      <Button fx:id="deleteButton" layoutX="207.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="deleteButton" layoutX="207.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.deleteButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="addButton" layoutX="12.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="addButton" layoutX="12.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.addButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="resumeButton" layoutX="51.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="resumeButton" layoutX="51.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.resumeButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="pauseButton" layoutX="90.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="pauseButton" layoutX="90.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.pauseButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="stopButton" layoutX="129.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="stopButton" layoutX="129.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.stopButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="cleanButton" layoutX="168.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="cleanButton" layoutX="168.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.cleanButton.tooltip" />
           </tooltip>
       </Button>
-      <Button fx:id="forceDeleteButton" layoutX="246.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" >
+      <Button fx:id="forceDeleteButton" layoutX="246.0" layoutY="127.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
           <tooltip>
               <Tooltip text="%main.forceDeleteButton.tooltip" />
           </tooltip>
       </Button>
+      <CheckBox fx:id="liveTrackCheckbox" layoutX="673.0" layoutY="135.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="88.0" text="%main.checkBox.liveTrack" />
    </children>
 </AnchorPane>

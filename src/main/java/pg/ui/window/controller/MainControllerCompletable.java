@@ -24,6 +24,7 @@ import pg.ui.window.controller.handler.AutoCompleteComboBoxHandler;
 import pg.ui.window.controller.setup.ActionButtonSetup;
 import pg.ui.window.controller.setup.ComponentSetup;
 import pg.ui.window.controller.task.AvailableOperationTask;
+import pg.ui.window.controller.task.atomic.call.LiveTrackRunnable;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -61,6 +62,7 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Pane favouritePane;
     @FXML private Label numberOfShowsLabel;
     @FXML private TableView<TaskDetail> taskTableView;
+    @FXML private CheckBox liveTrackCheckbox;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -73,6 +75,7 @@ public class MainControllerCompletable extends AbstractController {
     private ListTaskCompletable listTask;
     private UseLinkTaskCompletable useLinkTask;
     private ApplicationPropertiesHelper application;
+    private Future<?> liveTrackFuture;
 
     public MainControllerCompletable(WindowHandler windowHandler) {
         super(windowHandler);
@@ -90,6 +93,8 @@ public class MainControllerCompletable extends AbstractController {
         setupButtons();
         getAvailableOperation();
         progressIndicator.setVisible(false);
+        liveTrackCheckbox.setOnAction(liveTrackEvent());
+        liveTrackCheckbox.setDisable(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -215,6 +220,7 @@ public class MainControllerCompletable extends AbstractController {
                 findTask.setNumberOfShowsLabel(numberOfShowsLabel);
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
+                liveTrackCheckbox.setDisable(false);
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
                 if (ex instanceof ProgramException) {
@@ -264,6 +270,7 @@ public class MainControllerCompletable extends AbstractController {
                     findTask.setSid(extractSid());
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
+                    liveTrackCheckbox.setDisable(false);
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
@@ -310,6 +317,7 @@ public class MainControllerCompletable extends AbstractController {
                     useLinkTask.setSid(extractSid());
                     resetProperties(useLinkTask);
                     futureTask = executor.submit(useLinkTask);
+                    liveTrackCheckbox.setDisable(false);
                 } catch (Exception ex) {
                     logger.error(ex.getLocalizedMessage());
                     windowHandler.handleException((ProgramException) ex);
@@ -332,6 +340,7 @@ public class MainControllerCompletable extends AbstractController {
                     listTask.setSid(sid);
                     resetProperties(listTask);
                     futureTask = executor.submit(listTask);
+                    liveTrackCheckbox.setDisable(false);
                 }
                 if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
                     return;
@@ -346,6 +355,10 @@ public class MainControllerCompletable extends AbstractController {
                     );
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
+                    if (isDisabledLiveTracking()) {
+                        liveTrackCheckbox.setSelected(false);
+                        liveTrackCheckbox.setDisable(true);
+                    }
                 } else if (KeyCode.F == event.getCode()) {
                     deleteTask = new DeleteForceCompleteTaskCompletable(
                             taskTableView,
@@ -368,6 +381,11 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
+    private boolean isDisabledLiveTracking() {
+        return taskTableView.getItems().size() == 1 &&
+                taskTableView.getItems().get(0).getTitle().equals(TaskDetail.getNothingToDisplay().getTitle());
+    }
+
     private String extractSid() {
         String sid = null;
         if (findTask != null) {
@@ -386,6 +404,26 @@ public class MainControllerCompletable extends AbstractController {
         return (observable, oldValue, newValue) -> {
             torrentsToDelete = new ArrayList<>();
             torrentsToDelete.addAll(taskTableView.getSelectionModel().getSelectedItems());
+        };
+    }
+
+    private EventHandler<ActionEvent> liveTrackEvent() {
+        return e -> {
+            if (ApplicationPropertiesHelper.getInstance().getLiveTrackInterval() <= 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.CLOSE);
+                //alert.setTitle(bundle.getString("program.exception"));
+                alert.setTitle("No live track interval set");
+                //alert.setHeaderText(bundle.getString("exception.occurred"));
+                alert.setHeaderText("Enter live track interval first. I must be greater then 0.");
+                //alert.setContentText(exception.getUiError().msg());
+            } else if (liveTrackCheckbox.isSelected()) {
+                String sid = extractSid();
+                liveTrackFuture = executor.submit(
+                        new LiveTrackRunnable(sid, taskTableView, availableOperationTask.getDsApiDetail())
+                );
+            } else {
+                liveTrackFuture.cancel(true);
+            }
         };
     }
 }

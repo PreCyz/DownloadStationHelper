@@ -21,7 +21,8 @@ public enum SettingKeys {
     TORRENT_RELEASE_DATE("torrent.release.date"),
     REPEAT_DOWNLOAD("download.torrent.again"),
     HANDLE_DUPLICATES("handle.duplicates"),
-    MAX_FILE_SIZE("max.file.size");
+    MAX_FILE_SIZE("max.file.size"),
+    LIVE_TRACK("live.track.interval");
 
     private String key;
 

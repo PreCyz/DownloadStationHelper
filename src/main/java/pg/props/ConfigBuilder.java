@@ -176,6 +176,15 @@ public class ConfigBuilder {
         return this;
     }
 
+    public ConfigBuilder withLiveTrackInterval(String liveTrackInterval) {
+        if (StringUtils.nullOrTrimEmpty(liveTrackInterval)) {
+            liveTrackInterval = "0";
+        }
+        logger.info("Live track interval [{}]", liveTrackInterval);
+        config.setProperty(LIVE_TRACK.key(), liveTrackInterval);
+        return this;
+    }
+
     public Properties createConfig() {
         return config;
     }
