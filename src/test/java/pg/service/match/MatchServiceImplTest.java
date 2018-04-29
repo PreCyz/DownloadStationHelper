@@ -2,6 +2,7 @@ package pg.service.match;
 
 import org.junit.Before;
 import org.junit.Test;
+import pg.program.ShowDetail;
 import pg.util.JsonUtils;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.TorrentResponse;
@@ -19,11 +20,11 @@ import static org.junit.Assert.assertThat;
 
 /**Created by Gawa on 15/08/17.*/
 public class MatchServiceImplTest {
-    private MatchServiceImpl searchService;
+    private MatchServiceImpl matchService;
     private TorrentResponse torrentResponse;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         String osName = System.getProperty("os.name");
         URL jsonUrl = getClass().getClassLoader().getResource("testTorrentDetails.json");
         Path jsonPath;
@@ -45,28 +46,44 @@ public class MatchServiceImplTest {
 
     @Test
     public void givenTorrentsDetailWhenSearchThenReturnTorrents() {
-        final String word = "Stephen Colbert 2017 08 14 Anthony Scaramucci,720p,HDTV";
-        searchService = new MatchServiceImpl();
+        ShowDetail showDetail = new ShowDetail(1, "Stephen Colbert 2017");
+        showDetail.setBaseWords("720p,HDTV");
+        matchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->
-            searchService.matchTorrent(word, torrentDetail).ifPresent(filtered::add)
+            matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
         );
 
         assertThat(filtered, hasSize(1));
     }
 
     @Test
-    public void givenTorrentsDetailWhenSearchThenReturnTorrents2() {
-        final String word = "Cheaters,720p";
-        searchService = new MatchServiceImpl();
+    public void givenTorrentsDetailWhenSearchThenReturnTorrent1() {
+        ShowDetail showDetail = new ShowDetail(1, "Cheaters");
+        showDetail.setBaseWords("720p");
+        matchService = new MatchServiceImpl();
         List<ReducedDetail> filtered = new LinkedList<>();
 
         torrentResponse.getTorrents().forEach(torrentDetail ->
-            searchService.matchTorrent(word, torrentDetail).ifPresent(filtered::add)
+            matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
         );
 
         assertThat(filtered, hasSize(1));
+    }
+
+    @Test
+    public void givenTorrentsDetailAndNoShowDetailWhenMatchTorrentThenReturnNoTorrents() {
+        ShowDetail showDetail = new ShowDetail(1, "Some not existing title");
+        showDetail.setBaseWords("720p");
+        matchService = new MatchServiceImpl();
+        List<ReducedDetail> filtered = new LinkedList<>();
+
+        torrentResponse.getTorrents().forEach(torrentDetail ->
+                matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
+        );
+
+        assertThat(filtered, hasSize(0));
     }
 
 }
