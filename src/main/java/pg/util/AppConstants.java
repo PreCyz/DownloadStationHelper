@@ -30,6 +30,10 @@ public final class AppConstants {
     public static final String SETTINGS = "settings";
     public static final String EMPTY_STRING = "";
 
+    public static final String SHOWS_JSON = "shows.json";
+    public static final Path SHOWS_PROPERTIES_PATH = Paths.get(".", SETTINGS, SHOWS_PROPERTIES);
+    public static final Path SHOWS_JSON_PATH = Paths.get(".", SETTINGS, SHOWS_JSON);
+
     public static Path fullFilePath(String fileName) {
         String directoryPath = ApplicationPropertiesHelper.getInstance().getFilePath("");
         if (Files.notExists(Paths.get(directoryPath))) {

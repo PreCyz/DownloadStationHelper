@@ -11,7 +11,9 @@ import pg.ui.checker.Checker;
 import pg.ui.checker.ShowChecker;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.WindowHandlerImpl;
+import pg.util.AppConstants;
 
+import java.nio.file.Files;
 import java.util.Set;
 
 /** Created by Gawa 2017-10-04*/
@@ -38,7 +40,7 @@ public class FXMain extends Application {
     }
 
     private void upgradePropertiesToJson() {
-        if (JsonShowHelper.getInstance().jsonShowsNotExist()) {
+        if (Files.exists(AppConstants.SHOWS_PROPERTIES_PATH) && Files.notExists(AppConstants.SHOWS_JSON_PATH)) {
             Set<ShowDetail> showDetails = new PropertiesToShowDetailsConverter()
                     .convert(ShowsPropertiesHelper.loadShowsProperties());
             JsonShowHelper.getInstance().saveShows(showDetails);

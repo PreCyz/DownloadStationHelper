@@ -20,9 +20,9 @@ final class PropertiesHelper {
 
     static Optional<Properties> loadProperties(String fileName) {
         String applicationProperties = "." + File.separator + AppConstants.SETTINGS + File.separator + fileName;
-        try (FileInputStream fis = new FileInputStream(applicationProperties)) {
+        try (InputStream is = new FileInputStream(applicationProperties)) {
             Properties properties = new Properties();
-            properties.load(fis);
+            properties.load(is);
             logger.info("User {} file loaded.", fileName);
             return Optional.of(properties);
         } catch (IOException ex) {

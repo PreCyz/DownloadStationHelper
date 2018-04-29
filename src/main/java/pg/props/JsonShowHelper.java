@@ -2,7 +2,6 @@ package pg.props;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.program.ShowDetail;
@@ -10,8 +9,6 @@ import pg.util.AppConstants;
 import pg.util.JsonUtils;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,20 +37,15 @@ public class JsonShowHelper {
             return showDetails;
         }
         initialized = true;
-        showDetails.addAll(JsonUtils.convertJsonToSet(getShowsPath()));
+        showDetails.addAll(JsonUtils.convertJsonToSet(AppConstants.SHOWS_JSON_PATH));
         return showDetails;
-    }
-
-    @NotNull
-    private Path getShowsPath() {
-        return Paths.get(".", AppConstants.SETTINGS, "shows.json");
     }
 
     public void saveShows(Set<ShowDetail> shows) {
         try {
             showDetails = new TreeSet<>(ShowDetail.COMPARATOR);
             showDetails.addAll(shows);
-            JsonUtils.writeToFile(JsonShowHelper.getInstance().getShowsPath(), showDetails);
+            JsonUtils.writeToFile(AppConstants.SHOWS_JSON_PATH, showDetails);
         } catch (RuntimeException ex) {
             logger.error("Could not save shows.json", ex);
             throw new ProgramException(UIError.SAVE_PROPERTIES, ex);
@@ -61,6 +53,6 @@ public class JsonShowHelper {
     }
 
     public boolean jsonShowsNotExist() {
-        return Files.notExists(getShowsPath());
+        return Files.notExists(AppConstants.SHOWS_JSON_PATH);
     }
 }
