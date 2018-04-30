@@ -220,7 +220,7 @@ public class MainControllerCompletable extends AbstractController {
                 findTask.setNumberOfShowsLabel(numberOfShowsLabel);
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
-                liveTrackCheckbox.setDisable(false);
+                updateLiveTracking();
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
                 if (ex instanceof ProgramException) {
@@ -270,7 +270,7 @@ public class MainControllerCompletable extends AbstractController {
                     findTask.setSid(extractSid());
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
-                    liveTrackCheckbox.setDisable(false);
+                    updateLiveTracking();
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
@@ -317,7 +317,7 @@ public class MainControllerCompletable extends AbstractController {
                     useLinkTask.setSid(extractSid());
                     resetProperties(useLinkTask);
                     futureTask = executor.submit(useLinkTask);
-                    liveTrackCheckbox.setDisable(false);
+                    updateLiveTracking();
                 } catch (Exception ex) {
                     logger.error(ex.getLocalizedMessage());
                     windowHandler.handleException((ProgramException) ex);
@@ -340,7 +340,7 @@ public class MainControllerCompletable extends AbstractController {
                     listTask.setSid(sid);
                     resetProperties(listTask);
                     futureTask = executor.submit(listTask);
-                    liveTrackCheckbox.setDisable(false);
+                    updateLiveTracking();
                 }
                 if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
                     return;
@@ -355,10 +355,7 @@ public class MainControllerCompletable extends AbstractController {
                     );
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
-                    if (isDisabledLiveTracking()) {
-                        liveTrackCheckbox.setSelected(false);
-                        liveTrackCheckbox.setDisable(true);
-                    }
+                    updateLiveTracking();
                 } else if (KeyCode.F == event.getCode()) {
                     deleteTask = new DeleteForceCompleteTaskCompletable(
                             taskTableView,
@@ -369,6 +366,7 @@ public class MainControllerCompletable extends AbstractController {
                     );
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
+                    updateLiveTracking();
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
@@ -381,9 +379,13 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
-    private boolean isDisabledLiveTracking() {
-        return taskTableView.getItems().size() == 1 &&
-                taskTableView.getItems().get(0).getTitle().equals(TaskDetail.getNothingToDisplay().getTitle());
+    private void updateLiveTracking() {
+        if (taskTableView.getItems().size() == 1 && taskTableView.getItems().get(0).isNothingToDisplay()) {
+            liveTrackCheckbox.setSelected(false);
+            liveTrackCheckbox.setDisable(true);
+        } else {
+            liveTrackCheckbox.setDisable(false);
+        }
     }
 
     private String extractSid() {

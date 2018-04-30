@@ -25,6 +25,10 @@ public class TaskDetail {
         return new TaskDetail("Nothing to display");
     }
 
+    public boolean isNothingToDisplay() {
+        return getTitle().equals(getNothingToDisplay().getTitle());
+    }
+
     public String getId() {
         return id.get();
     }

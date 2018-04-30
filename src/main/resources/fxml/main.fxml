@@ -88,6 +88,6 @@
               <Tooltip text="%main.forceDeleteButton.tooltip" />
           </tooltip>
       </Button>
-      <CheckBox fx:id="liveTrackCheckbox" layoutX="673.0" layoutY="135.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="88.0" text="%main.checkBox.liveTrack" />
+      <CheckBox fx:id="liveTrackCheckbox" disable="true" layoutX="673.0" layoutY="135.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="88.0" text="%main.checkBox.liveTrack" />
    </children>
 </AnchorPane>
