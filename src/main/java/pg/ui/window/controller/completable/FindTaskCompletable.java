@@ -49,7 +49,9 @@ public class FindTaskCompletable extends ListTaskCompletable {
         CompletableFuture.supplyAsync(this::findTorrents, executor)
                 .thenApply(this::updateImdbMap)
                 .thenApply(this::matchTorrents)
-                .thenAccept(this::createTasksAndUpdateUI);
+                .thenApply(this::writeMatchTorrents)
+                .thenApply(this::createTasks)
+                .thenAccept(this::updateUIView);
         return null;
     }
 
@@ -100,15 +102,35 @@ public class FindTaskCompletable extends ListTaskCompletable {
         }
     }
 
-    private void createTasksAndUpdateUI(List<ReducedDetail> torrents) {
-        if (torrents.isEmpty()) {
-            updateUIWithNothingToDisplay();
-        } else {
-            writeMatchTorrents(torrents);
+    private List<ReducedDetail> writeMatchTorrents(List<ReducedDetail> torrents) {
+        try {
+            if (!torrents.isEmpty()) {
+                new WriteMatchTorrentsCall(torrents).call();
+            }
+            updateProgress(65, 100);
+            updateMessage("Match torrents stored");
+            return torrents;
+        } catch (Exception ex) {
+            throw new ProgramException(UIError.GET_TORRENTS, ex);
+        }
+    }
+
+    private List<ReducedDetail> createTasks(List<ReducedDetail> torrents) {
+        if (!torrents.isEmpty()) {
             if (getLoginSid() == null) {
                 loginToDiskStation();
             }
-            createTasks(torrents);
+            new CreateTaskCall(getLoginSid(), torrents, dsApiDetail.getDownloadStationTask()).call();
+        }
+        updateMessage("Torrents started");
+        updateProgress(99, 100);
+        return torrents;
+    }
+
+    private void updateUIView(List<ReducedDetail> torrents) {
+        if (torrents.isEmpty()) {
+            updateUIWithNothingToDisplay();
+        } else {
             updateUIView(getDsTaskListDetail());
         }
     }
@@ -125,22 +147,6 @@ public class FindTaskCompletable extends ListTaskCompletable {
                 tableView.requestFocus();
             });
         }
-    }
-
-    private void writeMatchTorrents(List<ReducedDetail> torrents) {
-        try {
-            new WriteMatchTorrentsCall(torrents).call();
-            updateProgress(65, 100);
-            updateMessage("Match torrents stored");
-        } catch (Exception ex) {
-            throw new ProgramException(UIError.GET_TORRENTS, ex);
-        }
-    }
-
-    private void createTasks(List<ReducedDetail> torrents) {
-        new CreateTaskCall(getLoginSid(), torrents, dsApiDetail.getDownloadStationTask()).call();
-        updateMessage("Torrents started");
-        updateProgress(99, 100);
     }
 
     private String messageAfterMatch() {
