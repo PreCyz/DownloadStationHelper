@@ -171,23 +171,23 @@ public class DuplicateFilterTest {
     }
 
     @Test
-    public void givenDifferentTitlesWhenIsTitlesDuplicateThenReturnFalse() {
+    public void givenDifferentTitlesWhenIsTitlesDuplicateThenReturnTrue() {
         String firstTitle = "Walking Dead S08E02 720p HDTV x264-FLEET EZTV";
         String secondTitle ="The Walking Dead S08E02 720p HDTV x264-FLEET EZTV";
 
         boolean actual = filter.isTitlesDuplicate(firstTitle, secondTitle);
 
-        assertThat(actual, is( equalTo(false)));
+        assertThat(actual, is( equalTo(true)));
     }
 
     @Test
-    public void givenTwoTitlesWithOnlyOneDifferenceWhenIsTitlesDuplicateThenReturnTrue() {
+    public void givenTwoTitlesWithOnlyOneDifferenceWhenIsTitlesDuplicateThenReturnFalse() {
         String firstTitle = "The Walking Dead S08E03 720p HDTV x264-FLEET EZTV";
         String secondTitle ="The Walking Dead S08E02 720p HDTV x264-FLEET EZTV";
 
         boolean actual = filter.isTitlesDuplicate(firstTitle, secondTitle);
 
-        assertThat(actual, is( equalTo(true)));
+        assertThat(actual, is( equalTo(false)));
     }
 
     @Test
@@ -200,4 +200,23 @@ public class DuplicateFilterTest {
         assertThat(actual, is( equalTo(false)));
     }
 
+    @Test
+    public void givenTitlesWithTheSameSeasonAndEpisode_when_isTitlesDuplicate_thenReturnTrue() {
+        String firstTitle = "The 100 S05E01 HDTV x264-SVA EZTV";
+        String secondTitle ="The 100 S05E01 720p HDTV x264-SVA EZTV";
+
+        boolean actual = filter.isTitlesDuplicate(firstTitle, secondTitle);
+
+        assertThat(actual, is( equalTo(true)));
+    }
+
+    @Test
+    public void givenDifferentTitlesWithTheSameSeasonAndEpisode_when_isTitlesDuplicate_thenReturnFalse() {
+        String firstTitle = "Raven S05E01 720p HDTV x264-SVA EZTV";
+        String secondTitle ="The 100 S05E01 720p HDTV x264-SVA EZTV";
+
+        boolean actual = filter.isTitlesDuplicate(firstTitle, secondTitle);
+
+        assertThat(actual, is( equalTo(false)));
+    }
 }

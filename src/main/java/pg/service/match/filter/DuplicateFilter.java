@@ -5,8 +5,11 @@ import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
 import pg.web.torrent.TorrentDetail;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /** Created by Gawa 2017-10-30 */
 class DuplicateFilter implements Filter {
@@ -14,6 +17,7 @@ class DuplicateFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(DuplicateFilter.class);
 
     private final int MAX_DIFFERENCE_COUNTER = 2;
+    private final int NO_SE_IDX = -1;
 
     @Override
     public List<TorrentDetail> apply(List<TorrentDetail> torrents) {
@@ -58,16 +62,77 @@ class DuplicateFilter implements Filter {
         }
         String[] splitTitleFromList = titleFromList.split(" ");
         String[] splitCurrentTitle = currentTitle.split(" ");
-        int minLength = Math.min(splitTitleFromList.length, splitCurrentTitle.length);
+
+        return isSameTitleSection(splitTitleFromList, splitCurrentTitle) &&
+                isSameSeasonEpisodeSection(splitTitleFromList, splitCurrentTitle) &&
+                isSameVersionSection(splitTitleFromList, splitCurrentTitle);
+    }
+
+    private boolean isSameTitleSection(String[] splitTitleFromList, String[] splitCurrentTitle) {
+        boolean result = false;
+        int seTitleFromIdx = getSeasonEpisodeIndex(splitTitleFromList);
+        int seCurrentTitleIdx = getSeasonEpisodeIndex(splitCurrentTitle);
+        if (seTitleFromIdx != NO_SE_IDX && seCurrentTitleIdx != NO_SE_IDX) {
+            List<String> titleSection = new LinkedList<>();
+            List<String> currentTitleSection = new LinkedList<>();
+            Arrays.spliterator(splitTitleFromList, 0, seTitleFromIdx).forEachRemaining(titleSection::add);
+            Arrays.spliterator(splitCurrentTitle, 0, seCurrentTitleIdx).forEachRemaining(currentTitleSection::add);
+            result = currentTitleSection.containsAll(titleSection);
+        }
+        return result;
+    }
+
+    private int getSeasonEpisodeIndex(String[] title) {
+        int result = -1;
+        for (int i = 0; i < title.length; i++) {
+            if (isSeasonEpisode(title[i])) {
+                result = i;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private boolean isSeasonEpisode(String string) {
+        Predicate<String> containsSE = word -> word.charAt(0) == 'S' && Character.isDigit(word.charAt(1)) &&
+                Character.isDigit(word.charAt(2)) && word.charAt(3) == 'E' && Character.isDigit(word.charAt(4)) &&
+                Character.isDigit(word.charAt(5));
+        return containsSE.test(string);
+    }
+
+    private boolean isSameSeasonEpisodeSection(String[] splitTitleFrom, String[] splitCurrentTitle) {
+        Optional<String> seTitle = Arrays.stream(splitTitleFrom).filter(this::isSeasonEpisode).findFirst();
+        Optional<String> seCurrent = Arrays.stream(splitCurrentTitle).filter(this::isSeasonEpisode).findFirst();
+        return seTitle.isPresent() && seCurrent.isPresent() && seTitle.get().equalsIgnoreCase(seCurrent.get());
+    }
+
+    private boolean isSameVersionSection(String[] splitTitleFromList, String[] splitCurrentTitle) {
+        int seTitleFromIdx = getSeasonEpisodeIndex(splitTitleFromList);
+        int seCurrentTitleIdx = getSeasonEpisodeIndex(splitCurrentTitle);
+        if (seTitleFromIdx == NO_SE_IDX || seCurrentTitleIdx == NO_SE_IDX) {
+            return false;
+        }
+
+        boolean result = true;
+        List<String> versionSection = new LinkedList<>();
+        List<String> currentVersionSection = new LinkedList<>();
+        Arrays.spliterator(splitTitleFromList, seTitleFromIdx + 1, splitTitleFromList.length)
+                .forEachRemaining(versionSection::add);
+        Arrays.spliterator(splitCurrentTitle, seCurrentTitleIdx + 1, splitCurrentTitle.length)
+                .forEachRemaining(currentVersionSection::add);
+
         int differenceCounter = 0;
-        for (int idx = 0; idx < minLength; idx++) {
-            if (!splitCurrentTitle[idx].equalsIgnoreCase(splitTitleFromList[idx])) {
+        for (String word : versionSection) {
+            if (!currentVersionSection.contains(word)) {
                 differenceCounter++;
             }
             if (differenceCounter == MAX_DIFFERENCE_COUNTER) {
-                return false;
+                result = false;
+                break;
             }
         }
-        return true;
+
+        return result;
     }
+
 }
