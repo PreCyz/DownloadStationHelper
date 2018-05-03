@@ -1,6 +1,6 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
-import pg.service.torrent.FavouriteTorrentServiceImpl;
+import pg.service.torrent.FavouriteTorrentService;
 import pg.service.torrent.TorrentService;
 import pg.ui.window.controller.completable.UpdatableTask;
 import pg.web.torrent.TorrentDetail;
@@ -14,7 +14,7 @@ public class FindFavouriteTorrentsCall implements Callable<List<TorrentDetail>> 
     private TorrentService torrentService;
 
     public FindFavouriteTorrentsCall(UpdatableTask<?> fxTask) {
-        torrentService = new FavouriteTorrentServiceImpl(fxTask);
+        torrentService = new FavouriteTorrentService(fxTask);
     }
 
     @Override

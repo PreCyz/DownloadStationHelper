@@ -1,28 +1,25 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
+import pg.ui.window.controller.task.atomic.call.response.PairResponse;
 import pg.web.client.GetClient;
 
 import java.util.concurrent.Callable;
 
 /** Created by Gawa 2017-10-25 */
-public class GetTorrentsCall implements Callable<String> {
+public class GetTorrentsCustomCall implements Callable<PairResponse> {
 
     private final String url;
 
-    public GetTorrentsCall(String url) {
+    public GetTorrentsCustomCall(String url) {
         this.url = url;
     }
 
     @Override
-    public String call() throws Exception {
+    public PairResponse call() {
         GetClient client = new GetClient(url);
         if (client.get().isPresent()) {
-            return client.get().get();
+            return new PairResponse(url, client.get().get());
         }
-        return "";
-    }
-
-    public String getUrl() {
-        return url;
+        return new PairResponse("", "");
     }
 }

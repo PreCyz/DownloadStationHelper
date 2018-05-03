@@ -3,38 +3,38 @@ package pg.service.torrent;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.ui.window.controller.completable.UpdatableTask;
-import pg.ui.window.controller.task.atomic.GetTorrentsTask;
+import pg.ui.window.controller.task.atomic.call.response.PairResponse;
+import pg.ui.window.controller.task.atomic.call.torrent.GetTorrentsCustomCall;
 import pg.util.JsonUtils;
 import pg.web.torrent.TorrentDetail;
 import pg.web.torrent.TorrentResponse;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**Created by Gawa 2017-09-23*/
-public class ImdbTorrentServiceImpl extends AbstractImdbService {
+public class ImdbTorrentServiceImpl extends AbstractTorrentService implements TorrentService {
     private final String imdbId;
-    private final UpdatableTask<?> fxTask;
+    private int numberOfTorrents = 0;
 
     public ImdbTorrentServiceImpl(String imdbId, UpdatableTask<?> fxTask) {
-        super();
+        super(fxTask);
         this.imdbId = imdbId;
-        this.fxTask = fxTask;
     }
 
     @Override
     public List<TorrentDetail> findTorrents() {
-        List<TorrentResponse> torrentResponses = new LinkedList<>();
-        GetTorrentsTask firstTask = new GetTorrentsTask(createUrl(imdbId, 1), executorService);
-        executeFirstTask(firstTask, torrentResponses, imdbId);
-        executorService = Executors.newFixedThreadPool(getNumberOfPages() - 1);
+        GetTorrentsCustomCall firstTask = new GetTorrentsCustomCall(createUrl(imdbId, 1));
+        List<TorrentResponse> torrentResponses = executeFirstTask(firstTask, imdbId);
 
-        List<GetTorrentsTask> tasks = createGetTorrentsTasks(imdbId);
-        executeTasks(tasks, torrentResponses);
+        List<GetTorrentsCustomCall> tasks = createGetTorrentsTasks(imdbId);
+        torrentResponses.addAll(executeTasks(tasks));
         List<TorrentDetail> torrentDetails = torrentResponses.stream()
                 .flatMap(tr -> tr.getTorrents().stream())
                 .collect(Collectors.toList());
@@ -42,38 +42,46 @@ public class ImdbTorrentServiceImpl extends AbstractImdbService {
         return torrentDetails;
     }
 
-    @Override
-    protected void executeTasks(List<GetTorrentsTask> tasks, List<TorrentResponse> torrentResponses) {
-        double onePercentOfProgress = 1.0 / 30;
-        fxTask.updateProgressTo30(onePercentOfProgress);
-        double done = 0;
-        while (!tasks.isEmpty()) {
-            for (Iterator<GetTorrentsTask> it = tasks.iterator(); it.hasNext(); ) {
-                GetTorrentsTask task = it.next();
-                if (task.isDone()) {
-                    String request = task.getRequestUrl();
-                    logger.info("Request [{}] finished.", request);
-                    List<TorrentResponse> torrentsForRequest = new ArrayList<>(limit);
-                    String response = task.getResponse();
-                    JsonUtils.convertFromString(response, TorrentResponse.class).ifPresent(torrentsForRequest::add);
-                    it.remove();
-                    logger.info("[{}] torrents in response.",
-                            torrentsForRequest.stream()
-                                    .mapToInt(tr -> tr.getTorrents().size())
-                                    .sum()
-                    );
-                    torrentResponses.addAll(torrentsForRequest);
-                    fxTask.updateProgressTo30(++done / getNumberOfPages());
-                }
-            }
-            if (!tasks.isEmpty()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    logger.error("Error when sleep thread.", e);
-                    throw new ProgramException(UIError.GET_TORRENTS);
-                }
-            }
+    protected String createUrl(String imdbId, int currentPage) {
+        String requestUrl = createUrl(currentPage);
+        return String.format("%s&imdb_id=%s", requestUrl, imdbId);
+    }
+
+    protected List<GetTorrentsCustomCall> createGetTorrentsTasks(String imdbId) {
+        Integer numberOfPages = getNumberOfPages();
+        List<GetTorrentsCustomCall> tasks = new ArrayList<>(numberOfPages);
+        for (int page = defaultPage; page <= numberOfPages; page++) {
+            tasks.add(new GetTorrentsCustomCall(createUrl(imdbId, page)));
         }
+        return tasks;
+    }
+
+    protected List<TorrentResponse> executeFirstTask(GetTorrentsCustomCall firstTask, String imdbId) {
+        List<TorrentResponse> torrentResponses = new LinkedList<>();
+        try {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            PairResponse response = executorService.submit(firstTask).get();
+            logger.info("Request [{}] finished.", response.getUrl());
+            Optional<TorrentResponse> torrentResponse =
+                    JsonUtils.convertFromString(response.getResponse(), TorrentResponse.class);
+            if (torrentResponse.isPresent()) {
+                numberOfTorrents = torrentResponse.get().getTorrentsCount();
+                torrentResponses.add(torrentResponse.get());
+                logger.info("[{}] torrents to download for imdb {}.", numberOfTorrents, imdbId);
+                logger.info("[{}] torrents in first response.", torrentResponse.get().getTorrents().size());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Error when sleep thread.", e);
+            throw new ProgramException(UIError.GET_TORRENTS);
+        }
+
+        return torrentResponses;
+    }
+
+    @Override
+    protected Integer getNumberOfPages() {
+        Double numberOfRequest = Math.ceil(numberOfTorrents / (double) limit);
+        defaultPage = 2;
+        return numberOfRequest.intValue();
     }
 }
