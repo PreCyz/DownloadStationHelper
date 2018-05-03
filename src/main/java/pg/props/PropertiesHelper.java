@@ -2,7 +2,7 @@ package pg.props;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.Main;
+import pg.FXMain;
 import pg.util.AppConstants;
 
 import java.io.*;
@@ -33,7 +33,7 @@ final class PropertiesHelper {
     }
 
     static Properties loadDefaultProperties(String fileName) {
-        try (InputStream resourceIS = Main.class.getClassLoader().getResourceAsStream(fileName)) {
+        try (InputStream resourceIS = FXMain.class.getClassLoader().getResourceAsStream(fileName)) {
             Properties properties = new Properties();
             properties.load(resourceIS);
             logger.info("Program {} file loaded.", fileName);
@@ -45,10 +45,6 @@ final class PropertiesHelper {
 
     static void storeApplicationProperties(Properties properties) throws IOException {
         storeProperties(properties, AppConstants.APPLICATION_PROPERTIES);
-    }
-
-    static void storeShowProperties(Properties properties) throws IOException {
-        storeProperties(properties, AppConstants.SHOWS_PROPERTIES);
     }
 
     private static void storeProperties(Properties properties, String fileName) throws IOException {

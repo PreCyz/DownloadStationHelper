@@ -11,15 +11,14 @@ import java.util.concurrent.Callable;
 /** Created by Gawa 2018-1-6 */
 public class FindFavouriteTorrentsCall implements Callable<List<TorrentDetail>> {
 
-    private final UpdatableTask<?> fxTask;
+    private TorrentService torrentService;
 
     public FindFavouriteTorrentsCall(UpdatableTask<?> fxTask) {
-        this.fxTask = fxTask;
+        torrentService = new FavouriteTorrentServiceImpl(fxTask);
     }
 
     @Override
     public List<TorrentDetail> call() {
-        TorrentService torrentService = new FavouriteTorrentServiceImpl(fxTask);
         return torrentService.findTorrents();
     }
 }
