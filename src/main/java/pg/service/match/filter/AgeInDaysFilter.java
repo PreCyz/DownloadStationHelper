@@ -15,21 +15,23 @@ class AgeInDaysFilter implements Filter {
 
     private final int torrentAge;
 
-    public AgeInDaysFilter(int torrentAge) {
+    AgeInDaysFilter(int torrentAge) {
         this.torrentAge = torrentAge;
     }
 
     @Override
     public List<TorrentDetail> apply(List<TorrentDetail> torrents) {
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add(Calendar.DAY_OF_MONTH, -torrentAge);
-        final long timestamp = yesterday.getTimeInMillis() / 1000;
         if (torrentAge == 0) {
             return torrents;
         }
-        logger.info("Age in last {} days filter applied.", torrentAge);
-        return torrents.stream()
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_MONTH, -torrentAge);
+        final long timestamp = yesterday.getTimeInMillis() / 1000;
+        List<TorrentDetail> filteredOut = torrents.stream()
                 .filter(torrent -> torrent.getDateReleased() > timestamp)
                 .collect(Collectors.toList());
+        logger.info("Age in last {} days filter applied. {} torrents were filtered out. {} torrents remained.",
+                torrentAge, torrents.size() - filteredOut.size(), filteredOut.size());
+        return filteredOut;
     }
 }

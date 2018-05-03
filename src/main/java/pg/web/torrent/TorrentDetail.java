@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**Created by Gawa on 15/08/17*/
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TorrentDetail {
+public class TorrentDetail implements Duplicable {
     private int id;
     private String hash;
     private String filename;

@@ -3,6 +3,7 @@ package pg.service.match.filter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.StringUtils;
+import pg.web.torrent.Duplicable;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.Arrays;
@@ -44,11 +45,12 @@ class DuplicateFilter implements Filter {
                 }
             }
         }
-        logger.info("Duplicate filter applied.");
+        logger.info("Duplicate filter applied. {} torrents were filtered out. {} torrents remained.",
+                torrents.size() - filteredOut.size(), filteredOut.size());
         return filteredOut;
     }
 
-    private boolean isDuplicate(TorrentDetail torrent, TorrentDetail torrentFromList) {
+    protected boolean isDuplicate(Duplicable torrent, Duplicable torrentFromList) {
         return !StringUtils.nullOrTrimEmpty(torrent.getSeason())
                 && !StringUtils.nullOrTrimEmpty(torrent.getEpisode())
                 && torrent.getSeason().equalsIgnoreCase(torrentFromList.getSeason())
@@ -64,8 +66,8 @@ class DuplicateFilter implements Filter {
         String[] splitCurrentTitle = currentTitle.split(" ");
 
         return isSameTitleSection(splitTitleFromList, splitCurrentTitle) &&
-                isSameSeasonEpisodeSection(splitTitleFromList, splitCurrentTitle) &&
-                isSameVersionSection(splitTitleFromList, splitCurrentTitle);
+                isSameSeasonEpisodeSection(splitTitleFromList, splitCurrentTitle); /*&&
+                isSameVersionSection(splitTitleFromList, splitCurrentTitle);*/
     }
 
     private boolean isSameTitleSection(String[] splitTitleFromList, String[] splitCurrentTitle) {
@@ -82,7 +84,7 @@ class DuplicateFilter implements Filter {
         return result;
     }
 
-    private int getSeasonEpisodeIndex(String[] title) {
+    protected int getSeasonEpisodeIndex(String[] title) {
         int result = -1;
         for (int i = 0; i < title.length; i++) {
             if (isSeasonEpisode(title[i])) {
@@ -94,9 +96,9 @@ class DuplicateFilter implements Filter {
     }
 
     private boolean isSeasonEpisode(String string) {
-        Predicate<String> containsSE = word -> word.charAt(0) == 'S' && Character.isDigit(word.charAt(1)) &&
-                Character.isDigit(word.charAt(2)) && word.charAt(3) == 'E' && Character.isDigit(word.charAt(4)) &&
-                Character.isDigit(word.charAt(5));
+        Predicate<String> containsSE = word -> word.length() == 6 &&
+                word.charAt(0) == 'S' && Character.isDigit(word.charAt(1)) && Character.isDigit(word.charAt(2)) &&
+                word.charAt(3) == 'E' && Character.isDigit(word.charAt(4)) && Character.isDigit(word.charAt(5));
         return containsSE.test(string);
     }
 

@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
-import pg.util.StringUtils;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.TorrentDetail;
 
@@ -24,11 +23,13 @@ class HistoryFilter extends DuplicateFilter {
                 AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE)
         );
         if (!map.isEmpty()) {
-            logger.info("History filter applied.");
             List<TorrentDetail> filteredOut = torrents.stream()
                     .filter(torrentDetail -> !map.containsKey(torrentDetail.getTitle()))
                     .collect(Collectors.toList());
-            return filterDuplicates(filteredOut, map);
+            logger.info("History filter applied. {} torrents were filtered out. {} torrents remained.",
+                    torrents.size() - filteredOut.size(), filteredOut.size());
+            return filteredOut;
+            //return filterDuplicates(filteredOut, map);
         }
         return torrents;
     }
@@ -49,14 +50,6 @@ class HistoryFilter extends DuplicateFilter {
             }
         }
         return filteredOut;
-    }
-
-    private boolean isDuplicate(TorrentDetail torrent, ReducedDetail historicTorrent) {
-        return !StringUtils.nullOrTrimEmpty(torrent.getSeason()) &&
-                !StringUtils.nullOrTrimEmpty(torrent.getEpisode()) &&
-                torrent.getSeason().equals(historicTorrent.getSeason()) &&
-                torrent.getEpisode().equals(historicTorrent.getEpisode()) &&
-                isTitlesDuplicate(torrent.getTitle(), historicTorrent.getTitle());
     }
 
 }

@@ -26,7 +26,7 @@ class FileSizeFilter implements Filter {
         }
     }
 
-    public FileSizeFilter(String maxSize) {
+    FileSizeFilter(String maxSize) {
         this.maxSize = maxSize;
     }
 
@@ -36,10 +36,12 @@ class FileSizeFilter implements Filter {
         if (maxFileSize == 0) {
             return torrents;
         }
-        logger.info("Max file size filter applied.");
-        return torrents.stream()
+        List<TorrentDetail> filteredOut = torrents.stream()
                 .filter(torrent -> Long.valueOf(torrent.getSize()) <= maxFileSize)
                 .collect(Collectors.toList());
+        logger.info("Max file size filter applied. {} torrents were filtered out. {} torrents remained.",
+                torrents.size() - filteredOut.size(), filteredOut.size());
+        return filteredOut;
     }
 
     private long extractMaxFileSize() {

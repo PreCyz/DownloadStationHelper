@@ -29,12 +29,16 @@ class ReleaseDateFilter implements Filter {
     @Override
     public List<TorrentDetail> apply(List<TorrentDetail> torrents) {
         long timestamp = getReleaseDateUnixTimestamp();
-        if (timestamp > 0) {
-            logger.info("Release date filter applied.");
+        if (timestamp <= 0) {
+            return torrents;
         }
-        return torrents.stream()
+        List<TorrentDetail> filteredOut = torrents.stream()
                 .filter(torrent -> torrent.getDateReleased() >= timestamp)
                 .collect(Collectors.toList());
+        logger.info("Release date filter applied. {} torrents were filtered out. {} torrents remained.",
+                torrents.size() - filteredOut.size(), filteredOut.size());
+
+        return filteredOut;
     }
 
     private long getReleaseDateUnixTimestamp() {

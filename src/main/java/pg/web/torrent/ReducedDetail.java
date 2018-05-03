@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 /**Created by Gawa on 15/08/17.*/
-public class ReducedDetail {
+public class ReducedDetail implements Duplicable {
 
     private String title;
     private int matchPrecision;

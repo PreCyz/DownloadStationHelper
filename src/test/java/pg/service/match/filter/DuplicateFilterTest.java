@@ -219,4 +219,11 @@ public class DuplicateFilterTest {
 
         assertThat(actual, is( equalTo(false)));
     }
+
+    @Test
+    public void givenTitle_when_getSeasonEpisodeIndex_then_returnProperIdx() {
+        String title = "Marvels Agents of S H I E L D S05E18 720p HDTV x264-KILLERS EZTV";
+        int idx = filter.getSeasonEpisodeIndex(title.split(" "));
+        assertThat(idx, is(equalTo(9)));
+    }
 }
