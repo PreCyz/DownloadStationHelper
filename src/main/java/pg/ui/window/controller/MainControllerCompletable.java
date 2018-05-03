@@ -214,13 +214,13 @@ public class MainControllerCompletable extends AbstractController {
                         taskTableView,
                         availableOperationTask.getDsApiDetail(),
                         windowHandler,
+                        liveTrackCheckbox,
                         executor
                 );
                 findTask.setSid(extractSid());
                 findTask.setNumberOfShowsLabel(numberOfShowsLabel);
                 resetProperties(findTask);
                 futureTask = executor.submit(findTask);
-                updateLiveTracking();
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
                 if (ex instanceof ProgramException) {
@@ -264,13 +264,13 @@ public class MainControllerCompletable extends AbstractController {
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
+                            liveTrackCheckbox,
                             executor
                     );
                     findTask.setImdbId(imdbId);
                     findTask.setSid(extractSid());
                     resetProperties(findTask);
                     futureTask = executor.submit(findTask);
-                    updateLiveTracking();
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
@@ -312,12 +312,12 @@ public class MainControllerCompletable extends AbstractController {
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             link,
+                            liveTrackCheckbox,
                             executor
                     );
                     useLinkTask.setSid(extractSid());
                     resetProperties(useLinkTask);
                     futureTask = executor.submit(useLinkTask);
-                    updateLiveTracking();
                 } catch (Exception ex) {
                     logger.error(ex.getLocalizedMessage());
                     windowHandler.handleException((ProgramException) ex);
@@ -335,12 +335,12 @@ public class MainControllerCompletable extends AbstractController {
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
+                            liveTrackCheckbox,
                             executor
                     );
                     listTask.setSid(sid);
                     resetProperties(listTask);
                     futureTask = executor.submit(listTask);
-                    updateLiveTracking();
                 }
                 if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
                     return;
@@ -348,25 +348,27 @@ public class MainControllerCompletable extends AbstractController {
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
                     deleteTask = new DeleteTaskCompletable(
                             taskTableView,
-                            sid,
-                            availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                            availableOperationTask.getDsApiDetail(),
                             torrentsToDelete,
+                            windowHandler,
+                            liveTrackCheckbox,
                             executor
                     );
+                    deleteTask.setSid(sid);
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
-                    updateLiveTracking();
                 } else if (KeyCode.F == event.getCode()) {
                     deleteTask = new DeleteForceCompleteTaskCompletable(
                             taskTableView,
-                            sid,
-                            availableOperationTask.getDsApiDetail().getDownloadStationTask(),
+                            availableOperationTask.getDsApiDetail(),
                             torrentsToDelete,
+                            windowHandler,
+                            liveTrackCheckbox,
                             executor
                     );
+                    deleteTask.setSid(sid);
                     resetProperties(deleteTask);
                     futureTask = executor.submit(deleteTask);
-                    updateLiveTracking();
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
@@ -377,15 +379,6 @@ public class MainControllerCompletable extends AbstractController {
                 }
             }
         };
-    }
-
-    private void updateLiveTracking() {
-        if (taskTableView.getItems().size() == 1 && taskTableView.getItems().get(0).isNothingToDisplay()) {
-            liveTrackCheckbox.setSelected(false);
-            liveTrackCheckbox.setDisable(true);
-        } else {
-            liveTrackCheckbox.setDisable(false);
-        }
     }
 
     private String extractSid() {

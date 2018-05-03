@@ -2,6 +2,7 @@ package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import pg.exception.ProgramException;
@@ -31,8 +32,8 @@ public class FindTaskCompletable extends ListTaskCompletable {
     private List<ReducedDetail> matchTorrents;
 
     public FindTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
-                               ExecutorService executor) {
-        super(tableView, dsApiDetail, windowHandler, executor);
+                               CheckBox liveTrackCheckbox, ExecutorService executor) {
+        super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
     }
 
@@ -141,10 +142,12 @@ public class FindTaskCompletable extends ListTaskCompletable {
         if (Platform.isFxApplicationThread()) {
             tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
             tableView.requestFocus();
+            updateLiveTracking();
         } else {
             Platform.runLater(() -> {
                 tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
                 tableView.requestFocus();
+                updateLiveTracking();
             });
         }
     }

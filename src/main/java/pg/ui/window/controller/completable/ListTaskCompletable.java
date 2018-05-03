@@ -2,6 +2,7 @@ package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
 import pg.converter.AbstractConverter;
 import pg.converter.DSTaskToTaskDetailConverter;
@@ -24,15 +25,17 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
     protected final ExecutorService executor;
     protected final DsApiDetail dsApiDetail;
     protected final WindowHandler windowHandler;
+    private final CheckBox liveTrackCheckbox;
 
     private String sid;
 
     public ListTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
-                               ExecutorService executor) {
+                               CheckBox liveTrackCheckbox, ExecutorService executor) {
         this.tableView = tableView;
         this.dsApiDetail = dsApiDetail;
         this.executor = executor;
         this.windowHandler = windowHandler;
+        this.liveTrackCheckbox = liveTrackCheckbox;
     }
 
     public void setSid(String sid) {
@@ -81,10 +84,12 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
         if (Platform.isFxApplicationThread()) {
             tableView.setItems(FXCollections.observableList(tasks));
             tableView.requestFocus();
+            updateLiveTracking();
         } else {
             Platform.runLater(() -> {
                 tableView.setItems(FXCollections.observableList(tasks));
                 tableView.requestFocus();
+                updateLiveTracking();
             });
         }
 
@@ -99,5 +104,14 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
     @Override
     public void updateProgressTo30(double workDone) {
         updateProgress(workDone * 30, 100);
+    }
+
+    protected void updateLiveTracking() {
+        if (tableView.getItems().size() == 1 && tableView.getItems().get(0).isNothingToDisplay()) {
+            liveTrackCheckbox.setSelected(false);
+            liveTrackCheckbox.setDisable(true);
+        } else {
+            liveTrackCheckbox.setDisable(false);
+        }
     }
 }

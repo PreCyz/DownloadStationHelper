@@ -1,5 +1,6 @@
 package pg.ui.window.controller.completable;
 
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
@@ -15,8 +16,8 @@ public class UseLinkTaskCompletable extends ListTaskCompletable {
     private String link;
 
     public UseLinkTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
-                                  String link, ExecutorService executor) {
-        super(tableView, dsApiDetail, windowHandler, executor);
+                                  String link, CheckBox liveTrackCheckbox, ExecutorService executor) {
+        super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.link = link;
     }
 
