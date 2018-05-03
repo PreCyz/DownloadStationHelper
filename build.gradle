@@ -40,7 +40,7 @@ def jarName = "DSHelper-$buildVersion"
 def jarNameFx = "DSHelper-FX-$buildVersion"
 def fxMainClassName = 'pg.FXMain'
 
-def addScriptToRunFile = {
+/*def addScriptToRunFile = {
     def runFile = new File("$buildDir/libs/run.sh")
     runFile.append('echo \'Start program\'')
     runFile.append('\necho \'.............\'')
@@ -50,9 +50,9 @@ def addScriptToRunFile = {
     runFile.append('\n\necho \'.............\'')
     runFile.append('\necho \'Program ended\'')
     println("addScriptToRunFile $jarName")
-}
+}*/
 
-def addScriptToRunImdbFile = {
+/*def addScriptToRunImdbFile = {
     def runImdbFile = new File("$buildDir/libs/runImdb.sh")
     runImdbFile.append('echo \'Start program\'')
     runImdbFile.append('\necho \'.............\'')
@@ -62,7 +62,7 @@ def addScriptToRunImdbFile = {
     runImdbFile.append('\n\necho \'.............\'')
     runImdbFile.append('\necho \'Program ended\'')
     println("addScriptToRunImdbFile $jarName")
-}
+}*/
 
 def addScriptToRunFXFile = {
     def runImdbFile = new File("$buildDir/libs/runFX.sh")
@@ -128,9 +128,9 @@ jar {
                 'Main-Class': mainClassName,
                 'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
     }
-    doLast {
+    /*doLast {
         addScriptToRunFile()
         addScriptToRunImdbFile()
-    }
+    }*/
     baseName = jarName
 }
