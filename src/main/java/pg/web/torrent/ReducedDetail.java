@@ -71,6 +71,9 @@ public class ReducedDetail implements Duplicable {
 
     @Override
     public String toString() {
-        return title;
+        return "title='" + title + '\'' +
+                ", season='" + season + '\'' +
+                ", episode='" + episode + '\'' +
+                '}';
     }
 }

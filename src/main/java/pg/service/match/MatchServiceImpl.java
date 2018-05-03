@@ -21,7 +21,7 @@ class MatchServiceImpl extends AbstractMatchService {
         List<TorrentDetail> filtered = applyFilters(torrents);
         if (!filtered.isEmpty()) {
             for (ShowDetail showDetail : showHelper.getShowDetails()) {
-                for (TorrentDetail torrentDetail : torrents) {
+                for (TorrentDetail torrentDetail : filtered) {
                     matchTorrent(showDetail, torrentDetail).ifPresent(matchingTorrents::add);
                 }
             }

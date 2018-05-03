@@ -94,4 +94,12 @@ public class TorrentDetail implements Duplicable {
     public String getSize() {
         return size;
     }
+
+    @Override
+    public String toString() {
+        return "title='" + title + '\'' +
+                ", season='" + season + '\'' +
+                ", episode='" + episode + '\'' +
+                '}';
+    }
 }

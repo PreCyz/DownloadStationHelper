@@ -22,16 +22,19 @@ class HistoryFilter extends DuplicateFilter {
         Map<String, ReducedDetail> map = JsonUtils.convertMatchTorrentsFromFile(
                 AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE)
         );
-        if (!map.isEmpty()) {
-            List<TorrentDetail> filteredOut = torrents.stream()
+        if (map.isEmpty()) {
+            return torrents;
+        }
+        List<TorrentDetail> filteredOut = torrents.stream()
                     .filter(torrentDetail -> !map.containsKey(torrentDetail.getTitle()))
                     .collect(Collectors.toList());
-            logger.info("History filter applied. {} torrents were filtered out. {} torrents remained.",
+        logger.info("History filter applied. {} torrents were filtered out. {} torrents remained.",
                     torrents.size() - filteredOut.size(), filteredOut.size());
-            return filteredOut;
-            //return filterDuplicates(filteredOut, map);
-        }
-        return torrents;
+
+        List<TorrentDetail> filteredOutWithoutDuplicates = filterDuplicates(filteredOut, map);
+        logger.info("Duplicates on history filter applied. {} torrents were filtered out. {} torrents remained.",
+                filteredOut.size() - filteredOutWithoutDuplicates.size(), filteredOutWithoutDuplicates.size());
+        return filteredOutWithoutDuplicates;
     }
 
     private List<TorrentDetail> filterDuplicates(List<TorrentDetail> torrents, Map<String, ReducedDetail> map) {
@@ -41,6 +44,8 @@ class HistoryFilter extends DuplicateFilter {
             for (String key : map.keySet()) {
                 ReducedDetail historicTorrent = map.get(key);
                 if (isDuplicate(torrent, historicTorrent)) {
+                    logger.info("Historic duplicate. '{}' duplicates already downloaded '{}'",
+                            torrent.getTitle(), historicTorrent.getTitle());
                     duplicate = true;
                     break;
                 }
