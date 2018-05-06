@@ -68,7 +68,8 @@ public abstract class AbstractTorrentService {
                                 .sum()
                 );
                 torrentResponses.addAll(torrentsForRequest);
-                fxTask.updateProgressTo30((i + 1) / getNumberOfPages());
+                double progress = (i + 1d) / getNumberOfPages();
+                fxTask.updateProgressTo30(progress);
             } catch (InterruptedException | ExecutionException e) {
                 logger.error("Error when getting torrents.", e);
             }
