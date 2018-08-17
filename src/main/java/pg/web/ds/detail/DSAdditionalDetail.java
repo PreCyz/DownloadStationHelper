@@ -1,8 +1,10 @@
 package pg.web.ds.detail;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 /** Created by Gawa 2018-03-03 */
+@Getter
 public class DSAdditionalDetail {
 
     @JsonProperty("completed_time")
@@ -31,59 +33,4 @@ public class DSAdditionalDetail {
     @JsonProperty("waiting_seconds")
     private long waitingSeconds;
 
-    public long getCompletedTime() {
-        return completedTime;
-    }
-
-    public long getConnectedLeechers() {
-        return connectedLeechers;
-    }
-
-    public long getConnectedPeers() {
-        return connectedPeers;
-    }
-
-    public long getConnectedSeeders() {
-        return connectedSeeders;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public long getSeedElapsed() {
-        return seedElapsed;
-    }
-
-    public long getStartedTime() {
-        return startedTime;
-    }
-
-    public long getTotalPeers() {
-        return totalPeers;
-    }
-
-    public long getTotalPieces() {
-        return totalPieces;
-    }
-
-    public String getUnzipPassword() {
-        return unzipPassword;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public long getWaitingSeconds() {
-        return waitingSeconds;
-    }
 }

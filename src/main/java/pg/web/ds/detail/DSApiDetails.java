@@ -1,21 +1,13 @@
 package pg.web.ds.detail;
 
+import lombok.Getter;
+
 /**Created by Gawa on 24/08/17.*/
+@Getter
 public class DSApiDetails {
 
     private int maxVersion;
     private int minVersion;
     private String path;
 
-    public int getMaxVersion() {
-        return maxVersion;
-    }
-
-    public int getMinVersion() {
-        return minVersion;
-    }
-
-    public String getPath() {
-        return path;
-    }
 }
