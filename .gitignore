@@ -11,3 +11,4 @@ config
 description
 src/main/resources/distro/credentials
 changesLog
+*.iml
