@@ -24,7 +24,7 @@ Basically it has 3 buttons and defined few shortcuts.
 2) 'Download from link' - triggers creating torrent task from given link.
 3) 'Download by IMDB ID - triggers creating torrent task for given imdb id. Set of imdb ids is kept
 locally and it is updated each time 'Download Favourites' is pressed. It can be found at
-_'./settings/imdbTitleMap.json'_
+_`./settings/imdbTitleMap.json`_
 
 Shortcuts are described on main window of UI.
 
