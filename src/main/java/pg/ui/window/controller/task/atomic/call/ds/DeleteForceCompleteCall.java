@@ -2,7 +2,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 
 import pg.program.ApiName;
 import pg.program.TaskDetail;
-import pg.web.ds.DSDeletedItem;
+import pg.web.ds.DSItem;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 
@@ -14,16 +14,15 @@ public class DeleteForceCompleteCall extends DeleteCall {
 
     public DeleteForceCompleteCall(String sid, List<TaskDetail> tasksToDelete, DSApiDetails downloadStationTask) {
         super(sid, tasksToDelete, downloadStationTask);
-        this.operation = "cleaned";
     }
 
     @Override
-    public List<DSDeletedItem> call() {
+    public List<DSItem> call() {
         return super.call();
     }
 
     protected String buildCreateTaskUrl() {
-        String id = String.join(",", tasksToDelete.stream().map(TaskDetail::getId).collect(Collectors.toList()));
+        String id = String.join(",", tasksToChange.stream().map(TaskDetail::getId).collect(Collectors.toList()));
 
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
                 "?" +

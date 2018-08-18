@@ -14,10 +14,10 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 /** Created by Gawa 2017-11-11 */
-public class DeleteCall extends ManageTaskCall implements Callable<List<DSItem>> {
+public class PauseCall extends ManageTaskCall implements Callable<List<DSItem>> {
 
-    public DeleteCall(String sid, List<TaskDetail> tasksToChange, DSApiDetails downloadStationTask) {
-        super(sid, tasksToChange, downloadStationTask);
+    public PauseCall(String sid, List<TaskDetail> tasksToPause, DSApiDetails downloadStationTask) {
+        super(sid, tasksToPause, downloadStationTask);
     }
 
     @Override
@@ -28,21 +28,20 @@ public class DeleteCall extends ManageTaskCall implements Callable<List<DSItem>>
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            return handleResponse(response.get(), DSTaskMethod.DELETE);
+            return handleResponse(response.get(), DSTaskMethod.PAUSE);
         }
         return Collections.emptyList();
     }
 
-    protected String buildCreateTaskUrl() {
+    private String buildCreateTaskUrl() {
         String id = String.join(",", tasksToChange.stream().map(TaskDetail::getId).collect(Collectors.toList()));
 
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
                 "?" +
-                "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
-                "version=" + downloadStationTask.getMaxVersion() + "&" +
-                "method=" + DSTaskMethod.DELETE.method() + "&" +
-                "id=" + id + "&" +
-                "force_complete=false&" +
-                "_sid=" + sid;
+                "api=" + ApiName.DOWNLOAD_STATION_TASK +
+                "&version=" + downloadStationTask.getMaxVersion() +
+                "&method=" + DSTaskMethod.PAUSE.method() +
+                "&id=" + id +
+                "&_sid=" + sid;
     }
 }

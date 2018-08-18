@@ -7,7 +7,7 @@ import pg.exception.UIError;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.DeleteForceCompleteCall;
-import pg.web.ds.DSDeletedItem;
+import pg.web.ds.DSItem;
 import pg.web.ds.detail.DsApiDetail;
 
 import java.util.List;
@@ -30,15 +30,15 @@ public class DeleteForceCompleteTaskCompletable extends DeleteTaskCompletable {
     }
 
     @Override
-    protected List<DSDeletedItem> deleteDSTasks() {
+    protected List<DSItem> deleteDSTasks() {
         updateProgress(2, 5);
         try {
-            List<DSDeletedItem> dsDeletedItems = CompletableFuture.supplyAsync(
+            List<DSItem> dsItems = CompletableFuture.supplyAsync(
                     () -> new DeleteForceCompleteCall(getLoginSid(), torrentsToDelete, dsApiDetail.getDownloadStationTask()).call(),
                     executor
             ).get();
             updateProgress(5, 5);
-            return dsDeletedItems;
+            return dsItems;
         } catch (InterruptedException | ExecutionException e) {
             throw new ProgramException(UIError.DELETE_TASK, e);
         }
