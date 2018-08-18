@@ -23,7 +23,8 @@ Basically it has 3 buttons and defined few shortcuts.
 1) 'Download Favourites' - triggers scanning and creating torrent task for defined titles.
 2) 'Download from link' - triggers creating torrent task from given link.
 3) 'Download by IMDB ID - triggers creating torrent task for given imdb id. Set of imdb ids is kept
-locally and it is updated each time 'Download Favourites' is pressed.
+locally and it is updated each time 'Download Favourites' is pressed. It can be found at
+_'./settings/imdbTitleMap.json'_
 
 Shortcuts are described on main window of UI.
 
@@ -88,7 +89,7 @@ It contains _id_, _title_, _baseWords_ and _matchPrecision_ properties.
     - _matchPrecision_ how many words from _title_ and _baseWards_ should torrent contains to be considered
       as matched.
 
-Json is generated automatically by application and can be found at _./settings/shows.json_
+Json is generated automatically by application and can be found at _`./settings/shows.json`_
 
 #### Important
 1) The words in _baseWards_ has to be comma separated. Otherwise it will be only one phrase defined.
