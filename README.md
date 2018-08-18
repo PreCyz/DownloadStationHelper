@@ -2,13 +2,30 @@
 
 Application is useful for people who are lazy like me and do not want to create torrent tasks manually.
 
-Application does two separate things:
+Application does following things:
 1) Scan for new torrents,
+    - user defines titles of torrents to be scanned (recommendation is to use it with TV shows),
+    - application scans internet for this torrents,
+    - findings are locally stored in json file.
 2) Prepare or create task for DownloadStation on Synology device:
-    - creates new torrent tasks via DownloadStation API,
-    - saves torrent files in directory. Directory is pointed out for automatic scan by application DownloadStation.
+    - creates new torrent tasks via Synology DownloadStation API,
+    - saves torrent files in directory, directory is pointed out for automatic scan by DownloadStation.
+3) Trigger torrent task straight from link. Supported protocols are: (http, https, ftp, ftps, sftp,
+magnet, thunder, flashget, qqdl.
+
+_TIP 1:_ Application can download *.torrent file to given location. If user has torrent client like:
+BitTorrent, BitComet, BitLord, uTorrent and that client has proper functionality, then user can set
+client to scan download folder and automatically launch torrent task.
 
 ### User Interface
+User interface is simple. If I have time I will add some screen.
+Basically it has 3 buttons and defined few shortcuts.
+1) 'Download Favourites' - triggers scanning and creating torrent task for defined titles.
+2) 'Download from link' - triggers creating torrent task from given link.
+3) 'Download by IMDB ID - triggers creating torrent task for given imdb id. Set of imdb ids is kept
+locally and it is updated each time 'Download Favourites' is pressed.
+
+Shortcuts are described on main window of UI.
 
 ### How to setup application
 
@@ -24,7 +41,7 @@ _`torrent.age`_ is age of the torrent given in days. This parameter is required 
 by creation date. If not specified then no filtering by date will be applied. If parameter for instance set as **2**
 days, then torrents older than 2 days will be filtered out.
 
-_`task.creation.method`_ method of task creation. Possible values: [REST, COPY_FILE]. When REST is set than program
+_`task.creation.method`_ method of task creation. Possible values: _`REST`_, _`COPY_FILE`_. When REST is set than program
 will create torrent task by calling DownloadStation API. With this option program can be run from whole internet.
 When COPY_FILE is set, then program will download torrent files and save them in specified directory. `I use this
 option when program is launched from LAN`.
@@ -35,7 +52,7 @@ directory, where downloaded torrents will be saved
 When **REST** option is set all below parameters are mandatory.
 
 _`torrent.url.type`_ what link to use in order to create task. Default value is torrent. 
-Possible values [magnet,torrent].
+Possible values _`magnet`,`torrent`_.
 _`synology.http.username`_ login to Synology server. If you specified here, it will override username given as run 
 parameter.
 _`synology.http.password`_ password to Synology server. If you specified here, it will override password given as run 
@@ -54,33 +71,36 @@ directory where json files with matched torrents will be stored. If not given (v
 than no result will be saved. 
 
 ### How to specify shows
-There is one more property file, that contains setup regarding shows which should be filtered from all torrents.
-This file is _`shows.properties`_ and its setup is very simple. There is one mandatory property:
-_`show.1.baseWords`_ property defines phrases used to filter out needed torrents. For example there is need to
-find _`Seth Meyers 2017 09 12 Emma Roberts 720p HDTV x264-CROOKS`_ show then definition of property 
-_`show.1.baseWords`_ might looks like this:
+There is one more settings file, that contains shows which should be filtered from all torrents. This file is
+_`shows.json`_. Sample content is here:
 
-#### `show.1.baseWords=Seth Meyers 2017 09 12,Emma Roberts,720p` 
+    {
+        "id" : 1,
+        "title" : "Game of Thrones",
+        "baseWords" : "HDTV,720p,x264",
+        "matchPrecision" : 3
+    }
 
-Important thing is that phrases has to be comma separated. Otherwise it will be only one phrase defined.
+It contains _id_, _title_, _baseWords_ and _matchPrecision_ properties.
+    -  _id_ simple unique number which starts from 1 added automatically,
+    - _title_ title of the torrent (TV show),
+    - _baseWards_ additional words that title may contains (name of the codec, resolution etc.),
+    - _matchPrecision_ how many words from _title_ and _baseWards_ should torrent contains to be considered
+      as matched.
 
-Definition of second show the same as first with exception, that instead of `1` in name of property has to be used
-`2`. For example:
+Json is generated automatically by application and can be found at _./settings/shows.json_
 
-#### `show.2.baseWords=The Murder of Laci Peterson,S01E04,HDTV`
+#### Important
+1) The words in _baseWards_ has to be comma separated. Otherwise it will be only one phrase defined.
+2) If _matchPrecision_ is not specified, then match precision is equal to number of commas in _baseWards_ plus 1.
 
-Similarly is with the next shows. Digit in the name of the property has to be incremented by 1 with each new show.
+Real scenario: I want to find and create torrent task for TV show titled _Game of Thrones_. Show should contain
+following additional words: _HDTV,720p,x264_ and only 2 of them should taking in to account while matching torrent.
+The json representation of this case is:
 
-There is one optional property in this file.
-_`show.1.matchPrecision`_ defines how many phrases torrent's title has to contain in order to match the torrent.
-If not specified, than match precision is equal to number of commas plus 1 from _show.2.baseWords_
-
-Example:
-
-`show.1.baseWords=Seth Meyers 2017 09 12,Emma Roberts,720p`
-
-`show.1.matchPrecision=2`
-
-It means that if title of each founded torrent has 2 phrases such as ( _Seth Meyers 2017 09 12,Emma Roberts_ ) or 
-( _Seth Meyers 2017 09 12,720p_ ) or ( _Emma Roberts,720p_ ), than it will be matched.
-So my advice is to choose precision wisely or do not specify at all and leave it with default value.  
+    {
+        "id" : 1, //created auctomatically
+        "title" : "Game of Thrones",
+        "baseWords" : "HDTV,720p,x264",
+        "matchPrecision" : 2
+    }
