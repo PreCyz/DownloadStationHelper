@@ -13,16 +13,17 @@ Application does following things:
 3) Trigger torrent task straight from link. Supported protocols are: (http, https, ftp, ftps, sftp,
 magnet, thunder, flashget, qqdl.
 
-_TIP 1:_ Application can download *.torrent file to given location. If user has torrent client like:
-BitTorrent, BitComet, BitLord, uTorrent and that client has proper functionality, then user can set
-client to scan download folder and automatically launch torrent task.
+_TIP 1:_ Application can download _*.torrent_ files to given location. If user has torrent client like BitTorrent,
+BitComet, BitLord, uTorrent and that client has directory scanning option, then user can set client to
+scan for new *.torrent files added to download folder and automatically launch task for this torrents.
 
 ### User Interface
-User interface is simple. If I have time I will add some screen.
+User interface is simple.  **TODO:** Add some screens.
+
 Basically it has 3 buttons and defined few shortcuts.
-1) 'Download Favourites' - triggers scanning and creating torrent task for defined titles.
-2) 'Download from link' - triggers creating torrent task from given link.
-3) 'Download by IMDB ID - triggers creating torrent task for given imdb id. Set of imdb ids is kept
+1) `Download Favourites` - triggers scanning and creating torrent task for defined titles.
+2) `Download from link` - triggers creating torrent task from given link.
+3) `Download by IMDB ID` - triggers creating torrent task for given imdb id. Set of imdb ids is kept
 locally and it is updated each time 'Download Favourites' is pressed. It can be found at
 _`./settings/imdbTitleMap.json`_
 
@@ -82,18 +83,18 @@ _`shows.json`_. Sample content is here:
         "matchPrecision" : 3
     }
 
-It contains _id_, _title_, _baseWords_ and _matchPrecision_ properties.
-    -  _id_ simple unique number which starts from 1 added automatically,
-    - _title_ title of the torrent (TV show),
-    - _baseWards_ additional words that title may contains (name of the codec, resolution etc.),
-    - _matchPrecision_ how many words from _title_ and _baseWards_ should torrent contains to be considered
+It contains _`id`_, _`title`_, _`baseWords`_ and _`matchPrecision`_ properties.
+    -  _`id`_ simple unique number which starts from 1 added automatically,
+    - _`title`_ title of the torrent (TV show),
+    - _`baseWards`_ additional words that title may contains (name of the codec, resolution etc.),
+    - _`matchPrecision`_ how many words from _`title`_ and _`baseWards`_ should torrent contains to be considered
       as matched.
 
 Json is generated automatically by application and can be found at _`./settings/shows.json`_
 
 #### Important
-1) The words in _baseWards_ has to be comma separated. Otherwise it will be only one phrase defined.
-2) If _matchPrecision_ is not specified, then match precision is equal to number of commas in _baseWards_ plus 1.
+1) The words in _`baseWards`_ has to be comma separated. Otherwise there will be only one phrase defined.
+2) If _`matchPrecision`_ is not specified, then match precision is equal to number of commas in _`baseWards`_ plus 1.
 
 Real scenario: I want to find and create torrent task for TV show titled _Game of Thrones_. Show should contain
 following additional words: _HDTV,720p,x264_ and only 2 of them should taking in to account while matching torrent.
