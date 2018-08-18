@@ -242,7 +242,7 @@ public class MainControllerCompletable extends AbstractController {
 
     private void cancelTask() {
         if (futureTask != null && !futureTask.isDone()) {
-            logger.info("Cancelling the task.");
+            logger.info(bundle.getString("main.cancel.task"));
             futureTask.cancel(true);
         }
     }
@@ -252,7 +252,7 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 cancelTask();
                 if (StringUtils.nullOrTrimEmpty(imdbComboBox.getValue())) {
-                    infoLabel.setText("Please choose imdb id.");
+                    infoLabel.setText(bundle.getString("main.imdb.choose"));
                 } else {
                     String imdbId = existingImdbMap.entrySet()
                             .stream()
@@ -297,11 +297,8 @@ public class MainControllerCompletable extends AbstractController {
             }
 
             TextInputDialog dialog = new TextInputDialog(AppConstants.EMPTY_STRING);
-            dialog.setTitle("Link dialog");
-            String msg = "Paste the link.\n" +
-                    "You may use: (http://, http://, ftp://, ftps://, sftp://, magnet:, thunder://, flashget://, " +
-                    "qqdl://)";
-            dialog.setHeaderText(msg);
+            dialog.setTitle(bundle.getString("dialog.link.title"));
+            dialog.setHeaderText(bundle.getString("dialog.link.info"));
             dialog.setContentText(AppConstants.EMPTY_STRING);
 
             Optional<String> result = dialog.showAndWait();
@@ -407,9 +404,9 @@ public class MainControllerCompletable extends AbstractController {
             if (ApplicationPropertiesHelper.getInstance().getLiveTrackInterval() <= 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.CLOSE);
                 //alert.setTitle(bundle.getString("program.exception"));
-                alert.setTitle("No live track interval set");
+                alert.setTitle(bundle.getString("alert.interval.title"));
                 //alert.setHeaderText(bundle.getString("exception.occurred"));
-                alert.setHeaderText("Enter live track interval first. I must be greater then 0.");
+                alert.setHeaderText("alert.interval.info");
                 //alert.setContentText(exception.getUiError().msg());
             } else if (liveTrackCheckbox.isSelected()) {
                 String sid = extractSid();
