@@ -12,11 +12,13 @@ import pg.web.ds.detail.DSApiDetails;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
-class ManageTaskCall extends BasicCall {
+public abstract class ManageTaskCall extends BasicCall implements Callable<List<DSItem>> {
 
     protected final String sid;
-    protected final List<TaskDetail> tasksToChange;
+    final List<TaskDetail> tasksToChange;
     protected final DSApiDetails downloadStationTask;
 
     ManageTaskCall(String sid, List<TaskDetail> tasksToChange, DSApiDetails downloadStationTask) {
@@ -26,7 +28,7 @@ class ManageTaskCall extends BasicCall {
         this.downloadStationTask = downloadStationTask;
     }
 
-    protected List<DSItem> handleResponse(String response, DSTaskMethod taskMethod) {
+    List<DSItem> handleResponse(String response, DSTaskMethod taskMethod) {
         Optional<DSDataResponse> dsResponse = JsonUtils.convertFromString(response, DSDataResponse.class);
         if (dsResponse.isPresent() && dsResponse.get().isSuccess()) {
             List<DSItem> DSItems = dsResponse.map(DSDataResponse::getData).get();
@@ -56,5 +58,9 @@ class ManageTaskCall extends BasicCall {
             default:
                 return UIError.LAUNCH_PROGRAM;
         }
+    }
+
+    String ids() {
+        return String.join(",", tasksToChange.stream().map(TaskDetail::getId).collect(Collectors.toList()));
     }
 }

@@ -4,6 +4,7 @@ package pg.web.ds;
 public enum DSTaskMethod {
     CREATE("create"),
     DELETE("delete"),
+    DELETE_FORCE("delete"),
     PAUSE("pause"),
     RESUME("resume"),
     EDIT("edit");

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 /** Created by Gawa 2017-11-11 */
-class DeleteCall extends ManageTaskCall {
+class ResumeCall extends ManageTaskCall {
 
-    DeleteCall(String sid, List<TaskDetail> tasksToChange, DSApiDetails downloadStationTask) {
-        super(sid, tasksToChange, downloadStationTask);
+    ResumeCall(String sid, List<TaskDetail> tasksToPause, DSApiDetails downloadStationTask) {
+        super(sid, tasksToPause, downloadStationTask);
     }
 
     @Override
@@ -26,19 +26,18 @@ class DeleteCall extends ManageTaskCall {
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
         if (response.isPresent()) {
-            return handleResponse(response.get(), DSTaskMethod.DELETE);
+            return handleResponse(response.get(), DSTaskMethod.RESUME);
         }
         return Collections.emptyList();
     }
 
-    protected String buildCreateTaskUrl() {
+    private String buildCreateTaskUrl() {
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
                 "?" +
-                "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
-                "version=" + downloadStationTask.getMaxVersion() + "&" +
-                "method=" + DSTaskMethod.DELETE.method() + "&" +
-                "id=" + ids() + "&" +
-                "force_complete=false&" +
-                "_sid=" + sid;
+                "api=" + ApiName.DOWNLOAD_STATION_TASK +
+                "&version=" + downloadStationTask.getMaxVersion() +
+                "&method=" + DSTaskMethod.RESUME.method() +
+                "&id=" + ids() +
+                "&_sid=" + sid;
     }
 }

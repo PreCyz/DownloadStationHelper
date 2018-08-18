@@ -14,6 +14,7 @@ public enum UIError {
     LIST_OF_TASK("Problem with getting list of task from disk station."),
     DELETE_TASK("Problem with deleting task on disk station"),
     PAUSE_TASK("Problem with pause task on disk station"),
+    RESUME_TASK("Problem with resume task on disk station"),
     IMDB("Problem with downloading by imdb."),
     SHORTCUT("Problem wen shortcut was used."),
     FAVOURITES("Problem with downloading favourites.");

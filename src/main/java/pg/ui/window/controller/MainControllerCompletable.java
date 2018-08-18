@@ -71,7 +71,7 @@ public class MainControllerCompletable extends AbstractController {
     private ExecutorService executor;
     private FindTaskCompletable findTask;
     private AvailableOperationTask availableOperationTask;
-    private DeleteTaskCompletable deleteTask;
+    private ManageTaskCompletable manageTask;
     private ListTaskCompletable listTask;
     private UseLinkTaskCompletable useLinkTask;
     private ApplicationPropertiesHelper application;
@@ -343,29 +343,29 @@ public class MainControllerCompletable extends AbstractController {
                     return;
                 }
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
-                    deleteTask = new DeleteTaskCompletable(
+                    manageTask = new DeleteTaskCompletable(
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
-                            torrentsToDelete,
                             windowHandler,
+                            torrentsToDelete,
                             liveTrackCheckbox,
                             executor
                     );
-                    deleteTask.setSid(sid);
-                    resetProperties(deleteTask);
-                    futureTask = executor.submit(deleteTask);
+                    manageTask.setSid(sid);
+                    resetProperties(manageTask);
+                    futureTask = executor.submit(manageTask);
                 } else if (KeyCode.F == event.getCode()) {
-                    deleteTask = new DeleteForceCompleteTaskCompletable(
+                    manageTask = new DeleteForceCompleteTaskCompletable(
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
-                            torrentsToDelete,
                             windowHandler,
+                            torrentsToDelete,
                             liveTrackCheckbox,
                             executor
                     );
-                    deleteTask.setSid(sid);
-                    resetProperties(deleteTask);
-                    futureTask = executor.submit(deleteTask);
+                    manageTask.setSid(sid);
+                    resetProperties(manageTask);
+                    futureTask = executor.submit(manageTask);
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
