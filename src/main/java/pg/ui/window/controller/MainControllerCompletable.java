@@ -66,7 +66,7 @@ public class MainControllerCompletable extends AbstractController {
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
-    private List<TaskDetail> torrentsToDelete;
+    private List<TaskDetail> torrentsToChange;
 
     private ExecutorService executor;
     private FindTaskCompletable findTask;
@@ -126,7 +126,7 @@ public class MainControllerCompletable extends AbstractController {
         taskTableView.getColumns().addAll(titleColumn, statusColumn, progressColumn);
 
         taskTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        taskTableView.getSelectionModel().selectedItemProperty().addListener(toDeleteChangeListener());
+        taskTableView.getSelectionModel().selectedItemProperty().addListener(toManageChangeListener());
         taskTableView.setOnKeyReleased(keyReleasedEventHandler());
         taskTableView.requestFocus();
     }
@@ -204,6 +204,26 @@ public class MainControllerCompletable extends AbstractController {
         allButton.setOnAction(allButtonAction());
         imdbButton.setOnAction(imdbButtonAction());
         useLinkButton.setOnAction(useLinkButtonAction());
+        addButton.setOnAction(useLinkButtonAction());
+        disableManageButtons();
+    }
+
+    private void enableManageButtons() {
+        deleteButton.setDisable(false);
+        resumeButton.setDisable(false);
+        pauseButton.setDisable(false);
+        forceDeleteButton.setDisable(false);
+        cleanButton.setDisable(false);
+        stopButton.setDisable(false);
+    }
+
+    private void disableManageButtons() {
+        deleteButton.setDisable(true);
+        resumeButton.setDisable(true);
+        pauseButton.setDisable(true);
+        forceDeleteButton.setDisable(true);
+        cleanButton.setDisable(true);
+        stopButton.setDisable(true);
     }
 
     private EventHandler<ActionEvent> allButtonAction() {
@@ -339,7 +359,7 @@ public class MainControllerCompletable extends AbstractController {
                     resetProperties(listTask);
                     futureTask = executor.submit(listTask);
                 }
-                if (torrentsToDelete == null || torrentsToDelete.isEmpty()) {
+                if (torrentsToChange == null || torrentsToChange.isEmpty()) {
                     return;
                 }
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
@@ -347,7 +367,7 @@ public class MainControllerCompletable extends AbstractController {
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
-                            torrentsToDelete,
+                            torrentsToChange,
                             liveTrackCheckbox,
                             executor
                     );
@@ -359,7 +379,7 @@ public class MainControllerCompletable extends AbstractController {
                             taskTableView,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
-                            torrentsToDelete,
+                            torrentsToChange,
                             liveTrackCheckbox,
                             executor
                     );
@@ -392,10 +412,13 @@ public class MainControllerCompletable extends AbstractController {
         return sid;
     }
 
-    private ChangeListener<TaskDetail> toDeleteChangeListener() {
+    private ChangeListener<TaskDetail> toManageChangeListener() {
         return (observable, oldValue, newValue) -> {
-            torrentsToDelete = new ArrayList<>();
-            torrentsToDelete.addAll(taskTableView.getSelectionModel().getSelectedItems());
+            torrentsToChange = new ArrayList<>();
+            torrentsToChange.addAll(taskTableView.getSelectionModel().getSelectedItems());
+            if (!torrentsToChange.isEmpty()) {
+                enableManageButtons();
+            }
         };
     }
 
@@ -403,11 +426,8 @@ public class MainControllerCompletable extends AbstractController {
         return e -> {
             if (ApplicationPropertiesHelper.getInstance().getLiveTrackInterval() <= 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.CLOSE);
-                //alert.setTitle(bundle.getString("program.exception"));
                 alert.setTitle(bundle.getString("alert.interval.title"));
-                //alert.setHeaderText(bundle.getString("exception.occurred"));
                 alert.setHeaderText("alert.interval.info");
-                //alert.setContentText(exception.getUiError().msg());
             } else if (liveTrackCheckbox.isSelected()) {
                 String sid = extractSid();
                 liveTrackFuture = executor.submit(
