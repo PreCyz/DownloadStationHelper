@@ -10,9 +10,11 @@ import pg.exception.UIError;
 import pg.program.ProgramMode;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
-import pg.ui.window.controller.task.atomic.call.ds.CreateTaskCall;
+import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactory;
+import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactoryBean;
 import pg.ui.window.controller.task.atomic.call.torrent.*;
 import pg.util.StringUtils;
+import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DsApiDetail;
 import pg.web.torrent.ReducedDetail;
 import pg.web.torrent.TorrentDetail;
@@ -79,9 +81,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
                 if (Platform.isFxApplicationThread()) {
                     numberOfShowsLabel.setText(String.valueOf(imdbMapSize));
                 } else {
-                    Platform.runLater(() -> {
-                        numberOfShowsLabel.setText(String.valueOf(imdbMapSize));
-                    });
+                    Platform.runLater(() -> numberOfShowsLabel.setText(String.valueOf(imdbMapSize)));
                 }
             }
             updateProgress(35, 100);
@@ -121,7 +121,10 @@ public class FindTaskCompletable extends ListTaskCompletable {
             if (getLoginSid() == null) {
                 loginToDiskStation();
             }
-            new CreateTaskCall(getLoginSid(), torrents, dsApiDetail.getDownloadStationTask()).call();
+            ManageTaskFactoryBean factoryBean = new ManageTaskFactoryBean(
+                    getLoginSid(), dsApiDetail.getDownloadStationTask(), DSTaskMethod.CREATE, torrents
+            );
+            ManageTaskFactory.getManageTask(factoryBean).call();
         }
         updateMessage("Torrents started");
         updateProgress(99, 100);

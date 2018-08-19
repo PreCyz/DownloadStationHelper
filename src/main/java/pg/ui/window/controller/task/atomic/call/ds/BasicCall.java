@@ -6,7 +6,7 @@ import pg.props.ApplicationPropertiesHelper;
 import pg.web.ds.DSAllowedProtocol;
 
 /** Created by Gawa 2017-11-11 */
-public class BasicCall {
+class BasicCall {
 
     protected final Logger logger;
     protected final ApplicationPropertiesHelper application;

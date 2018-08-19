@@ -4,7 +4,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
-import pg.ui.window.controller.task.atomic.call.ds.CreateTaskFromLinkCall;
+import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactory;
+import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactoryBean;
+import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DsApiDetail;
 
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +37,10 @@ public class UseLinkTaskCompletable extends ListTaskCompletable {
     }
 
     private void createTask() {
-        new CreateTaskFromLinkCall(getLoginSid(), link, dsApiDetail.getDownloadStationTask()).run();
+        ManageTaskFactoryBean factoryBean = new ManageTaskFactoryBean(
+                getLoginSid(), dsApiDetail.getDownloadStationTask(), DSTaskMethod.CREATE_FROM_LINK, link
+        );
+        ManageTaskFactory.getManageTask(factoryBean).call();
         updateMessage("Torrents started");
         updateProgress(99, 100);
     }
