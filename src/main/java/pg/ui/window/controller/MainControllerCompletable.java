@@ -201,20 +201,17 @@ public class MainControllerCompletable extends AbstractController {
                 deleteButton, addButton, cleanButton, resumeButton, pauseButton, stopButton, forceDeleteButton
         ));
         setup.setup();
+        setOnActionEvent();
+        disableManageButtons();
+    }
+
+    private void setOnActionEvent() {
         allButton.setOnAction(allButtonAction());
         imdbButton.setOnAction(imdbButtonAction());
         useLinkButton.setOnAction(useLinkButtonAction());
         addButton.setOnAction(useLinkButtonAction());
-        disableManageButtons();
-    }
-
-    private void enableManageButtons() {
-        deleteButton.setDisable(false);
-        resumeButton.setDisable(false);
-        pauseButton.setDisable(false);
-        forceDeleteButton.setDisable(false);
-        cleanButton.setDisable(false);
-        stopButton.setDisable(false);
+        deleteButton.setOnAction(deleteButtonAction());
+        forceDeleteButton.setOnAction(forceDeleteButtonAction());
     }
 
     private void disableManageButtons() {
@@ -224,6 +221,15 @@ public class MainControllerCompletable extends AbstractController {
         forceDeleteButton.setDisable(true);
         cleanButton.setDisable(true);
         stopButton.setDisable(true);
+    }
+
+    private void enableManageButtons() {
+        deleteButton.setDisable(false);
+        resumeButton.setDisable(false);
+        pauseButton.setDisable(false);
+        forceDeleteButton.setDisable(false);
+        cleanButton.setDisable(false);
+        stopButton.setDisable(false);
     }
 
     private EventHandler<ActionEvent> allButtonAction() {
@@ -343,6 +349,66 @@ public class MainControllerCompletable extends AbstractController {
         };
     }
 
+    private EventHandler<ActionEvent> deleteButtonAction() {
+        return e -> {
+            try {
+                deleteTask();
+            } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.DELETE_TASK, ex));
+                }
+            }
+        };
+    }
+
+    private void deleteTask() {
+        String sid = extractSid();
+        manageTask = new DeleteTaskCompletable(
+                taskTableView,
+                availableOperationTask.getDsApiDetail(),
+                windowHandler,
+                torrentsToChange,
+                liveTrackCheckbox,
+                executor
+        );
+        manageTask.setSid(sid);
+        resetProperties(manageTask);
+        futureTask = executor.submit(manageTask);
+    }
+
+    private EventHandler<ActionEvent> forceDeleteButtonAction() {
+        return e -> {
+            try {
+                forceDeleteTask();
+            } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.DELETE_TASK, ex));
+                }
+            }
+        };
+    }
+
+    private void forceDeleteTask() {
+        String sid = extractSid();
+        manageTask = new DeleteForceCompleteTaskCompletable(
+                taskTableView,
+                availableOperationTask.getDsApiDetail(),
+                windowHandler,
+                torrentsToChange,
+                liveTrackCheckbox,
+                executor
+        );
+        manageTask.setSid(sid);
+        resetProperties(manageTask);
+        futureTask = executor.submit(manageTask);
+    }
+
     private EventHandler<KeyEvent> keyReleasedEventHandler() {
         return event -> {
             try {
@@ -363,29 +429,9 @@ public class MainControllerCompletable extends AbstractController {
                     return;
                 }
                 if (EnumSet.of(KeyCode.DELETE, KeyCode.BACK_SPACE, KeyCode.C).contains(event.getCode())) {
-                    manageTask = new DeleteTaskCompletable(
-                            taskTableView,
-                            availableOperationTask.getDsApiDetail(),
-                            windowHandler,
-                            torrentsToChange,
-                            liveTrackCheckbox,
-                            executor
-                    );
-                    manageTask.setSid(sid);
-                    resetProperties(manageTask);
-                    futureTask = executor.submit(manageTask);
+                    deleteTask();
                 } else if (KeyCode.F == event.getCode()) {
-                    manageTask = new DeleteForceCompleteTaskCompletable(
-                            taskTableView,
-                            availableOperationTask.getDsApiDetail(),
-                            windowHandler,
-                            torrentsToChange,
-                            liveTrackCheckbox,
-                            executor
-                    );
-                    manageTask.setSid(sid);
-                    resetProperties(manageTask);
-                    futureTask = executor.submit(manageTask);
+                    forceDeleteTask();
                 }
             } catch (Exception ex) {
                 logger.error(ex.getLocalizedMessage());
