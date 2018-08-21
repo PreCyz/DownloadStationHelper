@@ -212,6 +212,8 @@ public class MainControllerCompletable extends AbstractController {
         addButton.setOnAction(useLinkButtonAction());
         deleteButton.setOnAction(deleteButtonAction());
         forceDeleteButton.setOnAction(forceDeleteButtonAction());
+        pauseButton.setOnAction(pauseButtonAction());
+        resumeButton.setOnAction(resumeButtonAction());
     }
 
     private void disableManageButtons() {
@@ -388,7 +390,7 @@ public class MainControllerCompletable extends AbstractController {
                 if (ex instanceof ProgramException) {
                     windowHandler.handleException((ProgramException) ex);
                 } else {
-                    windowHandler.handleException(new ProgramException(UIError.DELETE_TASK, ex));
+                    windowHandler.handleException(new ProgramException(UIError.DELETE_FORCE_TASK, ex));
                 }
             }
         };
@@ -407,6 +409,58 @@ public class MainControllerCompletable extends AbstractController {
         manageTask.setSid(sid);
         resetProperties(manageTask);
         futureTask = executor.submit(manageTask);
+    }
+
+    private EventHandler<ActionEvent> pauseButtonAction() {
+        return e -> {
+            try {
+                String sid = extractSid();
+                manageTask = new PauseTaskCompletable(
+                        taskTableView,
+                        availableOperationTask.getDsApiDetail(),
+                        windowHandler,
+                        torrentsToChange,
+                        liveTrackCheckbox,
+                        executor
+                );
+                manageTask.setSid(sid);
+                resetProperties(manageTask);
+                futureTask = executor.submit(manageTask);
+            } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.PAUSE_TASK, ex));
+                }
+            }
+        };
+    }
+
+    private EventHandler<ActionEvent> resumeButtonAction() {
+        return e -> {
+            try {
+                String sid = extractSid();
+                manageTask = new ResumeTaskCompletable(
+                        taskTableView,
+                        availableOperationTask.getDsApiDetail(),
+                        windowHandler,
+                        torrentsToChange,
+                        liveTrackCheckbox,
+                        executor
+                );
+                manageTask.setSid(sid);
+                resetProperties(manageTask);
+                futureTask = executor.submit(manageTask);
+            } catch (Exception ex) {
+                logger.error(ex.getLocalizedMessage());
+                if (ex instanceof ProgramException) {
+                    windowHandler.handleException((ProgramException) ex);
+                } else {
+                    windowHandler.handleException(new ProgramException(UIError.PAUSE_TASK, ex));
+                }
+            }
+        };
     }
 
     private EventHandler<KeyEvent> keyReleasedEventHandler() {
