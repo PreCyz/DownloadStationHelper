@@ -31,11 +31,11 @@ class CreateTaskCall extends ManageTaskCall {
 
         return prepareServerUrl() + "/webapi/" + downloadStationTask.getPath() +
                 "?" +
-                "api=" + ApiName.DOWNLOAD_STATION_TASK + "&" +
-                "&version=" + downloadStationTask.getMaxVersion() + "&" +
-                "&method=" + getTaskMethod().method() + "&" +
-                "&_sid=" + sid + "&" +
-                "&destination=" + destination + "&" +
+                "api=" + ApiName.DOWNLOAD_STATION_TASK +
+                "&version=" + downloadStationTask.getMaxVersion() +
+                "&method=" + getTaskMethod().method() +
+                "&_sid=" + sid +
+                "&destination=" + destination +
                 "&uri=" + uri;
     }
 
