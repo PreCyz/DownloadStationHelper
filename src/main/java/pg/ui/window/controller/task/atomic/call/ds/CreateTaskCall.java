@@ -39,23 +39,18 @@ class CreateTaskCall extends ManageTaskCall {
                 "&uri=" + uri;
     }
 
-    private String getEncodedTorrentUri(ReducedDetail reducedDetail) {
+    String getEncodedTorrentUri(ReducedDetail reducedDetail) {
         final TorrentUrlType urlType = TorrentUrlType.valueOf(
                 application.getTorrentUrlType(TorrentUrlType.torrent.name())
         );
-        switch (urlType) {
-            case magnet:
-                try {
-                    return URLEncoder.encode(reducedDetail.getMagnetUrl(), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    return reducedDetail.getMagnetUrl();
-                }
-            default:
-                try {
-                    return URLEncoder.encode(reducedDetail.getTorrentUrl(), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    return reducedDetail.getTorrentUrl();
-                }
+        String url = reducedDetail.getTorrentUrl();
+        if (urlType == TorrentUrlType.magnet) {
+            url = reducedDetail.getMagnetUrl();
+        }
+        try {
+            return URLEncoder.encode(url, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return url;
         }
     }
 
