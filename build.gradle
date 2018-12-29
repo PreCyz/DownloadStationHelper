@@ -33,6 +33,7 @@ dependencies {
 def appVersionKey = 'app.version'
 Properties properties = new Properties()
 File propertiesFile = new File("$buildDir/resources/main/application.properties")
+//File propertiesFile = new File("/home/gawa/IdeaProjects/DownloadStationHelper/out/production/resources/application.properties")
 propertiesFile.withInputStream {
     properties.load(it)
 }
