@@ -11,16 +11,14 @@ import pg.web.ds.DSItem;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 public abstract class ManageTaskCall extends BasicCall implements Callable<List<DSItem>> {
 
     protected final String sid;
-    final List<TaskDetail> tasks;
+    private final List<TaskDetail> tasks;
     protected final DSApiDetails downloadStationTask;
 
     ManageTaskCall(String sid, List<TaskDetail> tasks, DSApiDetails downloadStationTask) {
@@ -43,10 +41,12 @@ public abstract class ManageTaskCall extends BasicCall implements Callable<List<
         return Collections.emptyList();
     }
 
-    List<DSItem> handleResponse(String response, DSTaskMethod taskMethod) {
+    private List<DSItem> handleResponse(String response, DSTaskMethod taskMethod) {
         Optional<DSDataResponse> dsResponse = JsonUtils.convertFromString(response, DSDataResponse.class);
         if (dsResponse.isPresent() && dsResponse.get().isSuccess()) {
-            List<DSItem> DSItems = dsResponse.map(DSDataResponse::getData).get();
+            List<DSItem> DSItems = dsResponse.filter(item -> Objects.nonNull(item.getData()))
+                    .map(DSDataResponse::getData)
+                    .orElseGet(ArrayList::new);
             for (DSItem item : DSItems) {
                 if (item.getError() == 0) {
                     logger.info("Task '{}' {}.", item.getId(), taskMethod);
@@ -58,7 +58,11 @@ public abstract class ManageTaskCall extends BasicCall implements Callable<List<
             }
             return DSItems;
         } else {
-            logger.error(DSError.getTaskError(dsResponse.get().getError().getCode()));
+            if (dsResponse.isPresent()) {
+                logger.error(DSError.getTaskError(dsResponse.get().getError().getCode()));
+            } else {
+                logger.error("Can not retrieve error code.");
+            }
             throw new ProgramException(getUIError(taskMethod),
                     new RuntimeException(String.format("Task [%s] with error. No details.", taskMethod.method())));
         }

@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pg.exception.ProgramException;
 import pg.exception.UIError;
 import pg.program.ProgramMode;
@@ -27,6 +29,7 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class FindTaskCompletable extends ListTaskCompletable {
 
+    private final Logger logger;
     private ProgramMode programMode;
     private String imdbId;
     private Label numberOfShowsLabel;
@@ -37,6 +40,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
                                CheckBox liveTrackCheckbox, ExecutorService executor) {
         super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
+        this.logger = LogManager.getLogger(this.getClass());
     }
 
     public void setImdbId(String imdbId) {
@@ -70,6 +74,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Found torrents");
             return torrentDetails;
         } catch (Exception ex) {
+            logger.error(ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -88,6 +93,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Imdb map stored");
             return torrents;
         } catch (Exception ex) {
+            logger.error(ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -99,6 +105,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage(messageAfterMatch());
             return this.matchTorrents;
         } catch (Exception ex) {
+            logger.error(ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -112,22 +119,28 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Match torrents stored");
             return torrents;
         } catch (Exception ex) {
+            logger.error(ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
 
     private List<ReducedDetail> createTasks(List<ReducedDetail> torrents) {
-        if (!torrents.isEmpty()) {
-            if (getLoginSid() == null) {
-                loginToDiskStation();
+        try {
+            if (!torrents.isEmpty()) {
+                if (getLoginSid() == null) {
+                    loginToDiskStation();
+                }
+                ManageTaskFactoryBean factoryBean = new ManageTaskFactoryBean(
+                        getLoginSid(), dsApiDetail.getDownloadStationTask(), DSTaskMethod.CREATE, torrents
+                );
+                ManageTaskFactory.getManageTask(factoryBean).call();
             }
-            ManageTaskFactoryBean factoryBean = new ManageTaskFactoryBean(
-                    getLoginSid(), dsApiDetail.getDownloadStationTask(), DSTaskMethod.CREATE, torrents
-            );
-            ManageTaskFactory.getManageTask(factoryBean).call();
+        } catch (Exception ex) {
+            logger.error(ex);
+        } finally {
+            updateMessage("Torrents started");
+            updateProgress(99, 100);
         }
-        updateMessage("Torrents started");
-        updateProgress(99, 100);
         return torrents;
     }
 
