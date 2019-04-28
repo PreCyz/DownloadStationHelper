@@ -3,12 +3,14 @@ package pg.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import pg.web.torrent.ReducedDetail;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class JsonUtilsTest {
 
     @BeforeClass
     public static void beforeClass() {
-        resource = JsonUtilsTest.class.getClassLoader().getResource("./matchTorrents.json");
+        resource = JsonUtilsTest.class.getClassLoader().getResource("matchTorrents.json");
     }
 
     @Test
@@ -45,7 +47,8 @@ public class JsonUtilsTest {
 
     @Test
     public void convertFromFile() throws Exception {
-        Map<String, ReducedDetail> map = JsonUtils.convertMatchTorrentsFromFile(Paths.get(resource.getPath()));
+        Path jsonPath = Paths.get(resource.toURI());
+        Map<String, ReducedDetail> map = JsonUtils.convertMatchTorrentsFromFile(jsonPath);
         assertThat(map.isEmpty(), is( equalTo(false)));
         assertThat(map, aMapWithSize(2));
         map.keySet().forEach(key -> assertThat(map.get(key), instanceOf(ReducedDetail.class)));

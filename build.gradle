@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 group 'download-station-helper'
 version ''
 
@@ -14,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.8'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.0'
@@ -30,15 +32,17 @@ dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
 }
 
-def appVersionKey = 'app.version'
-Properties properties = new Properties()
-File propertiesFile = new File("$buildDir/resources/main/application.properties")
-//File propertiesFile = new File("/home/gawa/IdeaProjects/DownloadStationHelper/out/production/resources/application.properties")
-propertiesFile.withInputStream {
-    properties.load(it)
+def buildVersion = "N/A"
+File propertiesFile = Paths.get(buildDir.getAbsolutePath(), 'resources', 'main', 'application.properties').toFile()
+if (propertiesFile.exists()) {
+    Properties properties = new Properties()
+    propertiesFile.withInputStream {
+        properties.load(it)
+    }
+    def appVersionKey = 'app.version'
+    buildVersion = properties."$appVersionKey"
 }
 
-def buildVersion = properties."$appVersionKey"
 def jarName = "DSHelper-$buildVersion"
 def jarNameFx = "DSHelper-FX-$buildVersion"
 def fxMainClassName = 'pg.FXMain'
@@ -68,7 +72,7 @@ def fxMainClassName = 'pg.FXMain'
 }*/
 
 def addScriptToRunFXFile = {
-    def runImdbFile = new File("$buildDir/libs/runFX.sh")
+    def runImdbFile = Paths.get(buildDir.getAbsolutePath(), 'libs', 'runFX.sh').toFile()
     runImdbFile.append('echo \'Start program\'')
     runImdbFile.append('\necho \'.............\'')
     runImdbFile.append('\n\njava -jar ')
@@ -85,7 +89,7 @@ def copyApplicationProperties = copySpec {
 }
 
 task copyAppPropertiesTask( type: Copy ) {
-    into "$buildDir/libs/settings"
+    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'settings').toString()
     with copyApplicationProperties
 }
 
@@ -103,7 +107,7 @@ task oneJar(type: Jar) {
 }
 
 task copyToLib( type: Copy ) {
-    into "$buildDir/libs/lib"
+    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'lib').toString()
     from configurations.runtime
 }
 
