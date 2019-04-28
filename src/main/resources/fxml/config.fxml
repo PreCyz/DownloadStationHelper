@@ -10,38 +10,35 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="%config.server.url.label" />
-                  <Label layoutX="14.0" layoutY="37.0" text="%config.server.port.label" />
-                  <Label layoutX="14.0" layoutY="60.0" text="%config.server.login.label" />
-                  <Label layoutX="15.0" layoutY="84.0" text="%config.server.password.label" />
-                  <TextField fx:id="serverUrl" layoutX="106.0" layoutY="9.0">
+                  <Label layoutX="14.0" layoutY="40.0" text="%config.server.port.label" />
+                  <Label layoutX="14.0" layoutY="66.0" text="%config.server.login.label" />
+                  <Label layoutX="15.0" layoutY="92.0" text="%config.server.password.label" />
+                  <TextField fx:id="serverUrl" layoutX="106.0" layoutY="9.0" prefHeight="27.0" prefWidth="171.0">
                      <tooltip>
                         <Tooltip text="%config.server.url.tooltip" />
                      </tooltip></TextField>
-                  <TextField fx:id="serverLogin" layoutX="106.0" layoutY="55.0">
+                  <TextField fx:id="serverLogin" layoutX="106.0" layoutY="60.0" prefHeight="27.0" prefWidth="171.0">
                      <tooltip>
                         <Tooltip text="%config.server.login.tooltip" />
                      </tooltip></TextField>
-                  <TextField fx:id="serverPassword" layoutX="106.0" layoutY="79.0">
-                     <tooltip>
-                        <Tooltip text="%config.server.password.tooltip" />
-                     </tooltip></TextField>
-                  <ComboBox fx:id="serverPort" layoutX="106.0" layoutY="32.0" prefHeight="25.0" prefWidth="171.0">
+                  <ComboBox fx:id="serverPort" layoutX="106.0" layoutY="35.0" prefHeight="25.0" prefWidth="171.0">
                      <tooltip>
                         <Tooltip text="%config.server.port.tooltip" />
                      </tooltip></ComboBox>
-                  <TextArea fx:id="apiInfo" editable="false" layoutX="15.0" layoutY="152.0" prefHeight="58.0" prefWidth="262.0" wrapText="true">
+                  <TextArea fx:id="apiInfo" editable="false" layoutX="15.0" layoutY="156.0" prefHeight="58.0" prefWidth="262.0" wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
                      <tooltip>
                         <Tooltip text="%config.server.synology.api.info.tooltip" />
                      </tooltip></TextArea>
-                  <Label layoutX="15.0" layoutY="130.0" prefHeight="15.0" prefWidth="86.0" text="%config.server.synology.api.info" />
-                  <Label layoutX="16.0" layoutY="107.0" text="%config.server.download.label" />
-                  <TextField fx:id="downloadTo" layoutX="106.0" layoutY="103.0">
+                  <Label layoutX="15.0" layoutY="139.0" prefHeight="15.0" prefWidth="86.0" text="%config.server.synology.api.info" />
+                  <Label layoutX="16.0" layoutY="118.0" text="%config.server.download.label" />
+                  <TextField fx:id="downloadTo" layoutX="106.0" layoutY="112.0" prefHeight="27.0" prefWidth="171.0">
                      <tooltip>
                         <Tooltip text="%config.server.download.tooltip" />
                      </tooltip></TextField>
+                  <PasswordField fx:id="serverPassword" layoutX="106.0" layoutY="86.0" prefHeight="27.0" prefWidth="170.0" />
                </children>
             </AnchorPane>
         </content>
@@ -53,18 +50,18 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="%config.api.url" />
-                  <Label layoutX="14.0" layoutY="37.0" text="%config.query.limit" />
+                  <Label layoutX="14.0" layoutY="8.0" text="%config.api.url" />
+                  <Label layoutX="14.0" layoutY="34.0" text="%config.query.limit" />
                   <Label layoutX="14.0" layoutY="60.0" text="%config.query.page" />
-                  <TextField fx:id="apiUrl" layoutX="106.0" layoutY="9.0">
+                  <TextField fx:id="apiUrl" layoutX="106.0" layoutY="3.0" prefHeight="27.0" prefWidth="190.0">
                      <tooltip>
                         <Tooltip text="%config.api.url.tootltip" />
                      </tooltip></TextField>
-                  <TextField fx:id="queryLimit" layoutX="106.0" layoutY="32.0">
+                  <TextField fx:id="queryLimit" layoutX="106.0" layoutY="29.0" prefHeight="27.0" prefWidth="190.0">
                      <tooltip>
                         <Tooltip text="%config.query.limit.tooltip" />
                      </tooltip></TextField>
-                  <TextField fx:id="queryPage" layoutX="106.0" layoutY="55.0">
+                  <TextField fx:id="queryPage" layoutX="106.0" layoutY="55.0" prefHeight="27.0" prefWidth="190.0">
                      <tooltip>
                         <Tooltip text="%config.query.page.tooltip" />
                      </tooltip></TextField>
@@ -79,14 +76,14 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="%config.filters.torrent.age.days" />
-                  <Label layoutX="14.0" layoutY="37.0" text="%config.filters.max.file.size" />
+                  <Label layoutX="14.0" layoutY="8.0" text="%config.filters.torrent.age.days" />
+                  <Label layoutX="14.0" layoutY="34.0" text="%config.filters.max.file.size" />
                   <Label layoutX="14.0" layoutY="60.0" text="%config.filters.torrent.release.date" />
-                  <TextField fx:id="torrentAge" layoutX="162.0" layoutY="9.0" prefHeight="25.0" prefWidth="115.0">
+                  <TextField fx:id="torrentAge" layoutX="162.0" layoutY="3.0" prefHeight="25.0" prefWidth="115.0">
                      <tooltip>
                         <Tooltip text="%config.filters.torrent.age.tooltip" />
                      </tooltip></TextField>
-                  <TextField fx:id="maxFileSize" layoutX="162.0" layoutY="32.0" prefHeight="25.0" prefWidth="115.0">
+                  <TextField fx:id="maxFileSize" layoutX="162.0" layoutY="29.0" prefHeight="25.0" prefWidth="115.0">
                      <tooltip>
                         <Tooltip text="%config.filters.max.file.size.tooltip" />
                      </tooltip></TextField>
@@ -113,15 +110,15 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="617.0">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="%config.paths.torrent.file.location" />
-                  <Label layoutX="14.0" layoutY="37.0" text="%config.paths.result.path" />
-                  <Button fx:id="torrentLocationChooser" layoutX="130.0" layoutY="9.0" mnemonicParsing="false" text=".">
+                  <Label layoutX="14.0" layoutY="12.0" text="%config.paths.torrent.file.location" />
+                  <Label layoutX="14.0" layoutY="39.0" text="%config.paths.result.path" />
+                  <Button fx:id="torrentLocationChooser" layoutX="130.0" layoutY="7.0" mnemonicParsing="false" text=".">
                      <tooltip>
                         <Tooltip text="%config.paths.torrent.file.location.tooltip" />
                      </tooltip></Button>
-                  <Text fx:id="torrentLocationText" layoutX="160.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%config.paths.torrent.file.hint" wrappingWidth="428.0" />
-                  <Text fx:id="resultLocationText" layoutX="159.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%config.paths.result.hint" wrappingWidth="430.0" />
-                  <Button fx:id="resultLocationChooser" layoutX="130.0" layoutY="32.0" mnemonicParsing="false" text=".">
+                  <Text fx:id="torrentLocationText" layoutX="160.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%config.paths.torrent.file.hint" wrappingWidth="428.0" />
+                  <Text fx:id="resultLocationText" layoutX="159.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%config.paths.result.hint" wrappingWidth="430.0" />
+                  <Button fx:id="resultLocationChooser" layoutX="130.0" layoutY="34.0" mnemonicParsing="false" text=".">
                      <tooltip>
                         <Tooltip text="%config.paths.result.path.tooltip" />
                      </tooltip></Button>
@@ -137,12 +134,12 @@
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="%config.mode.task.creation.method" />
-                  <Label layoutX="14.0" layoutY="37.0" text="%config.mode.torrent.url.type" />
+                  <Label layoutX="14.0" layoutY="38.0" text="%config.mode.torrent.url.type" />
                   <ComboBox fx:id="creationMethod" layoutX="166.0" layoutY="9.0" prefHeight="25.0" prefWidth="120.0">
                      <tooltip>
                         <Tooltip text="%config.mode.task.creation.method.tooltip" />
                      </tooltip></ComboBox>
-                  <ComboBox fx:id="torrentUrlType" layoutX="166.0" layoutY="32.0" prefHeight="25.0" prefWidth="120.0">
+                  <ComboBox fx:id="torrentUrlType" layoutX="166.0" layoutY="33.0" prefHeight="25.0" prefWidth="120.0">
                      <tooltip>
                         <Tooltip text="%config.mode.torrent.url.type.tooltip" />
                      </tooltip></ComboBox>

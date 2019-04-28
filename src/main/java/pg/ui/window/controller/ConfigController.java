@@ -31,7 +31,7 @@ public class ConfigController extends AbstractController {
     @FXML private TextField serverUrl;
     @FXML private ComboBox<String> serverPort;
     @FXML private TextField serverLogin;
-    @FXML private TextField serverPassword;
+    @FXML private PasswordField serverPassword;
     @FXML private TextField downloadTo;
     @FXML private TextArea apiInfo;
     @FXML private TextField apiUrl;
