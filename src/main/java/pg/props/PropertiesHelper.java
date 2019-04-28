@@ -52,8 +52,7 @@ final class PropertiesHelper {
         if (!Files.exists(Paths.get(settingsDirPath))) {
             Files.createDirectory(Paths.get(settingsDirPath));
         }
-        final String filePath = String.format("%s%s%s", settingsDirPath, File.separator, fileName);
-        Writer writer = new FileWriter(new File(filePath));
+        Writer writer = new FileWriter(Paths.get(settingsDirPath, fileName).toFile());
         String comments = "User configuration changed.";
         synchronized (PropertiesHelper.class) {
             properties.store(writer, comments);

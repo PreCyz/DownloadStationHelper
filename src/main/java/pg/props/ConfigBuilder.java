@@ -3,10 +3,12 @@ package pg.props;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.program.TorrentUrlType;
+import pg.util.CryptoUtils;
 import pg.util.StringUtils;
 import pg.web.ds.DSAllowedProtocol;
 import pg.web.ds.detail.DSMethod;
 
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 import static pg.program.SettingKeys.*;
@@ -58,7 +60,11 @@ public class ConfigBuilder {
         if (StringUtils.nullOrTrimEmpty(password)) {
             return this;
         }
-        config.setProperty(PASSWORD.key(), password);
+        try {
+            config.setProperty(PASSWORD.key(), CryptoUtils.encrypt(password));
+        } catch (GeneralSecurityException e) {
+            config.setProperty(PASSWORD.key(), password);
+        }
         return this;
     }
 

@@ -1,11 +1,14 @@
 package pg.props;
 
+import org.apache.logging.log4j.LogManager;
 import pg.program.SettingKeys;
 import pg.program.StartParameters;
 import pg.util.AppConstants;
+import pg.util.CryptoUtils;
 import pg.web.ds.DSAllowedProtocol;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
@@ -77,7 +80,15 @@ public final class ApplicationPropertiesHelper {
     }
 
     public String getPassword() {
-        return getApplicationProperties().getProperty(SettingKeys.PASSWORD.key());
+        String encryptedPassword = getApplicationProperties().getProperty(SettingKeys.PASSWORD.key());
+        if (encryptedPassword != null) {
+            try {
+                return CryptoUtils.decrypt(encryptedPassword);
+            } catch (GeneralSecurityException e) {
+                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not decrypt password.", e);
+            }
+        }
+        return encryptedPassword;
     }
 
     public String getServerUrl() {
@@ -158,29 +169,6 @@ public final class ApplicationPropertiesHelper {
         } else {
             throw new IllegalArgumentException("No userName where given. Add username to application.properties " +
                     "or run program with username param (username=login).");
-        }
-    }
-
-    public void extractPassword(String[] args) {
-        if (getApplicationProperties().containsKey(SettingKeys.PASSWORD.key())) {
-            return;
-        }
-        if (args == null || args.length == 0) {
-            throw new IllegalArgumentException("No password where given. Add password to application.properties " +
-                    "or run program with passwd param (passwd=somePass).");
-        }
-        Optional<String> passwd = Arrays.stream(args)
-                .filter(arg -> arg.contains(StartParameters.PASSWORD.param()))
-                .findFirst();
-        if (passwd.isPresent()) {
-            String pass = passwd.get();
-            if (pass.contains("'")) {
-                pass = pass.replaceAll("'", "");
-            }
-            getApplicationProperties().setProperty(SettingKeys.PASSWORD.key(), pass.substring(pass.lastIndexOf("=") + 1));
-        } else {
-            throw new IllegalArgumentException("No password where given. Add password to application.properties " +
-                    "or run program with passwd param (passwd=somePass).");
         }
     }
 
