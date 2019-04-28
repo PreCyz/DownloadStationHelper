@@ -191,15 +191,6 @@ public class ConfigBuilder {
         return this;
     }
 
-    public ConfigBuilder withAppVersion(String appVersion) {
-        if (StringUtils.nullOrTrimEmpty(appVersion)) {
-            appVersion = "N/A";
-        }
-        logger.info("Application version [{}]", appVersion);
-        config.setProperty(APP_VERSION.key(), appVersion);
-        return this;
-    }
-
     public Properties createConfig() {
         return config;
     }

@@ -1,5 +1,6 @@
 package pg.props;
 
+import com.google.common.io.CharStreams;
 import org.apache.logging.log4j.LogManager;
 import pg.program.SettingKeys;
 import pg.program.StartParameters;
@@ -8,6 +9,9 @@ import pg.util.CryptoUtils;
 import pg.web.ds.DSAllowedProtocol;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -18,6 +22,8 @@ public final class ApplicationPropertiesHelper {
 
     private static ApplicationPropertiesHelper instance;
     private static Properties application = null;
+    private static final String NOT_AVAILABLE = "N/A";
+    private static String version = NOT_AVAILABLE;
 
     private ApplicationPropertiesHelper() {}
 
@@ -56,7 +62,20 @@ public final class ApplicationPropertiesHelper {
     }
 
     public String getAppVersion() {
-        return getApplicationProperties().getProperty(SettingKeys.APP_VERSION.key(), "N/A");
+        if (NOT_AVAILABLE.equals(version)) {
+            try (InputStream is = getClass()
+                            .getClassLoader()
+                            .getResourceAsStream("version.txt");
+                    final Reader reader = new InputStreamReader(is)) {
+
+                version = CharStreams.toString(reader);
+
+            } catch (IOException e) {
+                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read version.txt.", e);
+                version = NOT_AVAILABLE;
+            }
+        }
+        return version;
     }
 
     public String getUrl(String defaultValue) {

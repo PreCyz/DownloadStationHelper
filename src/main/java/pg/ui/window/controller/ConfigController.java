@@ -157,8 +157,7 @@ public class ConfigController extends AbstractController {
                     .withResultLocation(resultLocationText.getText())
                     .withCreationMethod(creationMethod.getValue())
                     .withTorrentUrlType(torrentUrlType.getValue())
-                    .withLiveTrackInterval(liveTrackInterval.getText())
-                    .withAppVersion(appHelper.getAppVersion());
+                    .withLiveTrackInterval(liveTrackInterval.getText());
 
             try {
                 appHelper.store(configBuilder);
