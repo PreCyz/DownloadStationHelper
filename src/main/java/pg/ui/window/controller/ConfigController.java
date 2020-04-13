@@ -82,7 +82,7 @@ public class ConfigController extends AbstractController {
         releaseDate.setText(appHelper.getTorrentReleaseDate());
         repeatDownload.setSelected(StringUtils.booleanFromString(appHelper.getRepeatDownload("")));
         handleDuplicates.setSelected(StringUtils.booleanFromString(appHelper.getHandleDuplicates("")));
-        torrentLocationText.setText(appHelper.getTorrentLocation(""));
+        torrentLocationText.setText(appHelper.getTorrentLocation());
         resultLocationText.setText(appHelper.getFilePath(""));
         creationMethod.setValue(DSMethod.valueOf(appHelper.getCreationMethod(DSMethod.REST.name())));
         torrentUrlType.setValue(TorrentUrlType.valueOf(appHelper.getTorrentUrlType(TorrentUrlType.torrent.name())));

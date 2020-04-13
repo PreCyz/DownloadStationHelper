@@ -21,8 +21,9 @@ public class DSTaskToTaskDetailConverter extends AbstractConverter<DSTask, TaskD
     }
 
     private double calculateProgress(DSTask dsTask) {
+        final double COMPLETED = 100d;
         if (EnumSet.of(DSTaskDownloadStatus.finished, DSTaskDownloadStatus.finishing).contains(dsTask.getStatus())) {
-            return 100;
+            return COMPLETED;
         } else if (dsTask.getStatus() == DSTaskDownloadStatus.downloading) {
             DSAdditional additional = dsTask.getAdditional();
             if (dsTask.getSize() == 0 || additional.getFileDetails() == null || additional.getFileDetails().isEmpty()) {
@@ -32,8 +33,8 @@ public class DSTaskToTaskDetailConverter extends AbstractConverter<DSTask, TaskD
                     .stream()
                     .mapToLong(item -> Long.parseLong(item.getSizeDownloaded()))
                     .sum();
-            double progress = 100d * downloadedSize / dsTask.getSize();
-            return (int) (100 * progress) / 100d;
+            double progress = COMPLETED * downloadedSize / dsTask.getSize();
+            return (int) (COMPLETED * progress) / COMPLETED;
         }
         return Double.NaN;
     }

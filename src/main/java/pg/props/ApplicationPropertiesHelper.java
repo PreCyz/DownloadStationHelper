@@ -20,18 +20,18 @@ import java.util.Properties;
 /**Created by Gawa on 12/09/17.*/
 public final class ApplicationPropertiesHelper {
 
-    private static ApplicationPropertiesHelper instance;
     private static Properties application = null;
     private static final String NOT_AVAILABLE = "N/A";
     private static String version = NOT_AVAILABLE;
 
     private ApplicationPropertiesHelper() {}
 
+    private static class ApplicationPropertiesHelperHolder {
+        private static final ApplicationPropertiesHelper INSTANCE = new ApplicationPropertiesHelper();
+    }
+
     public synchronized static ApplicationPropertiesHelper getInstance() {
-        if (instance == null) {
-            instance = new ApplicationPropertiesHelper();
-        }
-        return instance;
+        return ApplicationPropertiesHelperHolder.INSTANCE;
     }
 
     protected Properties loadApplicationProperties(String fileName) {
@@ -63,15 +63,14 @@ public final class ApplicationPropertiesHelper {
 
     public String getAppVersion() {
         if (NOT_AVAILABLE.equals(version)) {
-            try (InputStream is = getClass()
-                            .getClassLoader()
-                            .getResourceAsStream("version.txt");
-                    final Reader reader = new InputStreamReader(is)) {
+            final String versionTxt = "version.txt";
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(versionTxt);
+                 final Reader reader = new InputStreamReader(is)) {
 
                 version = CharStreams.toString(reader);
 
             } catch (IOException e) {
-                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read version.txt.", e);
+                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", versionTxt, e);
                 version = NOT_AVAILABLE;
             }
         }
@@ -115,7 +114,7 @@ public final class ApplicationPropertiesHelper {
     }
 
     public DSAllowedProtocol getServerPort(DSAllowedProtocol defaultValue) {
-        return DSAllowedProtocol.valueFor(Integer.valueOf(getApplicationProperties()
+        return DSAllowedProtocol.valueFor(Integer.parseInt(getApplicationProperties()
                 .getProperty(SettingKeys.SERVER_PORT.key(), String.valueOf(defaultValue.port()))));
     }
 
@@ -135,7 +134,7 @@ public final class ApplicationPropertiesHelper {
         return getApplicationProperties().getProperty(SettingKeys.CREATION_METHOD.key(), defaultValue);
     }
 
-    public String getTorrentLocation(String defaultValue) {
+    public String getTorrentLocation() {
         return getApplicationProperties().getProperty(SettingKeys.TORRENT_LOCATION.key());
     }
 
@@ -164,7 +163,7 @@ public final class ApplicationPropertiesHelper {
     }
 
     public long getLiveTrackInterval() {
-        return Long.valueOf(getApplicationProperties().getProperty(SettingKeys.LIVE_TRACK.key(), "0"));
+        return Long.parseLong(getApplicationProperties().getProperty(SettingKeys.LIVE_TRACK.key(), "0"));
     }
 
     public void extractUsername(String[] args) {
@@ -197,7 +196,6 @@ public final class ApplicationPropertiesHelper {
 
     private synchronized void storeApplicationProperties(Properties config) throws IOException {
         PropertiesHelper.storeApplicationProperties(config);
-        instance = null;
         application = null;
     }
 

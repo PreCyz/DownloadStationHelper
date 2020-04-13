@@ -20,6 +20,7 @@ public class FileServiceImpl implements FileService {
     private Map<String, String> imdbTitleMap;
 
     @Override
+    @SuppressWarnings({"rawtypes","unchecked"})
     public void writeTorrentsToFile(List<ReducedDetail> foundTorrents) {
         Path filePath = AppConstants.fullFilePath(AppConstants.MATCHING_TORRENTS_FILE);
         Optional<TreeMap> treeMap = JsonUtils.convertFromFile(filePath, TreeMap.class);
@@ -41,6 +42,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void writeImdbMapToFile() {
         if (!imdbTitleMap.isEmpty()) {
             Path filePath = AppConstants.fullFilePath(AppConstants.IMDB_FILE_NAME);

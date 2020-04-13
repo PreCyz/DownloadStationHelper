@@ -16,20 +16,20 @@ public class JsonShowHelper {
 
     private static final Logger logger = LogManager.getLogger(JsonShowHelper.class);
 
-    private static JsonShowHelper instance;
     private Set<ShowDetail> showDetails;
     private boolean initialized;
+
+    private static class JsonShowHelperHolder {
+        private static final JsonShowHelper INSTANCE = new JsonShowHelper();
+    }
 
     private JsonShowHelper() {
         showDetails = new TreeSet<>(ShowDetail.COMPARATOR);;
         initialized = false;
     }
 
-    public static synchronized JsonShowHelper getInstance() {
-        if (instance == null) {
-            instance = new JsonShowHelper();
-        }
-        return instance;
+    public static JsonShowHelper getInstance() {
+        return JsonShowHelperHolder.INSTANCE;
     }
 
     public Set<ShowDetail> getShowDetails() {

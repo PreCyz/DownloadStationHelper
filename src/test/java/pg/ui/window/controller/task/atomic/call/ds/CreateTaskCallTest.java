@@ -41,7 +41,7 @@ public class CreateTaskCallTest {
                 "&version=1" +
                 "&method=" + DSTaskMethod.CREATE.method() +
                 "&_sid=sid" +
-                "&destination=null" +
+                "&destination=downloads" +
                 "&uri=");
     }
 

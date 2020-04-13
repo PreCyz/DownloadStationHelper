@@ -261,7 +261,7 @@ public class DiskStationServiceImpl implements DiskStationService {
 
     @Override
     public void writeTorrentsOnDS() {
-        String destination = application.getTorrentLocation("");
+        String destination = application.getTorrentLocation();
         if (destination == null || destination.isEmpty()) {
             logger.info("{} not specified. Add it to application.properties.", SettingKeys.TORRENT_LOCATION.key());
             return;

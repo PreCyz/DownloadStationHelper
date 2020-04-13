@@ -24,7 +24,7 @@ public class WriteTorrentsCall extends BasicCall implements Callable<Void> {
     }
 
     private void writeTorrentsOnDS() {
-        String destination = application.getTorrentLocation("");
+        String destination = application.getTorrentLocation();
         if (destination == null || destination.isEmpty()) {
             logger.info("{} not specified. Add it to application.properties.", SettingKeys.TORRENT_LOCATION.key());
             return;
