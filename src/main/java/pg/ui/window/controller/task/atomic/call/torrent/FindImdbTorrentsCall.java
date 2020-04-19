@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
-import pg.service.torrent.ImdbTorrentServiceImpl;
-import pg.service.torrent.TorrentService;
+import pg.services.torrent.ImdbTorrentServiceImpl;
+import pg.services.torrent.TorrentService;
 import pg.ui.window.controller.completable.UpdatableTask;
 import pg.web.torrent.TorrentDetail;
 

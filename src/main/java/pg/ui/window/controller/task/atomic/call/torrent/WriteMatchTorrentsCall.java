@@ -1,8 +1,8 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
 import pg.props.ApplicationPropertiesHelper;
-import pg.service.FileService;
-import pg.service.FileServiceImpl;
+import pg.services.FileService;
+import pg.services.FileServiceImpl;
 import pg.web.torrent.ReducedDetail;
 
 import java.util.List;

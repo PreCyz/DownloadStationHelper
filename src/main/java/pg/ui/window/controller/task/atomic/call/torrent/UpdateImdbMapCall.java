@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
-import pg.service.FileService;
-import pg.service.FileServiceImpl;
+import pg.services.FileService;
+import pg.services.FileServiceImpl;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.List;

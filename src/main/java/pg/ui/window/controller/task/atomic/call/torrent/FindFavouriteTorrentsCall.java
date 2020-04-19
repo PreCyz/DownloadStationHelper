@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic.call.torrent;
 
-import pg.service.torrent.FavouriteTorrentService;
-import pg.service.torrent.TorrentService;
+import pg.services.torrent.FavouriteTorrentService;
+import pg.services.torrent.TorrentService;
 import pg.ui.window.controller.completable.UpdatableTask;
 import pg.web.torrent.TorrentDetail;
 

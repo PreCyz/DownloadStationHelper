@@ -3,7 +3,7 @@ package pg.ui.window.controller.task.atomic.call.ds;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.ApiName;
-import pg.service.ds.DSError;
+import pg.services.ds.DSError;
 import pg.util.JsonUtils;
 import pg.web.client.GetClient;
 import pg.web.ds.DSActivity;
