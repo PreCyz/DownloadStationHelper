@@ -1,4 +1,4 @@
-package pg.converter;
+package pg.converters;
 
 /** Created by Gawa 2018-03-03 */
 @FunctionalInterface

@@ -1,5 +1,6 @@
 package pg.service.ds;
 
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,11 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**Created by Gawa 2017-09-15*/
+/**
+ * Created by Gawa 2017-09-15
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class DiskStationServiceImplTest {
 
     private DiskStationServiceImpl diskStationService;
+
+    @After
+    public void tearDown() {
+        diskStationService.logoutFromDiskStation();
+    }
 
     @Test
     @Ignore
@@ -32,6 +40,34 @@ public class DiskStationServiceImplTest {
     }
 
     @Test
+    public void test() throws Exception {
+        diskStationService = new DiskStationServiceImpl(Collections.emptyList());
+
+        diskStationService.prepareAvailableOperations();
+        diskStationService.loginToDiskStation();
+        diskStationService.btSearchStart("clone wars");
+
+        boolean isSearchFinished;
+        do {
+            Thread.sleep(5000);
+            isSearchFinished = diskStationService.btSearchList();
+
+        } while (!isSearchFinished);
+
+        diskStationService.btSearchClean();
+    }
+
+    @Test
+    public void testCategories() {
+        diskStationService = new DiskStationServiceImpl(Collections.emptyList());
+
+        diskStationService.prepareAvailableOperations();
+        diskStationService.loginToDiskStation();
+        diskStationService.btSearchModules();
+        diskStationService.btSearchCategories();
+    }
+
+    @Test
     public void givenListInsideListWhenCalculatingSizeOfTheCollectionWithTheStreamsThenReturnProperSize() {
         TorrentResponse tr = mock(TorrentResponse.class);
         when(tr.getTorrents()).thenReturn(
@@ -39,6 +75,6 @@ public class DiskStationServiceImplTest {
         );
         List<TorrentResponse> responses = Collections.singletonList(tr);
 
-        assertThat(responses.stream().mapToInt(r->r.getTorrents().size()).sum()).isEqualTo(3);
+        assertThat(responses.stream().mapToInt(r -> r.getTorrents().size()).sum()).isEqualTo(3);
     }
 }

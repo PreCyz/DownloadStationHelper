@@ -1,4 +1,4 @@
-package pg.converter;
+package pg.converters;
 
 import java.util.List;
 import java.util.stream.Collectors;

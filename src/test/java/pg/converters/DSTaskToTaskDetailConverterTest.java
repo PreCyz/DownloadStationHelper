@@ -1,4 +1,4 @@
-package pg.converter;
+package pg.converters;
 
 import org.junit.Before;
 import org.junit.Ignore;

@@ -1,4 +1,4 @@
-package pg.converter;
+package pg.converters;
 
 import pg.program.TaskDetail;
 import pg.web.ds.DSTaskDownloadStatus;
