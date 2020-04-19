@@ -8,6 +8,7 @@ public class DsApiDetail {
 
     private DSApiDetails authInfo;
     private DSApiDetails downloadStationTask;
+    private DSApiDetails downloadStationBtSearch;
     private String sid;
 
 }

@@ -8,10 +8,11 @@ import pg.web.ds.detail.DsApiDetail;
 public interface WindowHandler {
     void launchConfigWindow();
     void setDsApiDetail(DsApiDetail dsApiDetail);
+    DsApiDetail getDsApiDetail();
     void launchMainWindow();
     void launchShowWindow();
+    void launchSearchWindow();
     Window currentWindow();
     void handleException(ProgramException exception);
-
     void logoutOnExit();
 }

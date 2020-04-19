@@ -9,10 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
 import javafx.util.StringConverter;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
@@ -26,10 +25,12 @@ import pg.ui.window.controller.setup.ComponentSetup;
 import pg.ui.window.controller.task.AvailableOperationTask;
 import pg.ui.window.controller.task.atomic.call.LiveTrackRunnable;
 import pg.util.AppConstants;
+import pg.util.ImageUtils;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
+import pg.web.ds.detail.DsApiDetail;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -63,6 +64,7 @@ public class MainControllerCompletable extends AbstractController {
     @FXML private Label numberOfShowsLabel;
     @FXML private TableView<TaskDetail> taskTableView;
     @FXML private CheckBox liveTrackCheckbox;
+    @FXML private Button searchButton;
 
     private Map<String, String> existingImdbMap;
     private Future<?> futureTask;
@@ -79,7 +81,7 @@ public class MainControllerCompletable extends AbstractController {
 
     public MainControllerCompletable(WindowHandler windowHandler) {
         super(windowHandler);
-        executor = Executors.newFixedThreadPool(3);
+        executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         application = ApplicationPropertiesHelper.getInstance();
     }
 
@@ -132,7 +134,7 @@ public class MainControllerCompletable extends AbstractController {
     }
 
     private StringConverter<Double> doubleStringConverter() {
-        return new StringConverter<Double>() {
+        return new StringConverter<>() {
             @Override
             public String toString(Double object) {
                 return object.toString();
@@ -145,19 +147,11 @@ public class MainControllerCompletable extends AbstractController {
     }
 
     private void setupConnectingPane() {
-        int width = 4;
-        int height = 4;
-        BackgroundSize backgroundSize = new BackgroundSize(width, height, true, true, false, false);
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTING_GIF);
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image(inputStream),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize
-        );
-        Background background = new Background(backgroundImage);
-        connectionPane.setBackground(background);
+        try {
+            connectionPane.setBackground(ImageUtils.getBackground(AppConstants.CONNECTING_GIF));
+        } catch (IOException e) {
+            logger.warn("Could not read the image {}", AppConstants.CONNECTING_GIF);
+        }
     }
 
     private void getAvailableOperation() {
@@ -214,6 +208,7 @@ public class MainControllerCompletable extends AbstractController {
         forceDeleteButton.setOnAction(forceDeleteButtonAction());
         pauseButton.setOnAction(pauseButtonAction());
         resumeButton.setOnAction(resumeButtonAction());
+        searchButton.setOnAction(openSearchWindow());
     }
 
     private void disableManageButtons() {
@@ -460,6 +455,17 @@ public class MainControllerCompletable extends AbstractController {
                     windowHandler.handleException(new ProgramException(UIError.PAUSE_TASK, ex));
                 }
             }
+        };
+    }
+
+    private EventHandler<ActionEvent> openSearchWindow() {
+        return event -> {
+            final DsApiDetail dsApiDetail = availableOperationTask.getDsApiDetail();
+            if (dsApiDetail.getSid() == null || dsApiDetail.getSid().isEmpty()) {
+                dsApiDetail.setSid(extractSid());
+            }
+            windowHandler.setDsApiDetail(dsApiDetail);
+            windowHandler.launchSearchWindow();
         };
     }
 

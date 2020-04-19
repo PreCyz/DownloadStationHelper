@@ -49,7 +49,8 @@ public class ConfigController extends AbstractController {
     @FXML private ComboBox<DSMethod> creationMethod;
     @FXML private ComboBox<TorrentUrlType> torrentUrlType;
     @FXML private Button doneButton;
-    @FXML private TextField liveTrackInterval;
+    @FXML private Spinner<Integer> liveTrackInterval;
+    @FXML private Spinner<Integer> searchLimit;
 
     private final ApplicationPropertiesHelper appHelper;
 
@@ -86,7 +87,15 @@ public class ConfigController extends AbstractController {
         resultLocationText.setText(appHelper.getFilePath(""));
         creationMethod.setValue(DSMethod.valueOf(appHelper.getCreationMethod(DSMethod.REST.name())));
         torrentUrlType.setValue(TorrentUrlType.valueOf(appHelper.getTorrentUrlType(TorrentUrlType.torrent.name())));
-        liveTrackInterval.setText(String.valueOf(appHelper.getLiveTrackInterval()));
+
+        int min = 0;
+        int max = 100;
+        liveTrackInterval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                min, max, Long.valueOf(appHelper.getLiveTrackInterval()).intValue()
+        ));
+        searchLimit.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                min, max, Long.valueOf(appHelper.getSearchLimit()).intValue()
+        ));
     }
 
     private void setupComoBoxes() {
@@ -157,7 +166,8 @@ public class ConfigController extends AbstractController {
                     .withResultLocation(resultLocationText.getText())
                     .withCreationMethod(creationMethod.getValue())
                     .withTorrentUrlType(torrentUrlType.getValue())
-                    .withLiveTrackInterval(liveTrackInterval.getText());
+                    .withLiveTrackInterval(liveTrackInterval.getEditor().getText())
+                    .withSearchLimit(searchLimit.getEditor().getText());
 
             try {
                 appHelper.store(configBuilder);

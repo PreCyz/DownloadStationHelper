@@ -166,6 +166,10 @@ public final class ApplicationPropertiesHelper {
         return Long.parseLong(getApplicationProperties().getProperty(SettingKeys.LIVE_TRACK.key(), "0"));
     }
 
+    public long getSearchLimit() {
+        return Long.parseLong(getApplicationProperties().getProperty(SettingKeys.SEARCH_LIMIT.key(), "10"));
+    }
+
     public void extractUsername(String[] args) {
         if (getApplicationProperties().containsKey(SettingKeys.USERNAME.key())) {
             return;

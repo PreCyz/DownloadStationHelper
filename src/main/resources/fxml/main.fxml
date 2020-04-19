@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="482.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="482.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar prefHeight="29.0" prefWidth="775.0">
         <menus>
@@ -30,13 +30,14 @@
             <Label fx:id="numberOfShowsLabel" layoutX="295.0" layoutY="40.0" prefHeight="15.0" prefWidth="78.0" style="-fx-text-fill: green;" />
          </children>
       </Pane>
-      <Pane fx:id="favouritePane" disable="true" layoutX="579.0" layoutY="37.0" prefHeight="67.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
+      <Pane fx:id="favouritePane" disable="true" layoutX="579.0" layoutY="37.0" prefHeight="95.0" prefWidth="182.0" style="-fx-background-color: gainsboro; -fx-border-color: silver; -fx-border-style: solid;">
          <children>
-            <Button fx:id="allButton" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.all">
+            <Button fx:id="allButton" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.all">
                <tooltip>
                   <Tooltip text="%main.all.tooltip" />
                </tooltip></Button>
             <Button fx:id="useLinkButton" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.useLink" />
+            <Button fx:id="searchButton" layoutX="14.0" layoutY="62.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="%main.search" />
          </children>
       </Pane>
       <ProgressIndicator fx:id="progressIndicator" layoutX="671.0" layoutY="430.0" prefHeight="40.0" prefWidth="40.0" progress="0.0" />

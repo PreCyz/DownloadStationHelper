@@ -19,7 +19,11 @@ public enum UIError {
     RESUME_TASK("Problem with resume task on disk station"),
     IMDB("Problem with downloading by imdb."),
     SHORTCUT("Problem wen shortcut was used."),
-    FAVOURITES("Problem with downloading favourites.");
+    FAVOURITES("Problem with downloading favourites."),
+    SEARCH_START("Problem when using BT search API - start."),
+    SEARCH_LIST("Problem when using BT search API - list."),
+    SEARCH_CLEAN("Problem when using BT search API - clean.");
+
 
     private String msg;
 

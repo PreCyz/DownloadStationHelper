@@ -17,7 +17,6 @@ import java.util.concurrent.Callable;
 public class LoginCall extends BasicCall implements Callable<String> {
 
     private final DSApiDetails authInfo;
-    private String sid;
 
     public LoginCall(DSApiDetails authInfo) {
         super();
@@ -26,11 +25,10 @@ public class LoginCall extends BasicCall implements Callable<String> {
 
     @Override
     public String call() {
-        login();
-        return sid;
+        return login();
     }
 
-    private void login() {
+    private String login() {
         String requestUrl = buildLoginUrl();
         GetClient client = new GetClient(requestUrl);
         Optional<String> response = client.get();
@@ -41,20 +39,20 @@ public class LoginCall extends BasicCall implements Callable<String> {
             if (jsonResponse.isPresent()) {
                 DSLoginResponse loginResponse = jsonResponse.get();
                 if (loginResponse.isSuccess()) {
-                    sid = loginResponse.getDSLoginDetails().getSid();
+                    String sid = loginResponse.getDSLoginDetails().getSid();
                     String logMsg = String.format("Login successful. sid = %s.", sid);
                     logger.info(logMsg);
+                    return sid;
                 } else {
                     String logMsg = String.format("Login unsuccessful. Details %d - %s.",
                             loginResponse.getError().getCode(),
                             DSError.getAuthError(loginResponse.getError().getCode()));
                     throw new ProgramException(UIError.LOGIN_DS, new IllegalArgumentException(logMsg));
                 }
-            } else {
-                throw new ProgramException(UIError.LOGIN_DS,
-                        new IllegalArgumentException("Login unsuccessful. No ds from server."));
             }
         }
+        throw new ProgramException(UIError.LOGIN_DS,
+                new IllegalArgumentException("Login unsuccessful. No ds from server."));
     }
 
     private String buildLoginUrl() {

@@ -2,18 +2,17 @@ package pg.ui.window.controller.task;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.controller.task.atomic.AppTask;
 import pg.ui.window.controller.task.atomic.call.ds.AvailableOperationCall;
 import pg.util.AppConstants;
+import pg.util.ImageUtils;
 import pg.web.ds.detail.DsApiDetail;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 
 /** Created by Gawa 2017-10-29 */
@@ -88,24 +87,15 @@ public class AvailableOperationTask extends Task<Void> {
     }
 
     private void setConnectedImg() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(AppConstants.CONNECTED_GIF);
-        BackgroundSize backgroundSize = new BackgroundSize(
-                connectionPane.getWidth(),
-                connectionPane.getHeight(),
-                false,
-                false,
-                false,
-                false
-        );
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image(inputStream),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize
-        );
-        Background background = new Background(backgroundImage);
-        connectionPane.setBackground(background);
+        try {
+            connectionPane.setBackground(ImageUtils.getBackground(
+                    AppConstants.CONNECTED_GIF,
+                    Double.valueOf(connectionPane.getWidth()).intValue(),
+                    Double.valueOf(connectionPane.getHeight()).intValue()
+            ));
+        } catch (IOException e) {
+            logger.warn("Could not load image {}.", AppConstants.CONNECTED_GIF);
+        }
     }
 
     public DsApiDetail getDsApiDetail() {

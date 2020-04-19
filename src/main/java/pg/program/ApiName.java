@@ -7,5 +7,6 @@ public final class ApiName {
 
     public static final String API_AUTH = "SYNO.API.Auth";
     public static final String DOWNLOAD_STATION_TASK = "SYNO.DownloadStation.Task";
+    public static final String DOWNLOAD_STATION_BT_SEARCH = "SYNO.DownloadStation.BTSearch";
 
 }

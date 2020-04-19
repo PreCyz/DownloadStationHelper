@@ -14,21 +14,25 @@ javafx {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://nexus.gluonhq.com/nexus/content/repositories/releases/"
+    }
 }
 
 dependencies {
-    compile 'org.apache.httpcomponents:httpclient:4.5.12'
-    compile 'org.apache.logging.log4j:log4j-api:2.13.1'
-    compile 'org.apache.logging.log4j:log4j-core:2.13.1'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.10.3'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
-    compile 'pl.project13.maven:git-commit-id-plugin:2.2.6'
-    compile "org.openjfx:javafx-base:$javafx.version"
-    compile "org.openjfx:javafx-controls:$javafx.version"
-    compile "org.openjfx:javafx-graphics:$javafx.version"
-    compile "org.openjfx:javafx-controls:$javafx.version"
-    compile "org.openjfx:javafx-fxml:$javafx.version"
+    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
+    implementation 'org.apache.logging.log4j:log4j-api:2.13.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+    implementation 'pl.project13.maven:git-commit-id-plugin:2.2.6'
+    implementation "org.openjfx:javafx-base:$javafx.version"
+    implementation "org.openjfx:javafx-controls:$javafx.version"
+    implementation "org.openjfx:javafx-graphics:$javafx.version"
+    implementation "org.openjfx:javafx-controls:$javafx.version"
+    implementation "org.openjfx:javafx-fxml:$javafx.version"
+    implementation 'com.gluonhq:charm-glisten:6.0.3'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'

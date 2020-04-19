@@ -12,5 +12,7 @@ public class DSInfo {
     private DSApiDetails authInfo;
     @JsonProperty(ApiName.DOWNLOAD_STATION_TASK)
     private DSApiDetails downloadStationTask;
+    @JsonProperty(ApiName.DOWNLOAD_STATION_BT_SEARCH)
+    private DSApiDetails downloadStationBtSearch;
 
 }

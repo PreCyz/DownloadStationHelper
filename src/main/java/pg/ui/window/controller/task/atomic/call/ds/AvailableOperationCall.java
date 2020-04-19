@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 /** Created by Gawa 2017-11-11 */
 public class AvailableOperationCall extends BasicCall implements Callable<DsApiDetail> {
 
-    private DsApiDetail dsApiDetail;
+    private final DsApiDetail dsApiDetail;
 
     public AvailableOperationCall() {
         super();
@@ -32,10 +32,11 @@ public class AvailableOperationCall extends BasicCall implements Callable<DsApiD
             Optional<DSResponse> jsonResponse =
                     JsonUtils.convertFromString(response.get(), DSResponse.class);
             if (jsonResponse.isPresent()) {
-                DSResponse DSResponse = jsonResponse.get();
-                if (DSResponse.isSuccess()) {
-                    dsApiDetail.setAuthInfo(DSResponse.getDsInfo().getAuthInfo());
-                    dsApiDetail.setDownloadStationTask(DSResponse.getDsInfo().getDownloadStationTask());
+                DSResponse dsResponse = jsonResponse.get();
+                if (dsResponse.isSuccess()) {
+                    dsApiDetail.setAuthInfo(dsResponse.getDsInfo().getAuthInfo());
+                    dsApiDetail.setDownloadStationTask(dsResponse.getDsInfo().getDownloadStationTask());
+                    dsApiDetail.setDownloadStationBtSearch(dsResponse.getDsInfo().getDownloadStationBtSearch());
                 }
             }
         }

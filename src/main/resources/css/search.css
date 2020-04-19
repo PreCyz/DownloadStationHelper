@@ -1,0 +1,10 @@
+#resultCountLabel {
+    -fx-font-size: 25px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #00008b;
+}
+
+#progressPane {
+    -fx-border-color: #00008b;
+    -fx-border-with: 1px;
+}

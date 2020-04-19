@@ -51,6 +51,11 @@ public class WindowHandlerImpl implements WindowHandler {
         this.dsApiDetail = dsApiDetail;
     }
 
+    @Override
+    public DsApiDetail getDsApiDetail() {
+        return dsApiDetail;
+    }
+
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
             if (isLoggedIn) {
@@ -82,6 +87,14 @@ public class WindowHandlerImpl implements WindowHandler {
         Stage showStage = new Stage();
         showStage.initModality(Modality.WINDOW_MODAL);
         buildScene(showStage, WindowFactory.SHOW.createWindow(this, bundle));
+        showStage.showAndWait();
+    }
+
+    @Override
+    public void launchSearchWindow() {
+        Stage showStage = new Stage();
+        showStage.initModality(Modality.WINDOW_MODAL);
+        buildScene(showStage, WindowFactory.SEARCH.createWindow(this, bundle));
         showStage.showAndWait();
     }
 

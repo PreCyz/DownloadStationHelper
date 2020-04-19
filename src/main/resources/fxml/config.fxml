@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="455.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="455.0" prefWidth="619.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TitledPane animated="false" collapsible="false" prefHeight="250.0" prefWidth="310.0" text="%config.server.title">
         <content>
@@ -158,8 +158,10 @@
          <content>
             <AnchorPane prefHeight="86.0" prefWidth="186.0">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" prefHeight="15.0" prefWidth="132.0" text="%config.liveTrackInterval" />
-                  <TextField fx:id="liveTrackInterval" layoutX="149.0" layoutY="9.0" prefHeight="25.0" prefWidth="48.0" />
+                  <Label layoutX="11.0" layoutY="14.0" prefHeight="15.0" prefWidth="132.0" text="%config.liveTrackInterval" />
+                  <Spinner fx:id="searchLimit" editable="true" layoutX="109.0" layoutY="42.0" prefHeight="27.0" prefWidth="88.0" />
+                  <Label layoutX="11.0" layoutY="47.0" prefHeight="15.0" prefWidth="85.0" text="%config.searchLimit" />
+                  <Spinner fx:id="liveTrackInterval" editable="true" layoutX="109.0" layoutY="9.0" prefHeight="27.0" prefWidth="88.0" />
                </children>
             </AnchorPane>
          </content>

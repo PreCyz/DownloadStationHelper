@@ -3,9 +3,9 @@ package pg.ui.window.controller.setup;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import org.jetbrains.annotations.NotNull;
 import pg.util.AppConstants;
+import pg.util.ImageUtils;
 
 import java.util.List;
 
@@ -29,16 +29,7 @@ public class ActionButtonSetup implements ComponentSetup {
     private void setBackground(Button button) {
         int width = 30;
         int height = 30;
-        BackgroundSize backgroundSize = new BackgroundSize(width, height, false, false, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage(
-                getButtonImage(button),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize
-        );
-        Background background = new Background(backgroundImage);
-        button.setBackground(background);
+        button.setBackground(ImageUtils.getBackground(getButtonImage(button), width, height));
     }
 
     private void setupWithImage(Button button) {

@@ -175,7 +175,8 @@ public class ConfigBuilder {
 
     public ConfigBuilder withApiInfo(String apiInfo) {
         if (StringUtils.nullOrTrimEmpty(apiInfo)) {
-            apiInfo = "/webapi/query.cgi?api=SYNO.API.Info&version=1&method=query&query=SYNO.API.Auth,SYNO.DownloadStation.Task";
+            apiInfo = "/webapi/query.cgi?api=SYNO.API.Info&version=1&method=query" +
+                    "&query=SYNO.API.Auth,SYNO.DownloadStation.Task,SYNO.DownloadStation.BTSearch";
         }
         logger.info("Synology Api Info set [{}]", apiInfo);
         config.setProperty(API_INFO.key(), apiInfo);
@@ -188,6 +189,15 @@ public class ConfigBuilder {
         }
         logger.info("Live track interval [{}]", liveTrackInterval);
         config.setProperty(LIVE_TRACK.key(), liveTrackInterval);
+        return this;
+    }
+
+    public ConfigBuilder withSearchLimit(String searchLimit) {
+        if (StringUtils.nullOrTrimEmpty(searchLimit)) {
+            searchLimit = "0";
+        }
+        logger.info("Search limit [{}]", searchLimit);
+        config.setProperty(SEARCH_LIMIT.key(), searchLimit);
         return this;
     }
 
