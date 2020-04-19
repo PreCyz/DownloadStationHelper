@@ -1,4 +1,4 @@
-package pg.exception;
+package pg.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;

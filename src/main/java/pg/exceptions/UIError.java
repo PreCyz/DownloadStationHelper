@@ -1,4 +1,4 @@
-package pg.exception;
+package pg.exceptions;
 
 /**Created by Gawa 2017-10-07*/
 public enum UIError {

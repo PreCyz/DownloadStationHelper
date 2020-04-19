@@ -1,8 +1,8 @@
 package pg.ui;
 
 import javafx.scene.image.Image;
-import pg.exception.ProgramException;
-import pg.exception.UIError;
+import pg.exceptions.ProgramException;
+import pg.exceptions.UIError;
 
 import java.io.InputStream;
 

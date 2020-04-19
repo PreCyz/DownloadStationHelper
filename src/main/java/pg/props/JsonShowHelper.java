@@ -2,8 +2,8 @@ package pg.props;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pg.exception.ProgramException;
-import pg.exception.UIError;
+import pg.exceptions.ProgramException;
+import pg.exceptions.UIError;
 import pg.program.ShowDetail;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
