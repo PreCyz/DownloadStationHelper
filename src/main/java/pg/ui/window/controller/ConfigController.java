@@ -89,12 +89,11 @@ public class ConfigController extends AbstractController {
         torrentUrlType.setValue(TorrentUrlType.valueOf(appHelper.getTorrentUrlType(TorrentUrlType.torrent.name())));
 
         int min = 0;
-        int max = 100;
         liveTrackInterval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                min, max, Long.valueOf(appHelper.getLiveTrackInterval()).intValue()
+                min, Integer.MAX_VALUE, Long.valueOf(appHelper.getLiveTrackInterval()).intValue()
         ));
         searchLimit.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                min, max, Long.valueOf(appHelper.getSearchLimit()).intValue()
+                min, Integer.MAX_VALUE, Long.valueOf(appHelper.getSearchLimit()).intValue()
         ));
     }
 

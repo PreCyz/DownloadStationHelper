@@ -1,7 +1,10 @@
 package pg.ui.window.controller;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -78,6 +81,7 @@ public class MainControllerCompletable extends AbstractController {
     private UseLinkTaskCompletable useLinkTask;
     private ApplicationPropertiesHelper application;
     private Future<?> liveTrackFuture;
+    private Property<ObservableList<TaskDetail>> itemProperty;
 
     public MainControllerCompletable(WindowHandler windowHandler) {
         super(windowHandler);
@@ -130,7 +134,11 @@ public class MainControllerCompletable extends AbstractController {
         taskTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         taskTableView.getSelectionModel().selectedItemProperty().addListener(toManageChangeListener());
         taskTableView.setOnKeyReleased(keyReleasedEventHandler());
+        taskTableView.setPlaceholder(new Label("Nothing to display"));
         taskTableView.requestFocus();
+
+        itemProperty = new SimpleListProperty<>();
+        taskTableView.itemsProperty().bindBidirectional(itemProperty);
     }
 
     private StringConverter<Double> doubleStringConverter() {
@@ -148,7 +156,9 @@ public class MainControllerCompletable extends AbstractController {
 
     private void setupConnectingPane() {
         try {
-            connectionPane.setBackground(ImageUtils.getBackground(AppConstants.CONNECTING_GIF));
+            final int width = 4;
+            final int height = 4;
+            connectionPane.setBackground(ImageUtils.getBackground(AppConstants.CONNECTING_GIF, width, height));
         } catch (IOException e) {
             logger.warn("Could not read the image {}", AppConstants.CONNECTING_GIF);
         }
@@ -234,7 +244,7 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 cancelTask();
                 findTask = new FindTaskCompletable(
-                        taskTableView,
+                        itemProperty,
                         availableOperationTask.getDsApiDetail(),
                         windowHandler,
                         liveTrackCheckbox,
@@ -284,7 +294,7 @@ public class MainControllerCompletable extends AbstractController {
                             .findFirst()
                             .orElse("");
                     findTask = new FindTaskCompletable(
-                            taskTableView,
+                            itemProperty,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             liveTrackCheckbox,
@@ -328,7 +338,7 @@ public class MainControllerCompletable extends AbstractController {
             result.ifPresent(link -> {
                 try {
                     useLinkTask = new UseLinkTaskCompletable(
-                            taskTableView,
+                            itemProperty,
                             availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             link,
@@ -364,7 +374,7 @@ public class MainControllerCompletable extends AbstractController {
     private void deleteTask() {
         String sid = extractSid();
         manageTask = new DeleteTaskCompletable(
-                taskTableView,
+                itemProperty,
                 availableOperationTask.getDsApiDetail(),
                 windowHandler,
                 torrentsToChange,
@@ -394,7 +404,7 @@ public class MainControllerCompletable extends AbstractController {
     private void forceDeleteTask() {
         String sid = extractSid();
         manageTask = new DeleteForceCompleteTaskCompletable(
-                taskTableView,
+                itemProperty,
                 availableOperationTask.getDsApiDetail(),
                 windowHandler,
                 torrentsToChange,
@@ -411,7 +421,7 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 String sid = extractSid();
                 manageTask = new PauseTaskCompletable(
-                        taskTableView,
+                        itemProperty,
                         availableOperationTask.getDsApiDetail(),
                         windowHandler,
                         torrentsToChange,
@@ -437,7 +447,7 @@ public class MainControllerCompletable extends AbstractController {
             try {
                 String sid = extractSid();
                 manageTask = new ResumeTaskCompletable(
-                        taskTableView,
+                        itemProperty,
                         availableOperationTask.getDsApiDetail(),
                         windowHandler,
                         torrentsToChange,
@@ -475,8 +485,7 @@ public class MainControllerCompletable extends AbstractController {
                 String sid = extractSid();
                 if (KeyCode.L == event.getCode()) {
                     listTask = new ListTaskCompletable(
-                            taskTableView,
-                            availableOperationTask.getDsApiDetail(),
+                            itemProperty, availableOperationTask.getDsApiDetail(),
                             windowHandler,
                             liveTrackCheckbox,
                             executor
@@ -533,7 +542,7 @@ public class MainControllerCompletable extends AbstractController {
             if (ApplicationPropertiesHelper.getInstance().getLiveTrackInterval() <= 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.CLOSE);
                 alert.setTitle(bundle.getString("alert.interval.title"));
-                alert.setHeaderText("alert.interval.info");
+                alert.setHeaderText(bundle.getString("alert.interval.info"));
             } else if (liveTrackCheckbox.isSelected()) {
                 String sid = extractSid();
                 liveTrackFuture = executor.submit(

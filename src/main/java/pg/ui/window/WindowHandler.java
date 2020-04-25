@@ -15,4 +15,6 @@ public interface WindowHandler {
     Window currentWindow();
     void handleException(ProgramException exception);
     void logoutOnExit();
+    void setSearchTaskId(String searchTaskId);
+    String getSearchTaskId();
 }

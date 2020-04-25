@@ -4,21 +4,24 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="400.0" prefWidth="871.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="searchTextField" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="847.0" />
-      <Button fx:id="searchButton" layoutX="816.0" layoutY="49.0" minWidth="37.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
-      <TableView fx:id="searchResultTableView" layoutX="14.0" layoutY="48.0" prefHeight="345.0" prefWidth="794.0">
+      <TextField fx:id="searchTextField" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="970.0" />
+      <Button fx:id="searchButton" layoutX="930.0" layoutY="49.0" minWidth="37.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
+      <TableView fx:id="searchResultTableView" layoutX="14.0" layoutY="48.0" prefHeight="345.0" prefWidth="905.0">
         <columns>
-          <TableColumn editable="false" maxWidth="480.0" prefWidth="480.0" text="Title" />
-          <TableColumn editable="false" maxWidth="60.0" prefWidth="60.0" resizable="false" text="Seeds" />
-            <TableColumn editable="false" maxWidth="60.0" prefWidth="60.0" resizable="false" text="Peers" />
-            <TableColumn editable="false" maxWidth="100.0" prefWidth="100.0" resizable="false" text="Size" />
-            <TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" resizable="false" text="Date" />
+          <TableColumn editable="false" maxWidth="520.0" prefWidth="520.0" text="%search.table.column.title" />
+          <TableColumn editable="false" maxWidth="60.0" prefWidth="60.0" resizable="false" text="%search.table.column.seeds" />
+            <TableColumn editable="false" maxWidth="60.0" prefWidth="60.0" resizable="false" text="%search.table.column.peers" />
+            <TableColumn editable="false" maxWidth="100.0" prefWidth="100.0" resizable="false" text="%search.table.column.size" />
+            <TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" resizable="false" text="%search.table.column.date" />
+            <TableColumn editable="false" maxWidth="75.0" prefWidth="75.0" resizable="false" text="%search.table.column.module" />
         </columns>
       </TableView>
-      <Label id="resultCountLabel" fx:id="resultCountLabel" layoutX="825.0" layoutY="360.0" stylesheets="@../css/search.css" text="0" />
-      <ImageView fx:id="progressImage" fitHeight="45.0" fitWidth="45.0" layoutX="816.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" />
-      <Pane fx:id="imagePane" layoutX="816.0" layoutY="107.0" prefHeight="45.0" prefWidth="45.0" />
+      <Label id="resultCountLabel" fx:id="resultCountLabel" layoutX="938.0" layoutY="360.0" stylesheets="@../css/search.css" text="0" />
+      <ImageView fx:id="progressImage" fitHeight="45.0" fitWidth="45.0" layoutX="930.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" />
+      <Pane fx:id="imagePane" layoutX="930.0" layoutY="103.0" prefHeight="45.0" prefWidth="45.0" />
+      <Button fx:id="stopButton" layoutX="930.0" layoutY="155.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
+      <Button fx:id="downloadButton" layoutX="930.0" layoutY="208.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
    </children>
 </AnchorPane>

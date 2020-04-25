@@ -13,6 +13,7 @@ import pg.exceptions.UIError;
 import pg.program.ApiName;
 import pg.program.SearchItem;
 import pg.props.ApplicationPropertiesHelper;
+import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.LoginCall;
 import pg.util.AppConstants;
 import pg.util.ImageUtils;
@@ -34,27 +35,29 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
-public class SearchCompletable extends Task<Void> {
+public class SearchCompletable extends Task<String> {
     private static final Logger logger  = LogManager.getLogger(SearchCompletable.class);
     private final ApplicationPropertiesHelper application;
     private final Property<ObservableList<SearchItem>> listProperty;
     private final Property<Background> backgroundProperty;
     private final DsApiDetail dsApiDetail;
     private final String keywords;
+    private final WindowHandler windowHandler;
     private String serverUrl;
     private String searchTaskId;
 
     public SearchCompletable(Property<ObservableList<SearchItem>> listProperty, Property<Background> backgroundProperty,
-            String keywords, DsApiDetail dsApiDetail) {
+            String keywords, DsApiDetail dsApiDetail, WindowHandler windowHandler) {
         this.listProperty = listProperty;
         this.backgroundProperty = backgroundProperty;
         this.keywords = keywords;
+        this.windowHandler = windowHandler;
         this.application = ApplicationPropertiesHelper.getInstance();
         this.dsApiDetail = dsApiDetail;
     }
 
     @Override
-    protected Void call() throws Exception {
+    protected String call() throws Exception {
         updateSid();
 
         btSearchStart();
@@ -79,7 +82,7 @@ public class SearchCompletable extends Task<Void> {
 
         updateProgressImage();
 
-        return null;
+        return searchTaskId;
     }
 
     private void updateListProperty(Set<SearchItem> dsSearchListItems, DSSearchListData data) {
@@ -100,6 +103,7 @@ public class SearchCompletable extends Task<Void> {
             LoginCall loginCall = new LoginCall(dsApiDetail.getAuthInfo());
             final String sid = loginCall.call();
             dsApiDetail.setSid(sid);
+            windowHandler.setDsApiDetail(dsApiDetail);
         }
     }
 
@@ -118,6 +122,7 @@ public class SearchCompletable extends Task<Void> {
                         JsonUtils.convertFromString(response.get(), DSSearchStartResponse.class);
                 if (jsonResponse.isPresent()) {
                     searchTaskId = jsonResponse.get().getData().getTaskId();
+                    windowHandler.setSearchTaskId(searchTaskId);
                     logger.info("Success. The search task id {}", searchTaskId);
                 } else {
                     throw new ProgramException(UIError.SEARCH_START,
@@ -160,7 +165,6 @@ public class SearchCompletable extends Task<Void> {
             GetClient client = new GetClient(requestUrl);
             Optional<String> response = client.get();
             if (response.isPresent()) {
-                logger.info(response.get());
                 Optional<DSSearchListResponse> jsonResponse =
                         JsonUtils.convertFromString(response.get(), DSSearchListResponse.class);
 
@@ -241,7 +245,7 @@ public class SearchCompletable extends Task<Void> {
     private void updateProgressImage() {
         Platform.runLater(() -> {
             try {
-                backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF));
+                backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF, 3, 3));
                 logger.info("Image changed to completed.");
             } catch (IOException e) {
                 logger.warn("Could not load progress gif.");

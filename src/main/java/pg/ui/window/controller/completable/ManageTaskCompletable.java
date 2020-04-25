@@ -1,7 +1,8 @@
 package pg.ui.window.controller.completable;
 
+import javafx.beans.property.Property;
+import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.exceptions.ProgramException;
@@ -26,9 +27,9 @@ public abstract class ManageTaskCompletable extends ListTaskCompletable  {
     private  List<TaskDetail> torrentsToManage;
     private final Logger logger;
 
-    ManageTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+    ManageTaskCompletable(Property<ObservableList<TaskDetail>> itemProperty, DsApiDetail dsApiDetail, WindowHandler windowHandler,
                           List<TaskDetail> torrentsToManage, CheckBox liveTrackCheckbox, ExecutorService executor) {
-        super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
+        super(itemProperty, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.torrentsToManage = torrentsToManage;
         this.logger = LogManager.getLogger(this.getClass());
     }

@@ -35,12 +35,11 @@ public class WindowHandlerImpl implements WindowHandler {
     private static final Logger logger = LogManager.getLogger(WindowHandlerImpl.class);
 
     private final Stage primaryStage;
+    private final ProgramDataDto programDataDto;
     private ResourceBundle bundle;
-    private Window window;
-    private DsApiDetail dsApiDetail;
-    private boolean isLoggedIn;
 
     public WindowHandlerImpl(Stage primaryStage) {
+        this.programDataDto = new ProgramDataDto();
         this.primaryStage = primaryStage;
         this.primaryStage.setOnCloseRequest(onCloseEventHandler());
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, Locale.getDefault());
@@ -48,18 +47,18 @@ public class WindowHandlerImpl implements WindowHandler {
 
     @Override
     public void setDsApiDetail(DsApiDetail dsApiDetail) {
-        this.dsApiDetail = dsApiDetail;
+        programDataDto.setDsApiDetail(dsApiDetail);
     }
 
     @Override
     public DsApiDetail getDsApiDetail() {
-        return dsApiDetail;
+        return programDataDto.getDsApiDetail();
     }
 
     private EventHandler<WindowEvent> onCloseEventHandler() {
         return t -> {
-            if (isLoggedIn) {
-                new LogoutCall(dsApiDetail.getAuthInfo()).call();
+            if (programDataDto.isLoggedIn()) {
+                new LogoutCall(programDataDto.getDsApiDetail().getAuthInfo()).call();
             } else {
                 logger.info("Logout from disk station is not needed.");
             }
@@ -112,7 +111,7 @@ public class WindowHandlerImpl implements WindowHandler {
 	        Scene scene = new Scene(window.root());
 	        scene.getStylesheets().add(window.css());
 	        stage.setScene(scene);
-            this.window = stage;
+            this.programDataDto.setWindow(stage);
             //window.refreshWindowSize();
         } catch (IOException ex) {
             handleException(new ProgramException(UIError.LAUNCH_PROGRAM, ex.getLocalizedMessage(), ex));
@@ -121,7 +120,7 @@ public class WindowHandlerImpl implements WindowHandler {
 
     @Override
     public Window currentWindow() {
-        return window;
+        return programDataDto.getWindow();
     }
 
     /*public void changeWindowWidth(double width) {
@@ -158,6 +157,16 @@ public class WindowHandlerImpl implements WindowHandler {
 
     @Override
     public void logoutOnExit() {
-        isLoggedIn = true;
+        programDataDto.setLoggedIn(true);
+    }
+
+    @Override
+    public void setSearchTaskId(String searchTaskId) {
+        programDataDto.setSearchTaskId(searchTaskId);
+    }
+
+    @Override
+    public String getSearchTaskId() {
+        return programDataDto.getSearchTaskId();
     }
 }

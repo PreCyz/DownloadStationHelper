@@ -1,7 +1,8 @@
 package pg.ui.window.controller.completable;
 
+import javafx.beans.property.Property;
+import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
 import pg.program.TaskDetail;
 import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactory;
@@ -17,9 +18,9 @@ public class UseLinkTaskCompletable extends ListTaskCompletable {
 
     private String link;
 
-    public UseLinkTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+    public UseLinkTaskCompletable(Property<ObservableList<TaskDetail>> itemProperty, DsApiDetail dsApiDetail, WindowHandler windowHandler,
                                   String link, CheckBox liveTrackCheckbox, ExecutorService executor) {
-        super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
+        super(itemProperty, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.link = link;
     }
 

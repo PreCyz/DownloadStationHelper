@@ -88,11 +88,7 @@ public class AvailableOperationTask extends Task<Void> {
 
     private void setConnectedImg() {
         try {
-            connectionPane.setBackground(ImageUtils.getBackground(
-                    AppConstants.CONNECTED_GIF,
-                    Double.valueOf(connectionPane.getWidth()).intValue(),
-                    Double.valueOf(connectionPane.getHeight()).intValue()
-            ));
+            connectionPane.setBackground(ImageUtils.getBackground(AppConstants.CONNECTED_GIF));
         } catch (IOException e) {
             logger.warn("Could not load image {}.", AppConstants.CONNECTED_GIF);
         }

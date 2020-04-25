@@ -12,12 +12,12 @@ public final class ImageUtils {
     }
 
     public static Background getBackground(String imagePath) throws IOException {
-        int width = 4;
-        int height = 4;
+        int width = 1;
+        int height = 1;
         return getBackground(imagePath, width, height);
     }
 
-    public static Background getBackground(String imagePath, int width, int height) throws IOException {
+    public static Background getBackground(String imagePath, double width, double height) throws IOException {
         try (InputStream is = ImageUtils.class.getClassLoader().getResourceAsStream(imagePath)) {
             final Image image = new Image(is);
             BackgroundSize backgroundSize = new BackgroundSize(width, height, true, true, false, false);
@@ -32,7 +32,7 @@ public final class ImageUtils {
         }
     }
 
-    public static Background getBackground(Image image, int width, int height) {
+    public static Background getBackground(Image image, double width, double height) {
         BackgroundSize backgroundSize = new BackgroundSize(width, height, true, true, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(
                 image,

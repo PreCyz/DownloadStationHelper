@@ -1,10 +1,11 @@
 package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pg.exceptions.ProgramException;
@@ -36,9 +37,9 @@ public class FindTaskCompletable extends ListTaskCompletable {
 
     private List<ReducedDetail> matchTorrents;
 
-    public FindTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+    public FindTaskCompletable(Property<ObservableList<TaskDetail>> itemProperty, DsApiDetail dsApiDetail, WindowHandler windowHandler,
                                CheckBox liveTrackCheckbox, ExecutorService executor) {
-        super(tableView, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
+        super(itemProperty, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
         this.logger = LogManager.getLogger(this.getClass());
     }
@@ -156,13 +157,11 @@ public class FindTaskCompletable extends ListTaskCompletable {
         updateMessage("No torrents to start");
         updateProgress(100, 100);
         if (Platform.isFxApplicationThread()) {
-            tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
-            tableView.requestFocus();
+            itemProperty.setValue(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
             updateLiveTracking();
         } else {
             Platform.runLater(() -> {
-                tableView.setItems(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
-                tableView.requestFocus();
+                itemProperty.setValue(FXCollections.observableList(Collections.singletonList(TaskDetail.getNothingToDisplay())));
                 updateLiveTracking();
             });
         }

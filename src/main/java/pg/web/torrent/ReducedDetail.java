@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pg.program.SearchItem;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**Created by Gawa on 15/08/17.*/
@@ -54,5 +58,17 @@ public class ReducedDetail implements Duplicable {
                 ", season='" + season + '\'' +
                 ", episode='" + episode + '\'' +
                 '}';
+    }
+
+    public static ReducedDetail valueFrom(SearchItem searchItem) {
+        ReducedDetail reducedDetail = new ReducedDetail(searchItem.getTitle());
+        reducedDetail.magnetUrl = searchItem.getDownloadUri();
+        reducedDetail.torrentUrl = searchItem.getDownloadUri();
+        reducedDetail.dateReleased = Date.from(
+                LocalDate.parse(searchItem.getDate(), DateTimeFormatter.ISO_DATE)
+                        .atStartOfDay(ZoneId.systemDefault())
+                        .toInstant()
+        );
+        return reducedDetail;
     }
 }

@@ -1,9 +1,10 @@
 package pg.ui.window.controller.completable;
 
 import javafx.application.Platform;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
 import pg.converters.AbstractConverter;
 import pg.converters.DSTaskToTaskDetailConverter;
 import pg.program.TaskDetail;
@@ -21,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 /** Created by Gawa 2017-10-29 */
 public class ListTaskCompletable extends UpdatableTask<Void> {
 
-    protected final TableView<TaskDetail> tableView;
+    protected final Property<ObservableList<TaskDetail>> itemProperty;
     protected final ExecutorService executor;
     protected final DsApiDetail dsApiDetail;
     protected final WindowHandler windowHandler;
@@ -29,9 +30,9 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
 
     private String sid;
 
-    public ListTaskCompletable(TableView<TaskDetail> tableView, DsApiDetail dsApiDetail, WindowHandler windowHandler,
+    public ListTaskCompletable(Property<ObservableList<TaskDetail>> itemProperty, DsApiDetail dsApiDetail, WindowHandler windowHandler,
                                CheckBox liveTrackCheckbox, ExecutorService executor) {
-        this.tableView = tableView;
+        this.itemProperty = itemProperty;
         this.dsApiDetail = dsApiDetail;
         this.executor = executor;
         this.windowHandler = windowHandler;
@@ -82,13 +83,11 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
             tasks.add(TaskDetail.getNothingToDisplay());
         }
         if (Platform.isFxApplicationThread()) {
-            tableView.setItems(FXCollections.observableList(tasks));
-            tableView.requestFocus();
+            itemProperty.setValue(FXCollections.observableList(tasks));
             updateLiveTracking();
         } else {
             Platform.runLater(() -> {
-                tableView.setItems(FXCollections.observableList(tasks));
-                tableView.requestFocus();
+                itemProperty.setValue(FXCollections.observableList(tasks));
                 updateLiveTracking();
             });
         }
@@ -107,7 +106,7 @@ public class ListTaskCompletable extends UpdatableTask<Void> {
     }
 
     protected void updateLiveTracking() {
-        if (tableView.getItems().size() == 1 && tableView.getItems().get(0).isNothingToDisplay()) {
+        if (itemProperty.getValue().size() == 1 && itemProperty.getValue().get(0).isNothingToDisplay()) {
             liveTrackCheckbox.setSelected(false);
             liveTrackCheckbox.setDisable(true);
         } else {
