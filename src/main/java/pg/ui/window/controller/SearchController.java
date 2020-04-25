@@ -246,8 +246,9 @@ public class SearchController extends AbstractController {
         try {
             final int width = 4;
             final int height = 4;
-            Background background = ImageUtils.getBackground(AppConstants.CONNECTING_GIF, width, height);
-            imageProperty = new SimpleObjectProperty<>(background);
+            imageProperty = new SimpleObjectProperty<>(
+                    ImageUtils.getBackground(AppConstants.CONNECTING_GIF, width, height)
+            );
         } catch (IOException e) {
             logger.warn("Could not load progress gif.", e);
         } finally {
@@ -262,15 +263,14 @@ public class SearchController extends AbstractController {
                     toDownloadSearchItems.stream().map(SearchItem::getTitle).collect(joining(","))
             );
             executor.submit(new StartDownloadCompletable(
-                    toDownloadSearchItems, windowHandler.getDsApiDetail(), executor
+                    toDownloadSearchItems, imageProperty, windowHandler.getDsApiDetail(), executor
             ));
         }
     }
 
     private void setListeners() {
         listProperty.addListener((observable, oldValue, newValue) -> {
-            logger.info("Values in the list has changed. Old size {}, new size {}",
-                    oldValue.size(), newValue.size());
+            logger.info("Values in the list has changed. New size {}", newValue.size());
             resultCountLabel.setText(String.valueOf(newValue.size()));
         });
     }

@@ -15,14 +15,15 @@ public final class AppConstants {
     public static final String RESOURCE_BUNDLE = "bundle.translation";
     public static final String BUNDLE_PATH = "bundle.translation";
     public static final String IMG_RESOURCE_PATH = "img/";
+    public static final String FXML_RESOURCE_PATH = "fxml/";
+    public static final String CSS_RESOURCE_PATH = "css/";
     public static final String CONNECTING_GIF = String.format("%sconnecting.gif", IMG_RESOURCE_PATH);
     public static final String CONNECTED_GIF = String.format("%sconnected.gif", IMG_RESOURCE_PATH);
     public static final String CHECK_GIF = String.format("%scheck.gif", IMG_RESOURCE_PATH);
+    public static final String FINGER_UP_GIF = String.format("%sfingerUp.gif", IMG_RESOURCE_PATH);
     public static final String DELETE_PNG = String.format("%sdelete.png", IMG_RESOURCE_PATH);
     public static final String ADD_PNG = String.format("%sadd.png", IMG_RESOURCE_PATH);
     public static final String CLEAN_PNG = String.format("%sclean.png", IMG_RESOURCE_PATH);
-    public static final String FXML_RESOURCE_PATH = "fxml/";
-    public static final String CSS_RESOURCE_PATH = "css/";
 
     public static final String IMDB_FILE_NAME = "imdbTitleMap.json";
     public static String MATCHING_TORRENTS_FILE = "matchTorrents.json";

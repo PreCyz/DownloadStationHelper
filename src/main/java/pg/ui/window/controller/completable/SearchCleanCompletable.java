@@ -92,7 +92,9 @@ public class SearchCleanCompletable implements Runnable {
     private void updateProgressImage() {
         Platform.runLater(() -> {
             try {
-                backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF));
+                final int width = 2;
+                final int height = 2;
+                backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF, width, height));
                 logger.info("Image changed to completed.");
             } catch (IOException e) {
                 logger.warn("Could not load progress gif.");

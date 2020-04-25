@@ -8,3 +8,9 @@
     -fx-border-color: #00008b;
     -fx-border-with: 1px;
 }
+
+#searchTextField {
+    -fx-font-size: 17px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #00008b;
+}
