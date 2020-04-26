@@ -136,7 +136,7 @@ task fxJar(type: Jar) {
 }
 
 jar {
-    dependsOn copyToLib, copyAppPropertiesTask
+    dependsOn copyToLib, copyAppPropertiesTask, versionTxt
     manifest {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': appVersion,

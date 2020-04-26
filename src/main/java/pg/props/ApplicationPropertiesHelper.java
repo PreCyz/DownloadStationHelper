@@ -8,23 +8,23 @@ import pg.util.AppConstants;
 import pg.util.CryptoUtils;
 import pg.web.ds.DSAllowedProtocol;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 
-/**Created by Gawa on 12/09/17.*/
+/**
+ * Created by Gawa on 12/09/17.
+ */
 public final class ApplicationPropertiesHelper {
 
     private static Properties application = null;
     private static final String NOT_AVAILABLE = "N/A";
     private static String version = NOT_AVAILABLE;
 
-    private ApplicationPropertiesHelper() {}
+    private ApplicationPropertiesHelper() {
+    }
 
     private static class ApplicationPropertiesHelperHolder {
         private static final ApplicationPropertiesHelper INSTANCE = new ApplicationPropertiesHelper();
@@ -63,15 +63,22 @@ public final class ApplicationPropertiesHelper {
 
     public String getAppVersion() {
         if (NOT_AVAILABLE.equals(version)) {
-            final String versionTxt = "version.txt";
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream(versionTxt);
-                 final Reader reader = new InputStreamReader(is)) {
-
-                version = CharStreams.toString(reader);
-
+            try (final InputStream settingsVersionIs = new FileInputStream(AppConstants.VERSION_PATH.toString());
+                 final Reader settingsReader = new InputStreamReader(settingsVersionIs);
+            ) {
+                version = CharStreams.toString(settingsReader);
             } catch (IOException e) {
-                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", versionTxt, e);
-                version = NOT_AVAILABLE;
+                LogManager.getLogger(ApplicationPropertiesHelper.class)
+                        .warn("Can not read '{}'.", AppConstants.VERSION_PATH.toString());
+
+                try (InputStream jarVersionIs = getClass().getClassLoader().getResourceAsStream(AppConstants.VERSION_TXT);
+                     final Reader jarReader = new InputStreamReader(jarVersionIs);
+                ) {
+                    version = CharStreams.toString(jarReader);
+                } catch (IOException ex) {
+                    LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", AppConstants.VERSION_TXT);
+                    version = NOT_AVAILABLE;
+                }
             }
         }
         return version;

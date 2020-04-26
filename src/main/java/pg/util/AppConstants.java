@@ -31,12 +31,14 @@ public final class AppConstants {
     public static String MATCHING_TORRENTS_FILE = "matchTorrents.json";
     public static final String APPLICATION_PROPERTIES = "application.properties";
     public static final String SHOWS_PROPERTIES = "shows.properties";
+    public static final String VERSION_TXT = "version.txt";
     public static final String SETTINGS = "settings";
     public static final String EMPTY_STRING = "";
 
     public static final String SHOWS_JSON = "shows.json";
     public static final Path SHOWS_PROPERTIES_PATH = Paths.get(".", SETTINGS, SHOWS_PROPERTIES);
     public static final Path SHOWS_JSON_PATH = Paths.get(".", SETTINGS, SHOWS_JSON);
+    public static final Path VERSION_PATH = Paths.get(".", SETTINGS, VERSION_TXT);
 
     public static Path fullFilePath(String fileName) {
         String directoryPath = ApplicationPropertiesHelper.getInstance().getFilePath("");
