@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Created by Gawa 2018-01-03 */
 public class MainControllerCompletable extends AbstractController {
@@ -201,10 +202,12 @@ public class MainControllerCompletable extends AbstractController {
     }
 
     private void setupButtons() {
-        ComponentSetup setup = new ActionButtonSetup(Arrays.asList(
-                deleteButton, addButton, cleanButton, resumeButton, pauseButton, stopButton, forceDeleteButton
-        ));
-        setup.setup();
+        Stream.of(
+                new ActionButtonSetup(Arrays.asList(
+                        deleteButton, addButton, cleanButton, resumeButton, pauseButton, forceDeleteButton
+                )),
+                new ActionButtonSetup(Collections.singletonList(stopButton), 15, 15)
+        ).forEach(ComponentSetup::setup);
         setOnActionEvent();
         disableManageButtons();
     }
