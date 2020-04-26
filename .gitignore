@@ -5,6 +5,7 @@
 /build/
 /logs/
 /settings/
+/result/
 gradlew
 gradlew.bat
 HEAD

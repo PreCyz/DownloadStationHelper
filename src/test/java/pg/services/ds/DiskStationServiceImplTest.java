@@ -26,7 +26,7 @@ public class DiskStationServiceImplTest {
 
     @After
     public void tearDown() {
-        diskStationService.logoutFromDiskStation();
+        //diskStationService.logoutFromDiskStation();
     }
 
     @Test
@@ -40,6 +40,7 @@ public class DiskStationServiceImplTest {
     }
 
     @Test
+    @Ignore
     public void test() throws Exception {
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
@@ -58,6 +59,7 @@ public class DiskStationServiceImplTest {
     }
 
     @Test
+    @Ignore
     public void testCategories() {
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
