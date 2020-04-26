@@ -21,17 +21,21 @@ import pg.ui.window.WindowHandler;
 import pg.ui.window.controller.completable.SearchCleanCompletable;
 import pg.ui.window.controller.completable.SearchCompletable;
 import pg.ui.window.controller.completable.StartDownloadCompletable;
+import pg.ui.window.controller.setup.ActionButtonSetup;
+import pg.ui.window.controller.setup.ComponentSetup;
 import pg.util.AppConstants;
 import pg.util.ImageUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
@@ -69,6 +73,8 @@ public class SearchController extends AbstractController {
         setUpTaskTableView();
         setActions();
         setListeners();
+        setButtonStyles();
+        setProperties();
     }
 
     @SuppressWarnings("unchecked")
@@ -227,6 +233,7 @@ public class SearchController extends AbstractController {
             executor.submit(new SearchCleanCompletable(
                     windowHandler.getDsApiDetail(), imageProperty, windowHandler.getSearchTaskId()
             ));
+            stopButton.setDisable(true);
         });
 
         downloadButton.setOnAction(event -> startDownload());
@@ -236,6 +243,7 @@ public class SearchController extends AbstractController {
         if (!keywords.isEmpty()) {
             logger.info("Searching torrents with following keywords [{}]", keywords);
             setProgressImage();
+            stopButton.setDisable(false);
             searchFeature = executor.submit(new SearchCompletable(
                     listProperty, imageProperty, keywords, windowHandler.getDsApiDetail(), windowHandler
             ));
@@ -273,6 +281,19 @@ public class SearchController extends AbstractController {
             logger.info("Values in the list has changed. New size {}", newValue.size());
             resultCountLabel.setText(String.valueOf(newValue.size()));
         });
+    }
+
+    private void setButtonStyles() {
+        Stream.of(
+                new ActionButtonSetup(Collections.singletonList(searchButton)),
+                new ActionButtonSetup(Collections.singletonList(stopButton), 20, 20),
+                new ActionButtonSetup(Collections.singletonList(downloadButton), 28, 28)
+        ).forEach(ComponentSetup::setup);
+    }
+
+    private void setProperties() {
+        downloadButton.setDisable(true);
+        stopButton.setDisable(true);
     }
 
 }

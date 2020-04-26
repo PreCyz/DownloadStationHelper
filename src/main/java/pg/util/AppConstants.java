@@ -24,6 +24,8 @@ public final class AppConstants {
     public static final String DELETE_PNG = String.format("%sdelete.png", IMG_RESOURCE_PATH);
     public static final String ADD_PNG = String.format("%sadd.png", IMG_RESOURCE_PATH);
     public static final String CLEAN_PNG = String.format("%sclean.png", IMG_RESOURCE_PATH);
+    public static final String DOWNLOAD_ARROW_PNG = String.format("%sdownloadButton.png", IMG_RESOURCE_PATH);
+    public static final String SEARCH_LOOP_PNG = String.format("%ssearchButton.png", IMG_RESOURCE_PATH);
 
     public static final String IMDB_FILE_NAME = "imdbTitleMap.json";
     public static String MATCHING_TORRENTS_FILE = "matchTorrents.json";

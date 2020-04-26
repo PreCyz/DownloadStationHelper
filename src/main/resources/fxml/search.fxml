@@ -4,10 +4,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="420.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="420.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField id="searchTextField" fx:id="searchTextField" layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="970.0" stylesheets="@../css/search.css" />
-      <Button fx:id="searchButton" layoutX="930.0" layoutY="65.0" minWidth="37.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
+      <TextField id="searchTextField" fx:id="searchTextField" layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="965.0" stylesheets="@../css/search.css" />
+      <Button id="searchButton" fx:id="searchButton" layoutX="930.0" layoutY="65.0" minWidth="37.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" stylesheets="@../css/search.css" />
       <TableView fx:id="searchResultTableView" layoutX="14.0" layoutY="64.0" prefHeight="345.0" prefWidth="905.0">
         <columns>
           <TableColumn editable="false" maxWidth="520.0" prefWidth="520.0" text="%search.table.column.title" />
@@ -21,7 +21,7 @@
       <Label id="resultCountLabel" fx:id="resultCountLabel" layoutX="938.0" layoutY="376.0" stylesheets="@../css/search.css" text="0" />
       <ImageView fx:id="progressImage" fitHeight="45.0" fitWidth="45.0" layoutX="930.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="imagePane" layoutX="930.0" layoutY="119.0" prefHeight="45.0" prefWidth="45.0" />
-      <Button fx:id="stopButton" layoutX="930.0" layoutY="171.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
-      <Button fx:id="downloadButton" layoutX="930.0" layoutY="224.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
+      <Button id="stopButton" fx:id="stopButton" layoutX="930.0" layoutY="171.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" stylesheets="@../css/search.css" />
+      <Button id="downloadButton" fx:id="downloadButton" layoutX="930.0" layoutY="224.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" stylesheets="@../css/search.css" />
    </children>
 </AnchorPane>

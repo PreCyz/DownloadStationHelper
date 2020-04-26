@@ -9,6 +9,21 @@
     -fx-border-with: 1px;
 }
 
+#searchButton {
+    -fx-border-color: #6495ed;
+    -fx-border-with: 1px;
+}
+
+#stopButton {
+    -fx-border-color: #ff1493;
+    -fx-border-with: 1px;
+}
+
+#downloadButton {
+    -fx-border-color: #00008b;
+    -fx-border-with: 1px;
+}
+
 #searchTextField {
     -fx-font-size: 17px;
     -fx-font-weight: bolder;
