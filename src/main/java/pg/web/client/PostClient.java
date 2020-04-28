@@ -5,8 +5,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 /**Created by Gawa on 15/08/17.*/
 public class PostClient {
 
-    private static final Logger logger = LogManager.getLogger(PostClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(PostClient.class);
 
     private final String url;
     private int responseCode;

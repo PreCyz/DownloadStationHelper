@@ -1,8 +1,8 @@
 package pg.ui.window.controller;
 
 import javafx.fxml.Initializable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.ui.window.WindowHandler;
 
 import java.net.URL;
@@ -18,7 +18,7 @@ public abstract class AbstractController implements Initializable {
 
     protected AbstractController(WindowHandler windowHandler) {
         this.windowHandler = windowHandler;
-        this.logger = LogManager.getLogger(getClass());
+        this.logger = LoggerFactory.getLogger(getClass());
     }
 
     @Override

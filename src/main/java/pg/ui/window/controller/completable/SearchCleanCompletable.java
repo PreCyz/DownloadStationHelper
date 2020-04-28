@@ -3,8 +3,8 @@ package pg.ui.window.controller.completable;
 import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.scene.layout.Background;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.ApiName;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class SearchCleanCompletable implements Runnable {
-    private static final Logger logger  = LogManager.getLogger(SearchCleanCompletable.class);
+    private static final Logger logger  = LoggerFactory.getLogger(SearchCleanCompletable.class);
     private final ApplicationPropertiesHelper application;
     private final DsApiDetail dsApiDetail;
     private final Property<Background> backgroundProperty;

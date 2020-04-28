@@ -1,7 +1,7 @@
 package pg.services.match.filter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**Created by Pawel Gawedzki on 9/19/2017.*/
 class FileSizeFilter implements Filter {
 
-    private static final Logger logger = LogManager.getLogger(FileSizeFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileSizeFilter.class);
 
     private final String maxSize;
 

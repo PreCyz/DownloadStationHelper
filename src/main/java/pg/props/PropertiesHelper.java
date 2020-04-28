@@ -1,7 +1,7 @@
 package pg.props;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.FXMain;
 import pg.util.AppConstants;
 
@@ -14,7 +14,7 @@ import java.util.Properties;
 /**Created by Gawa on 9/18/2017.*/
 final class PropertiesHelper {
 
-    private static final Logger logger = LogManager.getLogger(PropertiesHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 
     private PropertiesHelper() {}
 

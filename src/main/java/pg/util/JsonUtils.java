@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.program.ShowDetail;
 import pg.web.ds.DSDataResponse;
 import pg.web.torrent.ReducedDetail;
@@ -17,7 +17,7 @@ import java.util.*;
 /**Created by Gawa on 15/08/17.*/
 public class JsonUtils {
 
-    private static final Logger logger = LogManager.getLogger(JsonUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     private static final String NOTHING_TO_SHOW = "Nothing to show";
 

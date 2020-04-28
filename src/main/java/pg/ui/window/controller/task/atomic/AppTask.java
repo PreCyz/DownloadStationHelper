@@ -1,7 +1,7 @@
 package pg.ui.window.controller.task.atomic;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 
@@ -16,7 +16,7 @@ public class AppTask<C> {
 
     public AppTask(Callable<C> work, Executor executor) {
         task = new FutureTask<>(work);
-        this.logger = LogManager.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
         executor.execute(task);
     }
 

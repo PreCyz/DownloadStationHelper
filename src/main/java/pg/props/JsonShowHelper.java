@@ -1,7 +1,7 @@
 package pg.props;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.ShowDetail;
@@ -14,7 +14,7 @@ import java.util.TreeSet;
 
 public class JsonShowHelper {
 
-    private static final Logger logger = LogManager.getLogger(JsonShowHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonShowHelper.class);
 
     private Set<ShowDetail> showDetails;
     private boolean initialized;

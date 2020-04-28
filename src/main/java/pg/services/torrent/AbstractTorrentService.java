@@ -1,7 +1,7 @@
 package pg.services.torrent;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.props.ApplicationPropertiesHelper;
 import pg.ui.window.controller.completable.UpdatableTask;
 import pg.ui.window.controller.task.atomic.call.response.PairResponse;
@@ -31,7 +31,7 @@ public abstract class AbstractTorrentService {
         this.fxTask = fxTask;
         this.application = ApplicationPropertiesHelper.getInstance();
         this.url = application.getUrl(defaultUrl);
-        this.logger = LogManager.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     protected String createUrl(int currentPage) {

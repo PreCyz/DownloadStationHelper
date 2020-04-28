@@ -4,8 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -21,7 +21,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 /**Created by Gawa on 15/08/17.*/
 public class GetClient {
 
-    private static final Logger logger = LogManager.getLogger(GetClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetClient.class);
 
     private final String url;
     private int responseCode;
@@ -91,7 +91,7 @@ public class GetClient {
             Files.copy(inputStream, new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
             inputStream.close();
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not download the file", ex);
         }
     }
 }

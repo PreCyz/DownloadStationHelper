@@ -14,8 +14,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.props.ApplicationPropertiesHelper;
@@ -32,7 +32,7 @@ import static pg.util.AppConstants.RESOURCE_BUNDLE;
 /**Created by Gawa 2017-10-04*/
 public class WindowHandlerImpl implements WindowHandler {
 
-    private static final Logger logger = LogManager.getLogger(WindowHandlerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WindowHandlerImpl.class);
 
     private final Stage primaryStage;
     private final ProgramDataDto programDataDto;

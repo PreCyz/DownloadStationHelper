@@ -6,8 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.ProgramMode;
@@ -41,7 +41,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
                                CheckBox liveTrackCheckbox, ExecutorService executor) {
         super(itemProperty, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.programMode = ProgramMode.ALL_CONCURRENT;
-        this.logger = LogManager.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     public void setImdbId(String imdbId) {
@@ -75,7 +75,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Found torrents");
             return torrentDetails;
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not find torrents.", ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -94,7 +94,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Imdb map stored");
             return torrents;
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not update imdb", ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -106,7 +106,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage(messageAfterMatch());
             return this.matchTorrents;
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not match torrents.", ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -120,7 +120,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
             updateMessage("Match torrents stored");
             return torrents;
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not write match torrents.", ex);
             throw new ProgramException(UIError.GET_TORRENTS, ex);
         }
     }
@@ -137,7 +137,7 @@ public class FindTaskCompletable extends ListTaskCompletable {
                 ManageTaskFactory.getManageTask(factoryBean).call();
             }
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("Could not create task.", ex);
         } finally {
             updateMessage("Torrents started");
             updateProgress(99, 100);

@@ -1,7 +1,7 @@
 package pg.services.match;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.props.JsonShowHelper;
 import pg.services.match.filter.Filter;
 import pg.services.match.filter.FilterFactory;
@@ -22,7 +22,7 @@ abstract class AbstractMatchService implements MatchService {
     public AbstractMatchService() {
         showHelper = JsonShowHelper.getInstance();
         matchingTorrents = new LinkedList<>();
-        logger = LogManager.getLogger(this.getClass());
+        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override

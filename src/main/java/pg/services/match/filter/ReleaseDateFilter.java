@@ -1,7 +1,7 @@
 package pg.services.match.filter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.util.StringUtils;
 import pg.web.torrent.TorrentDetail;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**Created by Gawa 2017-09-24*/
 class ReleaseDateFilter implements Filter {
 
-    private static final Logger logger = LogManager.getLogger(ReleaseDateFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReleaseDateFilter.class);
 
     private final String releaseDateString;
     private final SimpleDateFormat[] formats = new SimpleDateFormat[] {

@@ -6,8 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.layout.Background;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.ApiName;
@@ -36,7 +36,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toList;
 
 public class SearchCompletable extends Task<String> {
-    private static final Logger logger  = LogManager.getLogger(SearchCompletable.class);
+    private static final Logger logger  = LoggerFactory.getLogger(SearchCompletable.class);
     private final ApplicationPropertiesHelper application;
     private final Property<ObservableList<SearchItem>> listProperty;
     private final Property<Background> backgroundProperty;

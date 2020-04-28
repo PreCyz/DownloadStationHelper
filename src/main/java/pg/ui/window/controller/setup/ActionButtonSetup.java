@@ -3,9 +3,9 @@ package pg.ui.window.controller.setup;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.util.AppConstants;
 import pg.util.ImageUtils;
 
@@ -16,7 +16,7 @@ import java.util.List;
 /** Created by Gawa 2018-03-11 */
 public class ActionButtonSetup implements ComponentSetup {
 
-    private static final Logger logger = LogManager.getLogger(ActionButtonSetup.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActionButtonSetup.class);
 
     private final double DEFAULT_WIDTH = 30;
     private final double DEFAULT_HEIGHT = 30;

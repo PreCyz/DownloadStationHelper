@@ -3,8 +3,8 @@ package pg.ui.window.controller.completable;
 import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.scene.layout.Background;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.program.SearchItem;
 import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactory;
 import pg.ui.window.controller.task.atomic.call.ds.ManageTaskFactoryBean;
@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import static java.util.stream.Collectors.toList;
 
 public class StartDownloadCompletable implements Runnable {
-    private static final Logger logger = LogManager.getLogger(SearchCompletable.class);
+    private static final Logger logger = LoggerFactory.getLogger(SearchCompletable.class);
     private final List<SearchItem> itemsToDownload;
     private final DsApiDetail dsApiDetail;
     private final ExecutorService executor;

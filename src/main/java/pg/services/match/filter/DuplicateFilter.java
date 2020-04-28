@@ -1,7 +1,7 @@
 package pg.services.match.filter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.util.StringUtils;
 import pg.web.torrent.Duplicable;
 import pg.web.torrent.TorrentDetail;
@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 /** Created by Gawa 2017-10-30 */
 class DuplicateFilter implements Filter {
 
-    private static final Logger logger = LogManager.getLogger(DuplicateFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(DuplicateFilter.class);
 
     private final int MAX_DIFFERENCE_COUNTER = 2;
     private final int NO_SE_IDX = -1;

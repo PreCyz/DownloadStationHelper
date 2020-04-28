@@ -3,8 +3,8 @@ package pg.ui.window.controller.task.atomic.call;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.converters.AbstractConverter;
 import pg.converters.DSTaskToTaskDetailConverter;
 import pg.program.TaskDetail;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class LiveTrackRunnable implements Runnable {
 
-    private static final Logger logger = LogManager.getLogger(LiveTrackRunnable.class);
+    private static final Logger logger = LoggerFactory.getLogger(LiveTrackRunnable.class);
 
     private final String sid;
     private final TableView<TaskDetail> tableView;

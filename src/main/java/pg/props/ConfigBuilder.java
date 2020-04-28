@@ -1,7 +1,7 @@
 package pg.props;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.program.TorrentUrlType;
 import pg.util.CryptoUtils;
 import pg.util.StringUtils;
@@ -16,7 +16,7 @@ import static pg.program.SettingKeys.*;
 /**Created by Gawa 2017-10-15*/
 public class ConfigBuilder {
 
-    private static final Logger logger = LogManager.getLogger(ConfigBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigBuilder.class);
 
     private final Properties config;
 

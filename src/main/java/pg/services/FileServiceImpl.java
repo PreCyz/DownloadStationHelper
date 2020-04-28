@@ -1,7 +1,7 @@
 package pg.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.util.AppConstants;
 import pg.util.JsonUtils;
 import pg.util.StringUtils;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**Created by Gawa 2017-09-15*/
 public class FileServiceImpl implements FileService {
 
-    private static final Logger logger = LogManager.getLogger(FileServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
     private Map<String, String> imdbTitleMap;
 

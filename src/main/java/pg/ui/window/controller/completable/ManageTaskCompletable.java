@@ -3,8 +3,8 @@ package pg.ui.window.controller.completable;
 import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pg.exceptions.ProgramException;
 import pg.exceptions.UIError;
 import pg.program.TaskDetail;
@@ -31,7 +31,7 @@ public abstract class ManageTaskCompletable extends ListTaskCompletable  {
                           List<TaskDetail> torrentsToManage, CheckBox liveTrackCheckbox, ExecutorService executor) {
         super(itemProperty, dsApiDetail, windowHandler, liveTrackCheckbox, executor);
         this.torrentsToManage = torrentsToManage;
-        this.logger = LogManager.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override

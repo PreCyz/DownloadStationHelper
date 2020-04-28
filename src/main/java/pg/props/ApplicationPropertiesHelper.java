@@ -1,7 +1,7 @@
 package pg.props;
 
 import com.google.common.io.CharStreams;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
 import pg.program.SettingKeys;
 import pg.program.StartParameters;
 import pg.util.AppConstants;
@@ -68,7 +68,7 @@ public final class ApplicationPropertiesHelper {
             ) {
                 version = CharStreams.toString(settingsReader);
             } catch (IOException e) {
-                LogManager.getLogger(ApplicationPropertiesHelper.class)
+                LoggerFactory.getLogger(ApplicationPropertiesHelper.class)
                         .warn("Can not read '{}'.", AppConstants.VERSION_PATH.toString());
 
                 try (InputStream jarVersionIs = getClass().getClassLoader().getResourceAsStream(AppConstants.VERSION_TXT);
@@ -76,7 +76,7 @@ public final class ApplicationPropertiesHelper {
                 ) {
                     version = CharStreams.toString(jarReader);
                 } catch (IOException ex) {
-                    LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", AppConstants.VERSION_TXT);
+                    LoggerFactory.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", AppConstants.VERSION_TXT);
                     version = NOT_AVAILABLE;
                 }
             }
@@ -110,7 +110,7 @@ public final class ApplicationPropertiesHelper {
             try {
                 return CryptoUtils.decrypt(encryptedPassword);
             } catch (GeneralSecurityException e) {
-                LogManager.getLogger(ApplicationPropertiesHelper.class).warn("Can not decrypt password.", e);
+                LoggerFactory.getLogger(ApplicationPropertiesHelper.class).warn("Can not decrypt password.", e);
             }
         }
         return encryptedPassword;
