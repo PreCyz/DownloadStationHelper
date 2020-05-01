@@ -20,6 +20,7 @@ public enum UIError {
     IMDB("Problem with downloading by imdb."),
     SHORTCUT("Problem wen shortcut was used."),
     FAVOURITES("Problem with downloading favourites."),
+    BTSEARCH("Problem when using BT search API."),
     SEARCH_START("Problem when using BT search API - start."),
     SEARCH_LIST("Problem when using BT search API - list."),
     SEARCH_CLEAN("Problem when using BT search API - clean.");

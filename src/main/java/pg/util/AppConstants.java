@@ -21,6 +21,7 @@ public final class AppConstants {
     public static final String CONNECTED_GIF = String.format("%sconnected.gif", IMG_RESOURCE_PATH);
     public static final String CHECK_GIF = String.format("%scheck.gif", IMG_RESOURCE_PATH);
     public static final String FINGER_UP_GIF = String.format("%sfingerUp.gif", IMG_RESOURCE_PATH);
+    public static final String EXPLOSION_GIF = String.format("%sexplosion.gif", IMG_RESOURCE_PATH);
     public static final String DELETE_PNG = String.format("%sdelete.png", IMG_RESOURCE_PATH);
     public static final String ADD_PNG = String.format("%sadd.png", IMG_RESOURCE_PATH);
     public static final String CLEAN_PNG = String.format("%sclean.png", IMG_RESOURCE_PATH);

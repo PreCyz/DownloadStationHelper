@@ -57,32 +57,38 @@ public class SearchCompletable extends Task<String> {
     }
 
     @Override
-    protected String call() throws Exception {
-        updateSid();
+    protected String call() {
+        boolean isSearchCompleted = false;
+        try {
+            updateSid();
 
-        btSearchStart();
+            btSearchStart();
 
-        final long THREAD_SLEEP_MILLISECONDS = 1000 * application.getLiveTrackInterval();
-        final Set<SearchItem> dsSearchListItems = new LinkedHashSet<>();
-        boolean isSearchFinished;
-        do {
-            logger.info("Waiting {} seconds to check if search is finished.", application.getLiveTrackInterval());
-            Thread.sleep(THREAD_SLEEP_MILLISECONDS);
-            final DSSearchListResponse listResponse = btSearchList();
-            final DSSearchListData data = listResponse.getData();
+            final long THREAD_SLEEP_MILLISECONDS = 1000 * application.getLiveTrackInterval();
+            final Set<SearchItem> dsSearchListItems = new LinkedHashSet<>();
+            do {
+                logger.info("Waiting {} seconds to check if search is finished.", application.getLiveTrackInterval());
+                Thread.sleep(THREAD_SLEEP_MILLISECONDS);
+                final DSSearchListResponse listResponse = btSearchList();
+                final DSSearchListData data = listResponse.getData();
 
-            updateListProperty(dsSearchListItems, data);
+                updateListProperty(dsSearchListItems, data);
 
-            isSearchFinished = data.isFinished();
+                isSearchCompleted = data.isFinished();
 
-            logger.info("Search finished on the server: [{}].", isSearchFinished);
-        } while (!isSearchFinished);
+                logger.info("Search finished on the server: [{}].", isSearchCompleted);
+            } while (!isSearchCompleted);
 
-        btSearchClean();
+            btSearchClean();
 
-        updateProgressImage();
-
-        return searchTaskId;
+            return searchTaskId;
+        } catch (Exception ex) {
+            logger.error("There is a problem while searching.", ex);
+            isSearchCompleted = false;
+            throw new ProgramException(UIError.BTSEARCH, ex);
+        } finally {
+            updateProgressImage(isSearchCompleted);
+        }
     }
 
     private void updateListProperty(Set<SearchItem> dsSearchListItems, DSSearchListData data) {
@@ -242,10 +248,14 @@ public class SearchCompletable extends Task<String> {
                 "_sid=" + dsApiDetail.getSid();
     }
 
-    private void updateProgressImage() {
+    private void updateProgressImage(final boolean success) {
         Platform.runLater(() -> {
             try {
-                backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF, 3, 3));
+                if (success) {
+                    backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.CHECK_GIF, 3, 3));
+                } else {
+                    backgroundProperty.setValue(ImageUtils.getBackground(AppConstants.EXPLOSION_GIF));
+                }
                 logger.info("Image changed to completed.");
             } catch (IOException e) {
                 logger.warn("Could not load progress gif.");
