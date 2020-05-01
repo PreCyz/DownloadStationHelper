@@ -63,25 +63,39 @@ public final class ApplicationPropertiesHelper {
 
     public String getAppVersion() {
         if (NOT_AVAILABLE.equals(version)) {
-            try (final InputStream settingsVersionIs = new FileInputStream(AppConstants.VERSION_PATH.toString());
-                 final Reader settingsReader = new InputStreamReader(settingsVersionIs);
-            ) {
-                version = CharStreams.toString(settingsReader);
-            } catch (IOException e) {
-                LoggerFactory.getLogger(ApplicationPropertiesHelper.class)
-                        .warn("Can not read '{}'.", AppConstants.VERSION_PATH.toString());
 
-                try (InputStream jarVersionIs = getClass().getClassLoader().getResourceAsStream(AppConstants.VERSION_TXT);
-                     final Reader jarReader = new InputStreamReader(jarVersionIs);
-                ) {
-                    version = CharStreams.toString(jarReader);
-                } catch (IOException ex) {
-                    LoggerFactory.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", AppConstants.VERSION_TXT);
-                    version = NOT_AVAILABLE;
-                }
+            version = getVersionFromJar();
+
+            if (NOT_AVAILABLE.equals(version)) {
+                version = getVersionFromSettings();
             }
         }
         return version;
+    }
+
+    private String getVersionFromJar() {
+        String result = NOT_AVAILABLE;
+        try (InputStream jarVersionIs = getClass().getClassLoader().getResourceAsStream(AppConstants.VERSION_TXT);
+             final Reader jarReader = new InputStreamReader(jarVersionIs);
+        ) {
+            result = CharStreams.toString(jarReader);
+        } catch (IOException ex) {
+            LoggerFactory.getLogger(ApplicationPropertiesHelper.class).warn("Can not read '{}'.", AppConstants.VERSION_TXT);
+        }
+        return result;
+    }
+
+    private String getVersionFromSettings() {
+        String result = NOT_AVAILABLE;
+        try (final InputStream settingsVersionIs = new FileInputStream(AppConstants.VERSION_PATH.toString());
+             final Reader settingsReader = new InputStreamReader(settingsVersionIs);
+        ) {
+            result = CharStreams.toString(settingsReader);
+        } catch (IOException e) {
+            LoggerFactory.getLogger(ApplicationPropertiesHelper.class)
+                    .warn("Can not read '{}'.", AppConstants.VERSION_PATH.toString());
+        }
+        return result;
     }
 
     public String getUrl(String defaultValue) {

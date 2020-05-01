@@ -1,5 +1,5 @@
 import java.nio.file.Paths
-import org.gradle.internal.os.OperatingSystem
+//import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id 'application'
@@ -40,16 +40,59 @@ dependencies {
 }
 
 group 'download-station-helper'
-def appVersion = "3.0.0"
+def appVersion = "3.0.2"
 
 def fxMainClassName = 'pg.Java11Main'
 def jarName = "DSHelper-11+"
-def jarNameFx = "DSHelper-FX11+"
 
 mainClassName = fxMainClassName
 
+def copyApplicationProperties = copySpec {
+    from 'src/main/resources/distro'
+    include '*.properties','credentials'
+}
 
+task copyToLib( type: Copy ) {
+    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'lib').toString()
+    from configurations.runtime
+}
 
+task versionTxt()  {
+    doLast {
+        new File(Paths.get(buildDir.getAbsolutePath(), 'resources', 'main', 'version.txt').toString()).text = "$appVersion"
+    }
+}
+
+task copyAppPropertiesTask( type: Copy ) {
+    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'settings').toString()
+    with copyApplicationProperties
+}
+
+jar {
+    dependsOn copyToLib, copyAppPropertiesTask, versionTxt
+    manifest {
+        attributes 'Implementation-Title': 'DownloadStationHelper',
+                'Implementation-Version': appVersion,
+                'Main-Class': mainClassName,
+                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+    }
+    archiveBaseName.set(jarName)
+}
+
+/*//create a single Jar with all dependencies
+task oneJar(type: Jar) {
+    dependsOn copyAppPropertiesTask
+    manifest {
+        attributes 'Implementation-Title': 'DownloadStationHelper',
+                'Implementation-Version': appVersion,
+                'Main-Class': mainClassName
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}*/
+
+/*
+def jarNameFx = "DSHelper-FX11+"
 def addScriptToRunFXFile = {
     String osName = OperatingSystem.current().getName();
     String osVersion = OperatingSystem.current().getVersion();
@@ -82,43 +125,9 @@ def addScriptToRunFXFile = {
     //runImdbFile.append('\n\necho \'.............\'')
     //runImdbFile.append('\necho \'Program ended\'')
     println("addScriptToRunFXFile $jarNameFx")
-}
+}*/
 
-def copyApplicationProperties = copySpec {
-    from 'src/main/resources/distro'
-    include '*.properties','credentials'
-}
-
-task versionTxt()  {
-    doLast {
-        new File(Paths.get(buildDir.getAbsolutePath(), 'resources', 'main', 'version.txt').toString()).text = "$appVersion"
-    }
-}
-
-task copyAppPropertiesTask( type: Copy ) {
-    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'settings').toString()
-    with copyApplicationProperties
-}
-
-//create a single Jar with all dependencies
-task oneJar(type: Jar) {
-    dependsOn copyAppPropertiesTask
-    manifest {
-        attributes 'Implementation-Title': 'DownloadStationHelper',
-                'Implementation-Version': appVersion,
-                'Main-Class': mainClassName
-    }
-    appVersion = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-task copyToLib( type: Copy ) {
-    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'lib').toString()
-    from configurations.runtime
-}
-
-//create a FX Jar
+/*//create a FX Jar
 task fxJar(type: Jar) {
     dependsOn copyToLib, copyAppPropertiesTask, versionTxt
     manifest {
@@ -132,15 +141,4 @@ task fxJar(type: Jar) {
     }
     archiveBaseName = jarNameFx
     with jar
-}
-
-jar {
-    dependsOn copyToLib, copyAppPropertiesTask, versionTxt
-    manifest {
-        attributes 'Implementation-Title': 'DownloadStationHelper',
-                'Implementation-Version': appVersion,
-                'Main-Class': mainClassName,
-                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
-    }
-    archiveBaseName = jarName
-}
+}*/
