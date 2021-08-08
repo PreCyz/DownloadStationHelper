@@ -10,5 +10,5 @@ public class DSLoginResponse extends DSGeneralResponse {
 
     @JsonProperty("data")
     private DSLoginDetails DSLoginDetails;
-
+    private boolean success;
 }
