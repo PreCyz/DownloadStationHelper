@@ -1,23 +1,20 @@
 package pg.services.match.filter;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import pg.TorrentDetailBuilder;
 import pg.web.torrent.TorrentDetail;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**Created by Gawa 2017-09-24*/
 public class AgeInDaysFilterTest {
 
     private Filter filter;
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         filter = null;
     }
@@ -32,7 +29,7 @@ public class AgeInDaysFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -45,7 +42,7 @@ public class AgeInDaysFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -60,7 +57,7 @@ public class AgeInDaysFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
 }

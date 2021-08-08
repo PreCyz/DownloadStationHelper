@@ -1,7 +1,7 @@
 package pg.services.match.filter;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import pg.web.torrent.TorrentDetail;
 
 import java.sql.Date;
@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,8 +22,8 @@ public class ReleaseDateFilterTest {
     private final SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() {
         filter = null;
     }
 
@@ -35,7 +34,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -45,7 +44,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -55,7 +54,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -65,7 +64,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -78,7 +77,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -91,7 +90,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
     @Test
@@ -104,7 +103,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(torrents.size()));
+        assertThat(actual).hasSize(torrents.size());
     }
 
     @Test
@@ -117,7 +116,7 @@ public class ReleaseDateFilterTest {
 
         List<TorrentDetail> actual = filter.apply(torrents);
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
 }

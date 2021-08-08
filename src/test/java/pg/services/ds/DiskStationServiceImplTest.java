@@ -1,36 +1,30 @@
 package pg.services.ds;
 
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pg.web.torrent.TorrentDetail;
 import pg.web.torrent.TorrentResponse;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by Gawa 2017-09-15
- */
-@RunWith(MockitoJUnitRunner.class)
+/** Created by Gawa 2017-09-15 */
+@ExtendWith(MockitoExtension.class)
 public class DiskStationServiceImplTest {
 
     private DiskStationServiceImpl diskStationService;
 
-    @After
+    @AfterEach
     public void tearDown() {
         //diskStationService.logoutFromDiskStation();
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void givenNoServerAddressInSettingsWhenPrepareServerUrlTheReturnHttpServerAddress() {
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
@@ -40,7 +34,7 @@ public class DiskStationServiceImplTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void test() throws Exception {
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 
@@ -59,7 +53,7 @@ public class DiskStationServiceImplTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testCategories() {
         diskStationService = new DiskStationServiceImpl(Collections.emptyList());
 

@@ -1,8 +1,10 @@
 package pg.services;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**Created by Gawa 2017-09-15*/
+@Disabled("Empty tests.")
 public class FileServiceImplTest {
     @Test
     public void writeTorrentsToFile() throws Exception {

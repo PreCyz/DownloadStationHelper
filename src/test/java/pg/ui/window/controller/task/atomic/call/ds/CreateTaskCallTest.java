@@ -1,8 +1,8 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pg.program.ApiName;
 import pg.web.ds.DSTaskMethod;
 import pg.web.ds.detail.DSApiDetails;
@@ -19,7 +19,7 @@ public class CreateTaskCallTest {
 
     private CreateTaskCall call;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         call = new CreateTaskCall("sid", Collections.emptyList(), mockDsApiDetails());
     }

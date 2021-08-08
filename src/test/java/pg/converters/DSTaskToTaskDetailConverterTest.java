@@ -1,49 +1,42 @@
 package pg.converters;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pg.program.TaskDetail;
 import pg.web.ds.DSTaskDownloadStatus;
-import pg.web.ds.detail.DSAdditional;
-import pg.web.ds.detail.DSFileDetail;
-import pg.web.ds.detail.DSTask;
+import pg.web.ds.detail.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /** Created by Gawa 2018-03-03 */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DSTaskToTaskDetailConverterTest {
 
     private Converter<DSTask, TaskDetail> converter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = new DSTaskToTaskDetailConverter();
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void givenDSTask_when_convert_then_returnTaskDetail() {
         List<TaskDetail> actual = Stream.of(converter.convert(mockDsTask())).collect(Collectors.toList());
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
         TaskDetail actualTaskDetail = actual.get(0);
-        assertThat(actualTaskDetail.getId(), is(equalTo("taskId")));
-        assertThat(actualTaskDetail.getTitle(), is(equalTo("task title")));
-        assertThat(actualTaskDetail.getProgress(), is(equalTo(33.0)));
+        assertThat(actualTaskDetail.getId()).isEqualTo("taskId");
+        assertThat(actualTaskDetail.getTitle()).isEqualTo("task title");
+        assertThat(actualTaskDetail.getProgress()).isEqualTo(33.0);
     }
 
     private DSTask mockDsTask() {

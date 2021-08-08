@@ -1,11 +1,9 @@
 package pg.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**Created by Gawa 2017-09-16*/
 public class StringUtilsTest {
@@ -22,12 +20,12 @@ public class StringUtilsTest {
 
     @Test
     public void givenSpaceStringValueWhenNullOrTrimEmptyThenReturnTrue() {
-        assertThat(StringUtils.nullOrTrimEmpty(" "), is( equalTo(true)));
+        assertThat(StringUtils.nullOrTrimEmpty(" ")).isTrue();
     }
 
     @Test
     public void givenStringValueWhenNullOrTrimEmptyThenReturnFalse() {
-        assertThat(StringUtils.nullOrTrimEmpty("string "), is( equalTo(false)));
+        assertThat(StringUtils.nullOrTrimEmpty("string ")).isFalse();
     }
 
 }

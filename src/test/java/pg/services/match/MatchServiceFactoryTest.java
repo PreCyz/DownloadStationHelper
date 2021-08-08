@@ -1,11 +1,9 @@
 package pg.services.match;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import pg.program.ProgramMode;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**Created by Gawa 2017-10-02*/
 public class MatchServiceFactoryTest {
@@ -13,15 +11,13 @@ public class MatchServiceFactoryTest {
     @Test
     public void givenModeAllWhenGetMatchServiceTheReturnMatchServiceImpl() {
         MatchService matchService = MatchServiceFactory.getMatchService(ProgramMode.ALL);
-
-        assertThat(matchService, is( instanceOf(MatchServiceImpl.class)));
+        assertThat(matchService).isInstanceOf(MatchServiceImpl.class);
     }
 
     @Test
     public void givenModeImdbWhenGetMatchServiceTheReturnMatchServiceImpl() {
         MatchService matchService = MatchServiceFactory.getMatchService(ProgramMode.IMDB);
-
-        assertThat(matchService, is( instanceOf(MatchByImdbService.class)));
+        assertThat(matchService).isInstanceOf(MatchByImdbService.class);
     }
 
 }

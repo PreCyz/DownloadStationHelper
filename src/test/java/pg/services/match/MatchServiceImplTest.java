@@ -1,7 +1,7 @@
 package pg.services.match;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pg.program.ShowDetail;
 import pg.util.JsonUtils;
 import pg.web.torrent.ReducedDetail;
@@ -10,20 +10,16 @@ import pg.web.torrent.TorrentResponse;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**Created by Gawa on 15/08/17.*/
 public class MatchServiceImplTest {
     private MatchServiceImpl matchService;
     private TorrentResponse torrentResponse;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         String osName = System.getProperty("os.name");
         URL jsonUrl = getClass().getClassLoader().getResource("testTorrentDetails.json");
@@ -41,7 +37,7 @@ public class MatchServiceImplTest {
 
     @Test
     public void whenConvertFromFileThenReturnResponseObject() {
-        assertThat(torrentResponse, notNullValue());
+        assertThat(torrentResponse).isNotNull();
     }
 
     @Test
@@ -55,7 +51,7 @@ public class MatchServiceImplTest {
             matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
         );
 
-        assertThat(filtered, hasSize(1));
+        assertThat(filtered).hasSize(1);
     }
 
     @Test
@@ -69,7 +65,7 @@ public class MatchServiceImplTest {
             matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
         );
 
-        assertThat(filtered, hasSize(1));
+        assertThat(filtered).hasSize(1);
     }
 
     @Test
@@ -83,7 +79,7 @@ public class MatchServiceImplTest {
                 matchService.matchTorrent(showDetail, torrentDetail).ifPresent(filtered::add)
         );
 
-        assertThat(filtered, hasSize(0));
+        assertThat(filtered).isEmpty();
     }
 
 }

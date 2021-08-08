@@ -1,22 +1,21 @@
 package pg.services.match.filter;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import pg.TorrentDetailBuilder;
 import pg.web.torrent.TorrentDetail;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**Created by Gawa 2017-09-24*/
 public class FileSizeFilterTest {
     private Filter filter;
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() {
         filter = null;
     }
 
@@ -28,7 +27,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -39,7 +38,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -50,7 +49,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
     @Test
@@ -61,7 +60,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -72,7 +71,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -83,7 +82,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
     @Test
@@ -94,7 +93,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -105,7 +104,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -116,7 +115,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(0));
+        assertThat(actual).isEmpty();
     }
 
     @Test
@@ -127,7 +126,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -138,7 +137,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -149,7 +148,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -160,7 +159,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
     @Test
@@ -171,7 +170,7 @@ public class FileSizeFilterTest {
 
         List<TorrentDetail> actual = filter.apply(Collections.singletonList(torrentDetail));
 
-        assertThat(actual, hasSize(1));
+        assertThat(actual).hasSize(1);
     }
 
 }

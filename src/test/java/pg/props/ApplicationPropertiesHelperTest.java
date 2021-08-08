@@ -1,25 +1,20 @@
 package pg.props;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pg.program.SettingKeys;
 import pg.util.AppConstants;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * Created by Pawel Gawedzki on 9/18/2017.
- */
+/** Created by Pawel Gawedzki on 9/18/2017. */
 public class ApplicationPropertiesHelperTest {
 
     private ApplicationPropertiesHelper application;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         application = ApplicationPropertiesHelper.getInstance();
         application.loadApplicationProperties(AppConstants.APPLICATION_PROPERTIES);
     }
@@ -31,8 +26,8 @@ public class ApplicationPropertiesHelperTest {
             application.extractUsername(null);
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getLocalizedMessage(), is( equalTo("No userName where given. Add username to " +
-                    "application.properties or run program with username param (username=login).")));
+            assertThat(ex.getLocalizedMessage()).isEqualTo("No userName where given. Add username to " +
+                    "application.properties or run program with username param (username=login).");
         }
     }
 
@@ -43,18 +38,18 @@ public class ApplicationPropertiesHelperTest {
             application.extractUsername(new String[]{"someArgument"});
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getLocalizedMessage(), is( equalTo("No userName where given. Add username to " +
-                    "application.properties or run program with username param (username=login).")));
+            assertThat(ex.getLocalizedMessage()).isEqualTo("No userName where given. Add username to " +
+                    "application.properties or run program with username param (username=login).");
         }
     }
 
     @Test
     public void givenUsernameInArgsWhenExtractUsernameFromArgsThenAddUserNameToProperties() {
         application.getApplicationProperties().remove(SettingKeys.USERNAME.key());
-        assertThat(application.getUsername(), is(nullValue()) );
+        assertThat(application.getUsername()).isNull();
 
         application.extractUsername(new String[]{"username=someUserName"});
-        assertThat(application.getUsername(), is( equalTo("someUserName")));
+        assertThat(application.getUsername()).isEqualTo("someUserName");
     }
 
     @Test
@@ -63,7 +58,7 @@ public class ApplicationPropertiesHelperTest {
 
         application.extractUsername(null);
 
-        assertThat(application.getUsername(), is( equalTo("someUserName")));
+        assertThat(application.getUsername()).isEqualTo("someUserName");
     }
 
     @Test
@@ -72,7 +67,7 @@ public class ApplicationPropertiesHelperTest {
 
         application.extractUsername(new String[]{"username=userFromArgs"});
 
-        assertThat(application.getUsername(), is( equalTo("userFromProperties")));
+        assertThat(application.getUsername()).isEqualTo("userFromProperties");
     }
 
 }
