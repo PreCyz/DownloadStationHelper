@@ -26,6 +26,7 @@ test {
 def jacksonCore = "2.12.4"
 def mockito = "3.11.2"
 def jUnit5 = "5.7.2"
+def assertJ = "3.20.2"
 
 dependencies {
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
@@ -46,7 +47,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.mockito:mockito-junit-jupiter:$mockito"
     testImplementation "org.mockito:mockito-inline:$mockito"
-    testImplementation 'org.assertj:assertj-core:3.20.2'
+    testImplementation "org.assertj:assertj-core:$assertJ"
 }
 
 group 'download-station-helper'
