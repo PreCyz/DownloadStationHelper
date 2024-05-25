@@ -17,7 +17,7 @@ public class SearchWindow extends AbstractWindow {
 
     @Override
     protected String windowImgFileName() {
-        return "searchImg.png";
+        return "search.png";
     }
 
     @Override

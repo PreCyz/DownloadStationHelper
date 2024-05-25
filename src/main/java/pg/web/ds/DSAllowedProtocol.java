@@ -2,9 +2,9 @@ package pg.web.ds;
 
 /**Created by Gawa 2017-10-14*/
 public enum DSAllowedProtocol {
-    http(5000), https(5001);
+    http(5113), https(5011);
 
-    private int port;
+    private final int port;
     DSAllowedProtocol(int port) {
         this.port = port;
     }

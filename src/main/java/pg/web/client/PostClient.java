@@ -1,30 +1,21 @@
 package pg.web.client;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.apache.http.HttpHeaders.USER_AGENT;
+import java.io.*;
+import java.net.URI;
+import java.net.http.*;
+import java.util.*;
 
 /**Created by Gawa on 15/08/17.*/
 public class PostClient {
 
     private static final Logger logger = LoggerFactory.getLogger(PostClient.class);
+    private static final HttpClient CLIENT = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
 
     private final String url;
-    private int responseCode;
+    private String output;
 
     public PostClient(String url) {
         this.url = url;
@@ -35,45 +26,35 @@ public class PostClient {
     }
 
     public Optional<String> get(Map<String, String> cookies) {
+        HttpRequest request = HttpRequest.newBuilder(URI.create(url))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .header("User-Agent", "Java 17.0.5 Native Http Client")
+                .build();
         try {
-            CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpPost request = new HttpPost(url);
+            HttpResponse<InputStream> res = CLIENT.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-            // add request header
-            request.addHeader("User-Agent", USER_AGENT);
-            //addCookies(request, cookies);
-            HttpResponse response = client.execute(request);
+            try (InputStream content = res.body();
+                 BufferedReader rd = new BufferedReader(new InputStreamReader(content))
+            ) {
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                setOutput(result.toString());
 
-            responseCode = response.getStatusLine().getStatusCode();
-
-            InputStream content = response.getEntity().getContent();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(content));
-
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
+            } catch (Exception ex) {
+                logger.error("no data.", ex);
             }
 
-            return Optional.of(result.toString());
-
-        } catch (IOException e) {
+            return Optional.of(output);
+        } catch (IOException | InterruptedException e) {
             logger.error(e.getLocalizedMessage());
         }
         return Optional.empty();
     }
 
-    private void addCookies(HttpGet request, Map<String, String> cookies) {
-        if (cookies != null && !cookies.isEmpty()) {
-            StringBuilder value = new StringBuilder();
-            for (Map.Entry<String, String> entry : cookies.entrySet()) {
-                value.append(entry.getKey()).append("=").append(entry.getValue()).append(";");
-            }
-            request.addHeader("Cookie", value.substring(0, value.lastIndexOf(";")));
-        }
-    }
-
-    public int getResponseCode() {
-        return responseCode;
+    private void setOutput(String value) {
+        output = value;
     }
 }

@@ -18,7 +18,7 @@ class ConfigWindow extends AbstractWindow {
 
     @Override
     protected String windowImgFileName() {
-        return "configImg.png";
+        return "config.png";
     }
 
     @Override

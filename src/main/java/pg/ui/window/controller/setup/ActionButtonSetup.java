@@ -3,7 +3,6 @@ package pg.ui.window.controller.setup;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pg.util.AppConstants;
@@ -22,8 +21,8 @@ public class ActionButtonSetup implements ComponentSetup {
     private final double DEFAULT_HEIGHT = 30;
 
     private final List<Button> buttons;
-    private double width;
-    private double height;
+    private final double width;
+    private final double height;
     private final boolean customSize;
 
     public ActionButtonSetup(List<Button> buttons) {
@@ -72,7 +71,6 @@ public class ActionButtonSetup implements ComponentSetup {
         }
     }
 
-    @NotNull
     private Image getButtonImage(Button button) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(getImagePath(button)) ) {
             return new Image(is);

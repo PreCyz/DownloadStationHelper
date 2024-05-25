@@ -18,7 +18,7 @@ class MainWindow extends AbstractWindow {
 
     @Override
     protected String windowImgFileName() {
-        return "mainImg.png";
+        return "main.png";
     }
 
     @Override

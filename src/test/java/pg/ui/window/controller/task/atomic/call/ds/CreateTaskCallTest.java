@@ -1,6 +1,5 @@
 package pg.ui.window.controller.task.atomic.call.ds;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pg.program.ApiName;
@@ -24,7 +23,6 @@ public class CreateTaskCallTest {
         call = new CreateTaskCall("sid", Collections.emptyList(), mockDsApiDetails());
     }
 
-    @NotNull
     private DSApiDetails mockDsApiDetails() {
         DSApiDetails downloadStationTask = mock(DSApiDetails.class);
         when(downloadStationTask.getMaxVersion()).thenReturn(1);

@@ -18,7 +18,7 @@ class ShowWindow extends AbstractWindow {
 
     @Override
     protected String windowImgFileName() {
-        return "showImg.png";
+        return "show.png";
     }
 
     @Override

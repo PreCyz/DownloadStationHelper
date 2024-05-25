@@ -3,50 +3,48 @@ import java.nio.file.Paths
 
 plugins {
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
-    id "io.freefair.lombok" version "5.0.0-rc6"
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 javafx {
-    version = "11.0.2"
+    version = "17.0.11"
     modules = [ 'javafx.fxml','javafx.controls', 'javafx.media', 'javafx.web', 'javafx.swing' ]
 }
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://nexus.gluonhq.com/nexus/content/repositories/releases/"
-    }
 }
 
 test {
     useJUnitPlatform()
 }
 
-def jacksonCore = "2.13.0"
-def mockito = "4.2.0"
-def jUnit5 = "5.8.2"
-def assertJ = "3.22.0"
+def jacksonCore = "2.17.1"
+def mockito = "5.12.0"
+def jUnit5 = "5.10.2"
+def assertJ = "3.25.3"
 
 dependencies {
-    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
-    implementation 'ch.qos.logback:logback-classic:1.2.10'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonCore"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonCore"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonCore"
-    implementation 'pl.project13.maven:git-commit-id-plugin:2.2.6'
+    implementation 'pl.project13.maven:git-commit-id-plugin:4.9.10'
     implementation "org.openjfx:javafx-base:$javafx.version"
     implementation "org.openjfx:javafx-controls:$javafx.version"
     implementation "org.openjfx:javafx-graphics:$javafx.version"
     implementation "org.openjfx:javafx-controls:$javafx.version"
     implementation "org.openjfx:javafx-fxml:$javafx.version"
-    implementation 'com.gluonhq:charm-glisten:6.0.3'
+    implementation 'com.google.guava:guava:33.2.0-jre'
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$jUnit5"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jUnit5"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$jUnit5"
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.mockito:mockito-junit-jupiter:$mockito"
-    testImplementation "org.mockito:mockito-inline:$mockito"
+    testImplementation "org.mockito:mockito-inline:5.2.0"
     testImplementation "org.assertj:assertj-core:$assertJ"
 }
 
@@ -55,6 +53,7 @@ def appVersion = "3.0.3"
 
 def fxMainClassName = 'pg.Java11Main'
 def jarName = "DSHelper-11+"
+def buildDirPath = layout.buildDirectory.get().getAsFile().getAbsolutePath()
 
 mainClassName = fxMainClassName
 
@@ -63,19 +62,19 @@ def copyApplicationProperties = copySpec {
     include '*.properties','credentials'
 }
 
-task copyToLib( type: Copy ) {
-    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'lib').toString()
-    from configurations.runtime
+tasks.register('copyToLib', Copy) {
+    into Paths.get(buildDirPath, 'libs', 'lib').toString()
+    from configurations
 }
 
-task versionTxt()  {
+tasks.register('versionTxt') {
     doLast {
-        new File(Paths.get(buildDir.getAbsolutePath(), 'resources', 'main', 'version.txt').toString()).text = "$appVersion"
+        new File(Paths.get(buildDirPath, 'resources', 'main', 'version.txt').toString()).text = "$appVersion"
     }
 }
 
-task copyAppPropertiesTask( type: Copy ) {
-    into Paths.get(buildDir.getAbsolutePath(), 'libs', 'settings').toString()
+tasks.register('copyAppPropertiesTask', Copy) {
+    into Paths.get(buildDirPath, 'libs', 'settings').toString()
     with copyApplicationProperties
 }
 
@@ -85,7 +84,7 @@ jar {
         attributes 'Implementation-Title': 'DownloadStationHelper',
                 'Implementation-Version': appVersion,
                 'Main-Class': mainClassName,
-                'Class-path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+                'Class-path': configurations.runtimeClasspath.collect { 'lib/' + it.getName() }.join(' ')
     }
     archiveBaseName.set(jarName)
 }
